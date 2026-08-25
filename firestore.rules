@@ -1,0 +1,170 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function userRole() {
+      return !signedIn() ? "" :
+        request.auth.token.role != null ? request.auth.token.role :
+        exists(userPath()) ? get(userPath()).data.role :
+        "";
+    }
+
+    function userClientId() {
+      return !signedIn() ? "" :
+        request.auth.token.clientId != null ? request.auth.token.clientId :
+        exists(userPath()) ? get(userPath()).data.clientId :
+        "";
+    }
+
+    function isSuperAdmin() {
+      return signedIn() && (
+        request.auth.token.superAdmin == true ||
+        request.auth.token.role == "superAdmin" ||
+        (exists(userPath()) && (
+          get(userPath()).data.superAdmin == true ||
+          get(userPath()).data.role == "superAdmin"
+        ))
+      );
+    }
+
+    function isInternalUser() {
+      return signedIn() && (
+        isSuperAdmin() ||
+        userRole() in ["admin", "superAdmin", "manager", "staff"]
+      );
+    }
+
+    function isClientUser() {
+      return signedIn() && userRole() == "client" && userClientId() != "";
+    }
+
+    match /pricingCatalog/{catalogId}/items/{itemId} {
+      allow read: if isInternalUser() || catalogId == 'active';
+      allow write: if isInternalUser();
+    }
+
+    match /pays/{countryId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if signedIn();
+    }
+
+    match /reservationRequests/{requestId} {
+      allow create: if
+        request.resource.data.keys().hasOnly([
+          "tenantName",
+          "tenantPhone",
+          "phoneKey",
+          "requestedDate",
+          "destination",
+          "message",
+          "status",
+          "source",
+          "createdAt"
+        ])
+        && request.resource.data.tenantName is string
+        && request.resource.data.tenantPhone is string
+        && request.resource.data.phoneKey is string
+        && request.resource.data.requestedDate is string
+        && request.resource.data.destination is string
+        && request.resource.data.message is string
+        && request.resource.data.status == "pending"
+        && request.resource.data.source == "publicRequests"
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isInternalUser();
+    }
+
+    match /enlevements/{enlevementId} {
+      allow create: if true;
+      allow read: if isInternalUser() || (isClientUser() && resource.data.customerId == userClientId());
+      allow update, delete: if isInternalUser();
+    }
+
+    match /pickupRequests/{requestId} {
+      allow create: if true;
+      allow read, update, delete: if isInternalUser();
+    }
+
+    match /pickupFormInvites/{inviteId} {
+      allow get: if true;
+      allow list: if isInternalUser();
+      allow create, delete: if isInternalUser();
+      allow update: if isInternalUser() || (
+        resource.data.status == "pending"
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly(["status", "submittedAt", "pickupRequestId"])
+        && request.resource.data.status == "submitted"
+        && request.resource.data.pickupRequestId is string
+      );
+    }
+
+    match /publicSubmissionLocks/{lockId} {
+      allow get: if true;
+      allow list, delete: if isInternalUser();
+      allow create: if
+        request.resource.data.keys().hasOnly(["phoneKey", "lastSubmittedAt", "lastSubmittedAtMs"])
+        && request.resource.data.phoneKey == lockId
+        && request.resource.data.lastSubmittedAtMs is number;
+      allow update: if
+        request.resource.data.diff(resource.data).changedKeys().hasOnly(["phoneKey", "lastSubmittedAt", "lastSubmittedAtMs"])
+        && request.resource.data.phoneKey == lockId
+        && request.resource.data.lastSubmittedAtMs is number;
+    }
+
+    match /driverLocations/{locationId} {
+      allow get: if true;
+      allow list, delete: if isInternalUser();
+      allow create, update: if
+        isInternalUser()
+        || (
+          request.resource.data.driverId is string
+          && request.resource.data.tourneeId is string
+          && request.resource.data.driverName is string
+          && request.resource.data.latitude is number
+          && request.resource.data.longitude is number
+          && request.resource.data.latitude >= -90
+          && request.resource.data.latitude <= 90
+          && request.resource.data.longitude >= -180
+          && request.resource.data.longitude <= 180
+          && request.resource.data.status in ["active", "stopped"]
+        );
+    }
+
+    match /clients/{clientId} {
+      allow read: if isInternalUser() || (isClientUser() && clientId == userClientId());
+      allow write: if isInternalUser();
+    }
+
+    match /customers/{customerId} {
+      allow read, write: if isInternalUser();
+    }
+
+    match /users/{userId} {
+      // Chaque compte peut charger son propre profil immédiatement après
+      // Firebase Authentication, sans dépendre de la lecture récursive du rôle.
+      allow read: if (signedIn() && userId == request.auth.uid) || isSuperAdmin();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    match /activityLogs/{logId} {
+      allow read: if isSuperAdmin();
+      allow create: if isInternalUser();
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if isInternalUser();
+    }
+  }
+}
