@@ -6,6 +6,7 @@ import { useCollection } from "vuefire"
 import { useAuthStore } from "./stores/useAuthStore.js"
 import { db } from "./components/firebaseConfig.js"
 import GlobalSearch from "./components/GlobalSearch.vue"
+import { routeLoading } from "./router/index.js"
 
 const route = useRoute()
 const store = useAuthStore()
@@ -19,7 +20,6 @@ const navSections = [
     title: "Pilotage",
     items: [
       { label: "Dashboard", path: "/", icon: "DB", permission: "dashboard" },
-      { label: "À traiter", path: "/work-queue", icon: "AT", permission: "dashboard" },
       { label: "Suivi client", path: "/client-followup", icon: "CL", permission: "clientFollowup" },
     ],
   },
@@ -87,7 +87,6 @@ const mobileNavItems = computed(() =>
 
 const titles = {
   "/": "Dashboard",
-  "/work-queue": "À traiter",
   "/activity-log": "Journal d’activité",
   "/liste": "Enlevements",
   "/scan": "Scan colis",
@@ -182,8 +181,18 @@ const getBadgeCount = (item) => {
 </script>
 
 <template>
+  <Transition name="loading-bar">
+    <div v-if="routeLoading" class="navigation-progress" aria-label="Chargement de la page">
+      <span></span>
+    </div>
+  </Transition>
+
   <template v-if="!showLayout">
-    <RouterView />
+    <RouterView v-slot="{ Component, route: currentRoute }">
+      <Transition name="page" mode="out-in">
+        <component :is="Component" :key="currentRoute.fullPath" />
+      </Transition>
+    </RouterView>
   </template>
 
   <div v-else class="min-h-screen overflow-x-hidden text-slate-950">
@@ -424,7 +433,11 @@ const getBadgeCount = (item) => {
       </header>
 
       <main class="min-h-[calc(100vh-5rem)] min-w-0 max-w-full overflow-x-hidden px-3 py-4 pb-24 sm:px-6 sm:py-6 sm:pb-24 lg:px-8 lg:pb-8">
-        <RouterView />
+        <RouterView v-slot="{ Component, route: currentRoute }">
+          <Transition name="page" mode="out-in">
+            <component :is="Component" :key="currentRoute.fullPath" />
+          </Transition>
+        </RouterView>
       </main>
     </div>
 

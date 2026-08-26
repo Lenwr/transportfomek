@@ -1,5 +1,6 @@
 // ✅ src/router/index.js
 import { createRouter, createWebHashHistory } from "vue-router"
+import { ref } from "vue"
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
 import { toast } from "vue3-toastify"
@@ -35,8 +36,9 @@ import DeliveryScanView from "../views/DeliveryScanView.vue"
 import BillingDocumentsView from "../views/BillingDocumentsView.vue"
 import ClientPickupFormView from "../views/ClientPickupFormView.vue"
 import ClientFollowupView from "../views/ClientFollowupView.vue"
-import WorkQueueView from "../views/WorkQueueView.vue"
 import ActivityLogView from "../views/ActivityLogView.vue"
+
+export const routeLoading = ref(false)
 
 // Components
 import GeneratorBarCode from "../components/GeneratorBarCode.vue"
@@ -56,7 +58,6 @@ const router = createRouter({
 
     // ✅ PROTECTED
     { path: "/", name: "home", component: HomeView, meta: { authNeeded: true, permission: "dashboard" } },
-    { path: "/work-queue", name: "workQueue", component: WorkQueueView, meta: { authNeeded: true, permission: "dashboard" } },
     { path: "/activity-log", name: "activityLog", component: ActivityLogView, meta: { authNeeded: true, superAdminOnly: true } },
     { path: "/client-followup", name: "clientFollowup", component: ClientFollowupView, meta: { authNeeded: true, permission: "clientFollowup" } },
     { path: "/pickup-requests", name: "pickupRequests", component: PickupRequestsListView, meta: { authNeeded: true, permission: "pickupRequests" } },
@@ -113,6 +114,7 @@ function waitForAuthReady() {
 }
 
 router.beforeEach(async (to, from, next) => {
+  routeLoading.value = true
   // pages publiques
   if (to.meta?.authNeeded === false) return next()
 
@@ -207,6 +209,16 @@ router.beforeEach(async (to, from, next) => {
   }
 
   return next()
+})
+
+router.afterEach(() => {
+  window.setTimeout(() => {
+    routeLoading.value = false
+  }, 180)
+})
+
+router.onError(() => {
+  routeLoading.value = false
 })
 
 export default router
