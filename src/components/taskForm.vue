@@ -1,7 +1,6 @@
 <script setup>
 import {useTasksStore} from "../stores/tasksStore.js";
 import {ref} from "vue";
-import {config} from "@mapbox/search-js-web";
 
 const taskStore = useTasksStore()
 const colis = ref('')
@@ -19,8 +18,6 @@ const handleSubmit = () => {
     adresse.value =''
   }
 }
-
-config.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || ''
 
 const inputAddress = ref('')
 

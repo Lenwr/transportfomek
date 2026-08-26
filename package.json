@@ -17,7 +17,6 @@
     "@fullcalendar/vue3": "^6.1.9",
     "@keeex/qrcodejs-kx": "^1.0.2",
     "@lottiefiles/dotlottie-vue": "^0.5.3",
-    "@mapbox/search-js-web": "^1.0.0-beta.22",
     "@vueuse/core": "^10.5.0",
     "canvg": "^4.0.2",
     "cors": "^2.8.5",
