@@ -1,4 +1,5 @@
 <script setup>
+import { messagingEndpoint } from "../utils/messagingEndpoint"
 import { computed, ref } from "vue"
 import { addDoc, collection, query, orderBy, serverTimestamp } from "firebase/firestore"
 import { useCollection } from "vuefire"
@@ -309,14 +310,14 @@ function buildClientFormMessage(client, link, mode = "todo") {
   const name = client.name || "client"
   if (mode === "missed") {
     return [
-      `AARON TRAVEL - Bonjour ${name},`,
+      `TRANSPORT FOMEK - Bonjour ${name},`,
       "suite a notre dernier passage, merci de completer ce formulaire pour enregistrer votre enlevement :",
       link,
     ].join("\n")
   }
 
   return [
-    `AARON TRAVEL - Bonjour ${name},`,
+    `TRANSPORT FOMEK - Bonjour ${name},`,
     "merci de remplir ce formulaire avant l'arrivée du chauffeur :",
     link,
   ].join("\n")
@@ -327,7 +328,7 @@ async function sendSms(phoneNumber, message) {
   if (!user) throw new Error("Reconnecte-toi pour envoyer un SMS")
 
   const token = await user.getIdToken()
-  const response = await fetch("https://us-central1-aarontravelgestion.cloudfunctions.net/sendInvoiceSMS", {
+  const response = await fetch(messagingEndpoint("sendInvoiceSMS"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -386,11 +387,11 @@ function removeClientBulkRow(rowId) {
 function fillSelectedClientMessage(template = "custom") {
   const name = clientName(selectedClient.value || {})
   if (template === "pickup") {
-    directMessage.value = `AARON TRAVEL - Bonjour ${name}, merci de confirmer votre disponibilité pour l'enlèvement.`
+    directMessage.value = `TRANSPORT FOMEK - Bonjour ${name}, merci de confirmer votre disponibilité pour l'enlèvement.`
     return
   }
   if (template === "missing") {
-    directMessage.value = `AARON TRAVEL - Bonjour ${name}, il nous manque des informations pour finaliser votre dossier. Merci de nous répondre.`
+    directMessage.value = `TRANSPORT FOMEK - Bonjour ${name}, il nous manque des informations pour finaliser votre dossier. Merci de nous répondre.`
     return
   }
   directMessage.value = ""

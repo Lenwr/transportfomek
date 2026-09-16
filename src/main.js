@@ -4,8 +4,9 @@ import App from "./App.vue"
 import router from "./router"
 import { VueFire } from "vuefire"
 import { createPinia } from "pinia"
+import { onAuthStateChanged } from "firebase/auth"
 
-import { firebaseApp, db } from "./components/firebaseConfig.js"
+import { firebaseApp, db, auth } from "./components/firebaseConfig.js"
 
 const app = createApp(App)
 
@@ -18,4 +19,10 @@ app.use(VueFire, {
 })
 
 app.use(createPinia())
-app.mount("#app")
+
+// Firebase restaure la session de façon asynchrone. Attendre son premier état
+// évite que les listeners Firestore démarrent sans utilisateur puis restent vides.
+const stopAuthBootstrap = onAuthStateChanged(auth, () => {
+  stopAuthBootstrap()
+  app.mount("#app")
+})

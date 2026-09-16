@@ -1,4 +1,5 @@
 <script setup>
+import { confirmToast } from "../../utils/confirmToast.js"
   import { ref, computed } from "vue"
   import { useFirestore, useCollection } from "vuefire"
   import {
@@ -8,25 +9,23 @@
     updateDoc,
     deleteDoc,
     serverTimestamp,
-    query,
-    orderBy,
   } from "firebase/firestore"
   import { toast } from "vue3-toastify"
-  
+
   const db = useFirestore()
   
   // Catalog “active”
   const catalogId = "active"
   const itemsRef = collection(db, "pricingCatalog", catalogId, "items")
-  const itemsCol = useCollection(query(itemsRef, orderBy("sort", "asc")))
+  const itemsCol = useCollection(itemsRef)
   
-  const DESTINATIONS = ["LOME", "COTONOU", "ABIDJAN"]
   const PRICING_TYPES = [
     { value: "FIXED_BY_DESTINATION", label: "Forfait par destination" },
     { value: "PER_INCH_BY_DESTINATION", label: "TV au pouce" },
   ]
   
   const search = ref("")
+  const newDestination = ref("")
   const editing = ref(null) // {id, ...data}
   const modalRef = ref(null)
   
@@ -38,13 +37,16 @@
     unit: "piece",
     isActive: true,
     sort: 100,
-    pricesByDestination: { LOME: 0, COTONOU: 0, ABIDJAN: 0 },
-    ratesByDestination: { LOME: 0, COTONOU: 0, ABIDJAN: 0 },
+    pricesByDestination: { DOUALA: 0 },
+    ratesByDestination: { DOUALA: 0 },
   })
   
   const filtered = computed(() => {
     const q = search.value.trim().toLowerCase()
-    const list = itemsCol.value || []
+    const list = [...(itemsCol.value || [])].sort((a, b) =>
+      (Number(a.sort) || 100) - (Number(b.sort) || 100) ||
+      String(a.label || "").localeCompare(String(b.label || ""), "fr")
+    )
     if (!q) return list
     return list.filter((it) =>
       [it.label, it.key, it.category].filter(Boolean).join(" ").toLowerCase().includes(q)
@@ -57,8 +59,40 @@
   }
   
   const openEdit = (item) => {
-    editing.value = { _mode: "edit", id: item.id, ...item }
+    editing.value = {
+      _mode: "edit",
+      id: item.id,
+      ...item,
+      pricesByDestination: { DOUALA: 0, ...(item.pricesByDestination || {}) },
+      ratesByDestination: { DOUALA: 0, ...(item.ratesByDestination || {}) },
+    }
     modalRef.value?.showModal()
+  }
+
+  const pricingDestinations = computed(() => {
+    if (!editing.value) return ["DOUALA"]
+    const keys = new Set([
+      "DOUALA",
+      ...Object.keys(editing.value.pricesByDestination || {}),
+      ...Object.keys(editing.value.ratesByDestination || {}),
+    ])
+    return [...keys]
+  })
+
+  const addDestination = () => {
+    const destination = newDestination.value.trim().toUpperCase()
+    if (!destination || !editing.value) return
+    editing.value.pricesByDestination ||= {}
+    editing.value.ratesByDestination ||= {}
+    if (!(destination in editing.value.pricesByDestination)) editing.value.pricesByDestination[destination] = 0
+    if (!(destination in editing.value.ratesByDestination)) editing.value.ratesByDestination[destination] = 0
+    newDestination.value = ""
+  }
+
+  const removeDestination = (destination) => {
+    if (destination === "DOUALA" || !editing.value) return
+    delete editing.value.pricesByDestination?.[destination]
+    delete editing.value.ratesByDestination?.[destination]
   }
   
   const closeModal = () => {
@@ -99,10 +133,10 @@
   
     if (editing.value.pricingType === "FIXED_BY_DESTINATION") {
       payload.pricesByDestination = { ...editing.value.pricesByDestination }
-      payload.ratesByDestination = { LOME: 0, COTONOU: 0, ABIDJAN: 0 }
+      payload.ratesByDestination = Object.fromEntries(pricingDestinations.value.map((destination) => [destination, 0]))
     } else {
       payload.ratesByDestination = { ...editing.value.ratesByDestination }
-      payload.pricesByDestination = { LOME: 0, COTONOU: 0, ABIDJAN: 0 }
+      payload.pricesByDestination = Object.fromEntries(pricingDestinations.value.map((destination) => [destination, 0]))
     }
   
     try {
@@ -122,7 +156,7 @@
   }
   
   const removeItem = async (id) => {
-    const ok = window.confirm("Supprimer cet article ?")
+    const ok = await confirmToast("Supprimer cet article ?")
     if (!ok) return
     try {
       await deleteDoc(doc(itemsRef, id))
@@ -143,8 +177,8 @@
         <!-- Header responsive -->
         <header class="flex flex-col gap-3 mb-5">
           <div>
-            <h1 class="text-2xl font-semibold text-slate-900">Grille tarifaire</h1>
-            <p class="text-sm text-slate-500">CRUD des articles + tarifs (source pour le devis client).</p>
+            <h1 class="text-2xl font-semibold text-slate-900">Catalogue</h1>
+            <p class="text-sm text-slate-500">Gère les articles proposés dans le formulaire d’enregistrement.</p>
           </div>
   
           <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
@@ -313,17 +347,28 @@
             <!-- Prices -->
             <div class="border rounded-xl p-3 bg-slate-50">
               <div class="text-sm font-semibold mb-2">Tarifs</div>
+
+              <div class="mb-3 flex gap-2">
+                <input v-model="newDestination" class="min-w-0 flex-1 rounded-lg border bg-white px-3 py-2 text-sm" placeholder="Ajouter une destination, ex. YAOUNDÉ" @keyup.enter.prevent="addDestination" />
+                <button type="button" class="rounded-lg bg-cyan-700 px-3 py-2 text-sm font-bold text-white" @click="addDestination">Ajouter</button>
+              </div>
   
               <div v-if="editing.pricingType === 'FIXED_BY_DESTINATION'" class="grid sm:grid-cols-3 gap-3">
-                <div v-for="dest in DESTINATIONS" :key="dest">
-                  <label class="block text-xs font-medium text-slate-600 mb-1">{{ dest }}</label>
+                <div v-for="dest in pricingDestinations" :key="dest">
+                  <div class="mb-1 flex items-center justify-between gap-2">
+                    <label class="block text-xs font-medium text-slate-600">{{ dest }}</label>
+                    <button v-if="dest !== 'DOUALA'" type="button" class="text-xs font-bold text-red-600" @click="removeDestination(dest)">Retirer</button>
+                  </div>
                   <input type="number" v-model.number="editing.pricesByDestination[dest]" class="w-full border rounded-lg px-3 py-2 text-sm bg-white" />
                 </div>
               </div>
   
               <div v-else class="grid sm:grid-cols-3 gap-3">
-                <div v-for="dest in DESTINATIONS" :key="dest">
-                  <label class="block text-xs font-medium text-slate-600 mb-1">{{ dest }} (€/pouce)</label>
+                <div v-for="dest in pricingDestinations" :key="dest">
+                  <div class="mb-1 flex items-center justify-between gap-2">
+                    <label class="block text-xs font-medium text-slate-600">{{ dest }} (€/pouce)</label>
+                    <button v-if="dest !== 'DOUALA'" type="button" class="text-xs font-bold text-red-600" @click="removeDestination(dest)">Retirer</button>
+                  </div>
                   <input type="number" v-model.number="editing.ratesByDestination[dest]" class="w-full border rounded-lg px-3 py-2 text-sm bg-white" />
                 </div>
               </div>
@@ -348,4 +393,3 @@
       </dialog>
     </div>
   </template>
-  

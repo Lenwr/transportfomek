@@ -1,5 +1,6 @@
 <!-- src/views/contracts/components/PaymentsCard.vue -->
 <script setup>
+import { confirmToast } from "../../../utils/confirmToast.js"
 import { computed, ref, watch } from "vue"
 import { useFirestore, useCollection } from "vuefire"
 import { collection, query, where, orderBy, doc, updateDoc, serverTimestamp } from "firebase/firestore"
@@ -194,17 +195,14 @@ async function generateInvoiceForPeriod(period, paymentRow = null) {
     vatRate,
 
     provider: {
-      title: "CGL/ Aaron travel",
-      contactName: "Boubakar CAMARA",
-      tva: "FR61828534214",
-      siret: "82853421400014",
-      addressLines: [
-        "15 rue des écoles, 95500 Le Thillay",
-        "11 rue des velettes, 92150 Suresnes",
-      ],
-      phone: "+33 6 03 67 50 62",
-      website: "http://www.aaron-travel.com",
-      email: "aarontravel@outlook.fr",
+      title: "TRANSPORT FOMEK",
+      contactName: "",
+      tva: "",
+      siret: "",
+      addressLines: ["15 rue des Écoles, 95500 Le Thillay"],
+      phone: "+33 6 95 93 19 92",
+      website: "https://transportfomek.vercel.app",
+      email: "",
     },
 
     billTo: {
@@ -234,11 +232,11 @@ async function generateInvoiceForPeriod(period, paymentRow = null) {
     },
 
     paymentInfo: {
-      primary: { title: "PAYPAL", value: "aarontravel@outlook.fr" },
-      iban: "FR4620041010125200472C03349",
-      bic: "PSSTFRPPSCE",
-      chequeTo: "AARON TRAVEL",
-      other: "Règlement par PayLib : 06.03.67.50.62",
+      primary: { title: "MODALITÉS DE PAIEMENT", value: "" },
+      iban: "",
+      bic: "",
+      chequeTo: "TRANSPORT FOMEK",
+      other: "",
     },
   })
 }
@@ -345,7 +343,7 @@ async function savePayment() {
 ========================================================= */
 async function removePayment(payment) {
   try {
-    const ok = window.confirm(
+    const ok = await confirmToast(
       `Supprimer le paiement ${payment?.period || ""} ? Cette action mettra aussi la facture à jour.`
     )
     if (!ok) return

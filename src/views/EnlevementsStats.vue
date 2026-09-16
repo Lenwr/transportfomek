@@ -5,14 +5,15 @@ import {
     startOfMonth, endOfMonth, eachDayOfInterval, addMonths, parse
 } from 'date-fns'
 import frLocale from 'date-fns/locale/fr'
-import { listeEnlevements } from '../components/firebaseConfig'
+import { db } from '../components/firebaseConfig'
+import { collection, doc, updateDoc } from 'firebase/firestore'
+import { useCollection } from 'vuefire'
+
+const listeEnlevements = useCollection(collection(db, 'enlevements'))
 import {
     normalizeToDate, formatDateTime, formatHour,
     norm, isPaye, canonicalizeStatut, parsePrixToNumber, formatCurrency
 } from '../components/useEnlevementsUtils'
-import { getFirestore, doc, updateDoc } from 'firebase/firestore'
-
-const db = getFirestore()
 const COLLECTION_NAME = 'enlevements' // adapte si besoin
 
 // Sélection du jour
@@ -45,7 +46,7 @@ const nbNonPayesJourChoisi = computed(() =>
     selectedDayItems.value.filter(it => norm(it.statut) === 'non paye' || norm(it.statut) === 'nonpaye').length
 )
 const nbResteAPayerJourChoisi = computed(() =>
-    selectedDayItems.value.filter(it => canonicalizeStatut(it.statut) === 'Reste à payer').length
+    selectedDayItems.value.filter(it => canonicalizeStatut(it.statut) === 'Acompte').length
 )
 
 // Edition & sauvegarde
@@ -72,7 +73,7 @@ async function saveRow(item) {
 function rowStatusClass(s) {
     const canon = canonicalizeStatut(s)
     if (canon === 'Payé') return 'bg-green-50 text-green-700 border-green-200'
-    if (canon === 'Reste à payer') return 'bg-amber-50 text-amber-800 border-amber-200'
+    if (canon === 'Acompte') return 'bg-amber-50 text-amber-800 border-amber-200'
     return 'bg-red-50 text-red-700 border-red-200'
 }
 
@@ -127,7 +128,7 @@ const clientsAgg = computed(() => {
     }
     const payes = [], reste = [], nonPayes = []
     for (const r of map.values()) {
-        const hasReste = r.totalReste > 0 || r.statuses.has('Reste à payer')
+        const hasReste = r.totalReste > 0 || r.statuses.has('Acompte')
         const allPayes = r.statuses.size > 0 && [...r.statuses].every(s => s === 'Payé')
         if (hasReste) reste.push(r)
         else if (allPayes) payes.push(r)
@@ -246,7 +247,7 @@ const formatShort = (d) => format(d, 'd MMM', { locale: frLocale })
                         Enlèvements : <span class="font-semibold">{{ nbTotalJourChoisi }}</span> —
                         <span class="text-green-700">{{ nbPayesJourChoisi }} payés</span> /
                         <span class="text-red-700">{{ nbNonPayesJourChoisi }} non payés</span> /
-                        <span class="text-amber-700">{{ nbResteAPayerJourChoisi }} reste à payer</span>
+                        <span class="text-amber-700">{{ nbResteAPayerJourChoisi }} acompte(s)</span>
                     </div>
                     <div class="text-sm text-gray-500">Montant fait (Payé) • Reste à payer</div>
                     <div class="text-2xl text-black font-bold">
@@ -300,7 +301,7 @@ const formatShort = (d) => format(d, 'd MMM', { locale: frLocale })
                                     :class="rowStatusClass(it.statut)">
                                     <option value="Payé" class="text-green-700">Payé</option>
                                     <option value="Non Payé" class="text-red-700">Non Payé</option>
-                                    <option value="Reste à payer" class="text-amber-700">Reste à payer</option>
+                                    <option value="Acompte" class="text-amber-700">Acompte</option>
                                 </select>
                             </td>
                             <td class="p-3">
@@ -328,8 +329,8 @@ const formatShort = (d) => format(d, 'd MMM', { locale: frLocale })
                                     {{ nbPayesJourChoisi }} Payé(s)
                                 </span>
                                 <span class="inline-block rounded px-2 py-1 text-xs ml-1"
-                                    :class="rowStatusClass('Reste à payer')">
-                                    {{ nbResteAPayerJourChoisi }} Reste à payer
+                                    :class="rowStatusClass('Acompte')">
+                                    {{ nbResteAPayerJourChoisi }} Acompte(s)
                                 </span>
                                 <span class="inline-block rounded px-2 py-1 text-xs ml-1"
                                     :class="rowStatusClass('Non Payé')">

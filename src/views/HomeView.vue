@@ -147,6 +147,118 @@ const destinationRows = computed(() => {
     .map(([label, count]) => ({ label, count, percent: Math.round((count / max) * 100) }))
 })
 
+const toDate = (value) => {
+  if (!value) return null
+  const date = value?.toDate ? value.toDate() : new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date
+}
+
+const shipmentDate = (item) =>
+  toDate(item.createdAt || item.date || item.updatedAt)
+
+const deliveryDate = (item) =>
+  toDate(item.deliveredAt || item.deliveryDate || item.signatureAt || item.updatedAt)
+
+const daysBetween = (start, end = new Date()) => {
+  if (!start) return 0
+  return Math.max(0, Math.floor((end.getTime() - start.getTime()) / 86400000))
+}
+
+const trackingOverview = computed(() => {
+  const shipments = enlevements.value || []
+  const delivered = shipments.filter((item) => shipmentStatus(item) === "DELIVERED")
+  const active = shipments.filter((item) => !["DELIVERED", "CANCELLED"].includes(shipmentStatus(item)))
+  const delays = delivered
+    .map((item) => {
+      const start = shipmentDate(item)
+      const end = deliveryDate(item)
+      return start && end ? daysBetween(start, end) : null
+    })
+    .filter((value) => value !== null)
+
+  return {
+    delivered: delivered.length,
+    active: active.length,
+    attention: active.filter((item) => daysBetween(shipmentDate(item)) >= 14).length,
+    deliveryRate: shipments.length ? Math.round((delivered.length / shipments.length) * 100) : 0,
+    averageDays: delays.length ? Math.round(delays.reduce((sum, value) => sum + value, 0) / delays.length) : 0,
+  }
+})
+
+const trackingCards = computed(() => [
+  { label: "Taux de livraison", value: `${trackingOverview.value.deliveryRate} %`, detail: `${trackingOverview.value.delivered} dossiers livrés`, tone: "emerald" },
+  { label: "Dossiers en cours", value: trackingOverview.value.active, detail: "Hors livrés et annulés", tone: "cyan" },
+  { label: "À surveiller", value: trackingOverview.value.attention, detail: "En cours depuis 14 jours ou plus", tone: "amber" },
+  { label: "Délai moyen", value: `${trackingOverview.value.averageDays} j`, detail: "Création jusqu’à livraison", tone: "indigo" },
+])
+
+const attentionShipments = computed(() =>
+  (enlevements.value || [])
+    .filter((item) => !["DELIVERED", "CANCELLED"].includes(shipmentStatus(item)))
+    .map((item) => ({ ...item, ageDays: daysBetween(shipmentDate(item)) }))
+    .filter((item) => item.ageDays >= 14)
+    .sort((a, b) => b.ageDays - a.ageDays)
+    .slice(0, 8)
+)
+
+const weeklyTracking = computed(() => {
+  const shipments = enlevements.value || []
+  return Array.from({ length: 7 }, (_, index) => {
+    const date = new Date()
+    date.setHours(0, 0, 0, 0)
+    date.setDate(date.getDate() - (6 - index))
+    const key = date.toISOString().slice(0, 10)
+    return {
+      key,
+      label: date.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit" }),
+      created: shipments.filter((item) => getDateKey(item.createdAt || item.date) === key).length,
+      delivered: shipments.filter((item) => shipmentStatus(item) === "DELIVERED" && getDateKey(item.deliveredAt || item.deliveryDate || item.updatedAt) === key).length,
+    }
+  })
+})
+
+const weeklyMax = computed(() => Math.max(1, ...weeklyTracking.value.flatMap((day) => [day.created, day.delivered])))
+
+const eightWeekTrend = computed(() => {
+  const shipments = enlevements.value || []
+  const monday = new Date()
+  monday.setHours(0, 0, 0, 0)
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7))
+
+  return Array.from({ length: 8 }, (_, index) => {
+    const start = new Date(monday)
+    start.setDate(start.getDate() - (7 - index) * 7)
+    const end = new Date(start)
+    end.setDate(end.getDate() + 7)
+    const inRange = (date) => date && date >= start && date < end
+    return {
+      label: start.toLocaleDateString("fr-FR", { day: "2-digit", month: "short" }),
+      created: shipments.filter((item) => inRange(shipmentDate(item))).length,
+      delivered: shipments.filter((item) => shipmentStatus(item) === "DELIVERED" && inRange(deliveryDate(item))).length,
+    }
+  })
+})
+
+const trendMax = computed(() => Math.max(1, ...eightWeekTrend.value.flatMap((week) => [week.created, week.delivered])))
+const trendPoints = (field) => eightWeekTrend.value.map((week, index) => {
+  const x = 35 + index * 90
+  const y = 175 - (week[field] / trendMax.value) * 145
+  return `${x},${y}`
+}).join(" ")
+
+const statusDonut = computed(() => {
+  const colors = ["#94a3b8", "#0891b2", "#6366f1", "#f59e0b", "#8b5cf6", "#10b981"]
+  let cursor = 0
+  const segments = statusRows.value.map((row, index) => {
+    const start = cursor
+    cursor += row.percent
+    return `${colors[index]} ${start}% ${cursor}%`
+  })
+  if (!cursor) return "conic-gradient(#e2e8f0 0 100%)"
+  if (cursor < 100) segments.push(`#e2e8f0 ${cursor}% 100%`)
+  return `conic-gradient(${segments.join(", ")})`
+})
+
 const stats = computed(() => [
   {
     label: "Enlevements du jour",
@@ -345,6 +457,121 @@ const actions = [
         </div>
       </section>
     </div>
+
+    <section class="surface-card p-5 sm:p-6">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="eyebrow">Suivi opérationnel</p>
+          <h3 class="mt-1 text-lg font-extrabold text-slate-950">Vue d’ensemble des expéditions</h3>
+        </div>
+        <RouterLink class="text-sm font-bold text-cyan-800 hover:text-cyan-900" to="/liste">Ouvrir le suivi complet</RouterLink>
+      </div>
+
+      <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <article v-for="card in trackingCards" :key="card.label" class="rounded-xl border border-slate-100 bg-slate-50 p-4">
+          <p class="text-sm font-semibold text-slate-500">{{ card.label }}</p>
+          <p class="mt-2 text-2xl font-black" :class="{
+            'text-emerald-700': card.tone === 'emerald',
+            'text-cyan-800': card.tone === 'cyan',
+            'text-amber-700': card.tone === 'amber',
+            'text-indigo-700': card.tone === 'indigo',
+          }">{{ card.value }}</p>
+          <p class="mt-1 text-xs font-medium text-slate-500">{{ card.detail }}</p>
+        </article>
+      </div>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
+        <div class="rounded-xl border border-slate-100 p-4 sm:p-5">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h4 class="font-bold text-slate-900">Évolution sur 8 semaines</h4>
+              <p class="mt-1 text-xs text-slate-500">Comparaison des dossiers créés et livrés</p>
+            </div>
+            <div class="flex gap-4 text-xs font-semibold text-slate-500">
+              <span class="flex items-center gap-2"><i class="h-0.5 w-5 bg-cyan-600"></i> Créés</span>
+              <span class="flex items-center gap-2"><i class="h-0.5 w-5 bg-emerald-500"></i> Livrés</span>
+            </div>
+          </div>
+          <div class="mt-4 overflow-x-auto">
+            <svg class="h-56 min-w-[700px] w-full" viewBox="0 0 700 220" role="img" aria-label="Courbes des enlèvements créés et livrés sur huit semaines">
+              <line v-for="level in 4" :key="level" x1="35" x2="665" :y1="30 + (level - 1) * 48" :y2="30 + (level - 1) * 48" stroke="#e2e8f0" stroke-width="1" />
+              <polyline :points="trendPoints('created')" fill="none" stroke="#0891b2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+              <polyline :points="trendPoints('delivered')" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+              <g v-for="(week, index) in eightWeekTrend" :key="week.label">
+                <circle :cx="35 + index * 90" :cy="175 - (week.created / trendMax) * 145" r="5" fill="#0891b2"><title>{{ week.created }} créé(s)</title></circle>
+                <circle :cx="35 + index * 90" :cy="175 - (week.delivered / trendMax) * 145" r="5" fill="#10b981"><title>{{ week.delivered }} livré(s)</title></circle>
+                <text :x="35 + index * 90" y="207" text-anchor="middle" fill="#64748b" font-size="11">{{ week.label }}</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-slate-100 p-4 sm:p-5">
+          <h4 class="font-bold text-slate-900">Répartition globale</h4>
+          <p class="mt-1 text-xs text-slate-500">Part des expéditions par statut</p>
+          <div class="mt-5 flex justify-center">
+            <div class="relative h-44 w-44 rounded-full" :style="{ background: statusDonut }">
+              <div class="absolute inset-7 flex flex-col items-center justify-center rounded-full bg-white shadow-inner">
+                <strong class="text-2xl text-slate-950">{{ enlevements.length || 0 }}</strong>
+                <span class="text-xs font-semibold text-slate-500">dossiers</span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-2 text-xs">
+            <div v-for="row in statusRows" :key="row.key" class="flex items-center justify-between gap-2 rounded-lg bg-slate-50 px-2 py-2">
+              <span class="flex min-w-0 items-center gap-1.5"><i class="h-2 w-2 shrink-0 rounded-full" :class="row.color"></i><span class="truncate text-slate-600">{{ row.label }}</span></span>
+              <strong class="text-slate-900">{{ row.percent }}%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
+        <div class="rounded-xl border border-slate-100 p-4">
+          <h4 class="font-bold text-slate-900">Activité des 7 derniers jours</h4>
+          <div class="mt-5 flex h-44 items-end justify-between gap-2 border-b border-slate-200 px-1">
+            <div v-for="day in weeklyTracking" :key="day.key" class="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1">
+              <div class="flex h-[125px] w-full items-end justify-center gap-1">
+                <div class="w-3 rounded-t bg-cyan-600" :style="{ height: `${Math.max(day.created ? 8 : 0, day.created / weeklyMax * 100)}%` }" :title="`${day.created} créé(s)`"></div>
+                <div class="w-3 rounded-t bg-emerald-500" :style="{ height: `${Math.max(day.delivered ? 8 : 0, day.delivered / weeklyMax * 100)}%` }" :title="`${day.delivered} livré(s)`"></div>
+              </div>
+              <span class="truncate text-[10px] font-semibold text-slate-500">{{ day.label }}</span>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-4 text-xs font-semibold text-slate-500">
+            <span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-sm bg-cyan-600"></i> Créés</span>
+            <span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-sm bg-emerald-500"></i> Livrés</span>
+          </div>
+        </div>
+
+        <div class="overflow-hidden rounded-xl border border-slate-100">
+          <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div>
+              <h4 class="font-bold text-slate-900">Dossiers à surveiller</h4>
+              <p class="text-xs text-slate-500">Expéditions non livrées depuis au moins 14 jours</p>
+            </div>
+            <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">{{ attentionShipments.length }}</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[560px] text-sm">
+              <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500">
+                <tr><th class="px-4 py-3">Référence</th><th class="px-4 py-3">Client</th><th class="px-4 py-3">Destination</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3 text-right">Ancienneté</th></tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr v-for="item in attentionShipments" :key="item.id" class="hover:bg-amber-50/40">
+                  <td class="px-4 py-3"><RouterLink class="font-bold text-cyan-800" :to="`/liste/${item.id}`">{{ item.numero || item.numeroSuivi || item.id?.slice(0, 8) }}</RouterLink></td>
+                  <td class="px-4 py-3 text-slate-700">{{ item.expediteur || '-' }}</td>
+                  <td class="px-4 py-3 text-slate-600">{{ item.destination || '-' }}</td>
+                  <td class="px-4 py-3 text-slate-600">{{ item.deliveryStatus || item.statut || 'En cours' }}</td>
+                  <td class="px-4 py-3 text-right font-bold text-amber-700">{{ item.ageDays }} j</td>
+                </tr>
+                <tr v-if="!attentionShipments.length"><td colspan="5" class="px-4 py-8 text-center text-slate-500">Aucun dossier ancien à surveiller.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <div class="grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
       <section class="surface-card overflow-hidden">

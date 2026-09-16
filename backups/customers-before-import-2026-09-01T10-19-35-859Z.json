@@ -1,0 +1,7562 @@
+{
+  "project": "fomektrack",
+  "exportedAt": "2026-09-01T10:19:35.859Z",
+  "count": 378,
+  "customers": [
+    {
+      "id": "excel_0002_CL100",
+      "numeroClient": "CL100",
+      "nom": "abidos",
+      "prenom": "paule",
+      "telephone": "+33656880325",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "15",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mai, sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0003_CL472",
+      "numeroClient": "CL472",
+      "nom": "abomo",
+      "prenom": "lucille",
+      "telephone": "+33629308975",
+      "adresse": "",
+      "ville": "aubervilliers",
+      "codePostal": "95000",
+      "destination": "",
+      "tarifSpecial": "23",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0004_CL101",
+      "numeroClient": "CL101",
+      "nom": "abomo ella",
+      "prenom": "donald",
+      "telephone": "+33648388876",
+      "adresse": "",
+      "ville": "chateaulin",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "29150",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0005_CL102",
+      "numeroClient": "CL102",
+      "nom": "abou",
+      "prenom": "",
+      "telephone": "+33",
+      "adresse": "",
+      "ville": "le thillay",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "95500",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": "janv, mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0006_CL103",
+      "numeroClient": "CL103",
+      "nom": "ahmed",
+      "prenom": "ismael",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "40",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0007_CL104",
+      "numeroClient": "CL104",
+      "nom": "akoa",
+      "prenom": "sandrine",
+      "telephone": "+33641401814",
+      "adresse": "4 villa musselburgh",
+      "ville": "champigny sur marne",
+      "codePostal": "94500",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": "avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0008_CL108",
+      "numeroClient": "CL108",
+      "nom": "akoa",
+      "prenom": "gisele",
+      "telephone": "+33744512437",
+      "adresse": "4 villa musselburgh",
+      "ville": "champigny sur marne",
+      "codePostal": "94500",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0009_CL105",
+      "numeroClient": "CL105",
+      "nom": "akono",
+      "prenom": "regine",
+      "telephone": "+33641511794",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "55",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0010_CL405",
+      "numeroClient": "CL405",
+      "nom": "alanzo",
+      "prenom": "victorien",
+      "telephone": "+33603528097",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0011_CL107",
+      "numeroClient": "CL107",
+      "nom": "alice",
+      "prenom": "",
+      "telephone": "+33643971258",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "kribi",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0012_CL109",
+      "numeroClient": "CL109",
+      "nom": "anaba poh",
+      "prenom": "regine flore",
+      "telephone": "+33601591603",
+      "adresse": "",
+      "ville": "trilport",
+      "codePostal": "77470",
+      "destination": "yaounde",
+      "tarifSpecial": "67",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "janv",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0013_CL110",
+      "numeroClient": "CL110",
+      "nom": "angela",
+      "prenom": "aline",
+      "telephone": "+33676209454",
+      "adresse": "",
+      "ville": "guyancourt",
+      "codePostal": "78280",
+      "destination": "douala yaounde",
+      "tarifSpecial": "74",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0014_CL111",
+      "numeroClient": "CL111",
+      "nom": "appoloni",
+      "prenom": "",
+      "telephone": "+33625778316",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0015_CL112",
+      "numeroClient": "CL112",
+      "nom": "armel",
+      "prenom": "anne",
+      "telephone": "+33755021541",
+      "adresse": "",
+      "ville": "maisons alfort",
+      "codePostal": "94700",
+      "destination": "yaounde",
+      "tarifSpecial": "82",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0016_CL113",
+      "numeroClient": "CL113",
+      "nom": "assomo amang",
+      "prenom": "odile",
+      "telephone": "+33610133372",
+      "adresse": "",
+      "ville": "genevilliers",
+      "codePostal": "92230",
+      "destination": "yaounde",
+      "tarifSpecial": "87",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0017_CL114",
+      "numeroClient": "CL114",
+      "nom": "attie",
+      "prenom": "marie paule",
+      "telephone": "+33755157604",
+      "adresse": "",
+      "ville": "saint quentin",
+      "codePostal": "2100",
+      "destination": "",
+      "tarifSpecial": "93",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0018_",
+      "numeroClient": "CL480",
+      "nom": "aubin",
+      "prenom": "96",
+      "telephone": "+33605661045",
+      "adresse": "",
+      "ville": "kremlin bicetre",
+      "codePostal": "94270",
+      "destination": "18",
+      "tarifSpecial": "97",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0019_CL116",
+      "numeroClient": "CL116",
+      "nom": "augustin",
+      "prenom": "tony",
+      "telephone": "+33605650652",
+      "adresse": "",
+      "ville": "angers",
+      "codePostal": "49000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0020_CL117",
+      "numeroClient": "CL117",
+      "nom": "ayina",
+      "prenom": "clemence",
+      "telephone": "+33640159156",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0021_CL376",
+      "numeroClient": "CL376",
+      "nom": "ayuk okang",
+      "prenom": "steven",
+      "telephone": "+33745939502",
+      "adresse": "",
+      "ville": "carhaix",
+      "codePostal": "29270",
+      "destination": "yaounde",
+      "tarifSpecial": "111",
+      "historiqueActivite": {
+        "2024": "113",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0022_CL118",
+      "numeroClient": "CL118",
+      "nom": "babette",
+      "prenom": "",
+      "telephone": "+33620124929",
+      "adresse": "",
+      "ville": "concarneau",
+      "codePostal": "29900",
+      "destination": "yaounde et douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0023_",
+      "numeroClient": "CL481",
+      "nom": "bang",
+      "prenom": "119",
+      "telephone": "+33612274019",
+      "adresse": "",
+      "ville": "niort",
+      "codePostal": "79000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0024_CL119",
+      "numeroClient": "CL119",
+      "nom": "bekombe",
+      "prenom": "aurore",
+      "telephone": "+06341712230695096501",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75011",
+      "destination": "yaounde",
+      "tarifSpecial": "124",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "janv, sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0025_CL354",
+      "numeroClient": "CL354",
+      "nom": "belibi akoa",
+      "prenom": "romain",
+      "telephone": "+33621117601",
+      "adresse": "",
+      "ville": "evry",
+      "codePostal": "91000",
+      "destination": "yaounde",
+      "tarifSpecial": "130",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0026_CL120",
+      "numeroClient": "CL120",
+      "nom": "bercheux",
+      "prenom": "daniel",
+      "telephone": "+33782609637",
+      "adresse": "",
+      "ville": "bouguenais",
+      "codePostal": "44340",
+      "destination": "kribi",
+      "tarifSpecial": "135",
+      "historiqueActivite": {
+        "2024": "137",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0027_CL121",
+      "numeroClient": "CL121",
+      "nom": "bernard",
+      "prenom": "christine",
+      "telephone": "+33666271300",
+      "adresse": "",
+      "ville": "caen",
+      "codePostal": "14000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0028_CL122",
+      "numeroClient": "CL122",
+      "nom": "beyala",
+      "prenom": "augustin",
+      "telephone": "+33768022491",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "144",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "janv",
+        "2026": "avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0029_CL477",
+      "numeroClient": "CL477",
+      "nom": "bigeon",
+      "prenom": "marcelle",
+      "telephone": "+33678486695",
+      "adresse": "6 rue aristide briand",
+      "ville": "bernay",
+      "codePostal": "27300",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0030_CL124",
+      "numeroClient": "CL124",
+      "nom": "biloa",
+      "prenom": "marie",
+      "telephone": "+33751024932",
+      "adresse": "",
+      "ville": "enghien les bains",
+      "codePostal": "95880",
+      "destination": "yaounde",
+      "tarifSpecial": "153",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0031_CL126",
+      "numeroClient": "CL126",
+      "nom": "boniface",
+      "prenom": "",
+      "telephone": "+33619021263",
+      "adresse": "51 avenue d'arpajon",
+      "ville": "egly",
+      "codePostal": "91520",
+      "destination": "",
+      "tarifSpecial": "900€/m3",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0032_CL127",
+      "numeroClient": "CL127",
+      "nom": "bouloy",
+      "prenom": "leon",
+      "telephone": "+06628232620659654019",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "kribi et douala",
+      "tarifSpecial": "163",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0033_CL128",
+      "numeroClient": "CL128",
+      "nom": "bouopda",
+      "prenom": "dominique",
+      "telephone": "+33666718997",
+      "adresse": "",
+      "ville": "clohars fouesnant",
+      "codePostal": "29950",
+      "destination": "yaounde",
+      "tarifSpecial": "169",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0034_CL129",
+      "numeroClient": "CL129",
+      "nom": "brun",
+      "prenom": "veronique",
+      "telephone": "+33619889544",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "kribi",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "nov",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0035_CL130",
+      "numeroClient": "CL130",
+      "nom": "bulteau",
+      "prenom": "regine",
+      "telephone": "+33672164703",
+      "adresse": "",
+      "ville": "la celle saint cloud",
+      "codePostal": "78170",
+      "destination": "douala",
+      "tarifSpecial": "176",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "janv, dec",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0036_CL203",
+      "numeroClient": "CL203",
+      "nom": "calamart",
+      "prenom": "Halimatou",
+      "telephone": "+33615265889",
+      "adresse": "",
+      "ville": "guingamp",
+      "codePostal": "22200",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0037_CL131",
+      "numeroClient": "CL131",
+      "nom": "cante",
+      "prenom": "",
+      "telephone": "+33762313942",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0038_",
+      "numeroClient": "CL482",
+      "nom": "caroline",
+      "prenom": "186",
+      "telephone": "+33758506238",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0039_CL461",
+      "numeroClient": "CL461",
+      "nom": "cavalerie",
+      "prenom": "cecile",
+      "telephone": "+33618358194",
+      "adresse": "",
+      "ville": "conflans st honorine",
+      "codePostal": "78700",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0040_CL134",
+      "numeroClient": "CL134",
+      "nom": "chanel",
+      "prenom": "",
+      "telephone": "+33780194086",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0041_CL135",
+      "numeroClient": "CL135",
+      "nom": "chatillon",
+      "prenom": "astride",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "29000",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0042_CL432",
+      "numeroClient": "CL432",
+      "nom": "cheminant",
+      "prenom": "arielle",
+      "telephone": "+33665462262",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0043_CL136",
+      "numeroClient": "CL136",
+      "nom": "cheumeugne",
+      "prenom": "mireille",
+      "telephone": "+33667087817",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35200",
+      "destination": "yaounde",
+      "tarifSpecial": "203",
+      "historiqueActivite": {
+        "2024": "113",
+        "2025": "",
+        "2026": "janv, mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0044_CL137",
+      "numeroClient": "CL137",
+      "nom": "chimene",
+      "prenom": "",
+      "telephone": "+33630258210",
+      "adresse": "",
+      "ville": "retiers",
+      "codePostal": "35240",
+      "destination": "kribi",
+      "tarifSpecial": "207",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0045_CL138",
+      "numeroClient": "CL138",
+      "nom": "chouchou",
+      "prenom": "",
+      "telephone": "+33777448160",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "55",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0046_CL139",
+      "numeroClient": "CL139",
+      "nom": "choupo",
+      "prenom": "gaetan",
+      "telephone": "+33783803610",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0047_CL140",
+      "numeroClient": "CL140",
+      "nom": "christele",
+      "prenom": "",
+      "telephone": "+33785877391",
+      "adresse": "",
+      "ville": "pluguffan",
+      "codePostal": "29700",
+      "destination": "",
+      "tarifSpecial": "216",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0048_",
+      "numeroClient": "CL483",
+      "nom": "christelle",
+      "prenom": "219",
+      "telephone": "+33758889509",
+      "adresse": "",
+      "ville": "lorient",
+      "codePostal": "56000",
+      "destination": "douala",
+      "tarifSpecial": "220",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0049_CL141",
+      "numeroClient": "CL141",
+      "nom": "christian",
+      "prenom": "",
+      "telephone": "+33605967813",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "24",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0050_CL142",
+      "numeroClient": "CL142",
+      "nom": "claud",
+      "prenom": "jean pierre",
+      "telephone": "+33617801368",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "227",
+      "destination": "yaounde",
+      "tarifSpecial": "227",
+      "historiqueActivite": {
+        "2024": "40",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0051_CL145",
+      "numeroClient": "CL145",
+      "nom": "coco",
+      "prenom": "",
+      "telephone": "+33620013010",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "douala",
+      "tarifSpecial": "229",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0052_",
+      "numeroClient": "CL484",
+      "nom": "coco",
+      "prenom": "230",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "638166731",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0053_",
+      "numeroClient": "CL485",
+      "nom": "crescence",
+      "prenom": "232",
+      "telephone": "+33634283864",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "233",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0054_CL146",
+      "numeroClient": "CL146",
+      "nom": "cressence",
+      "prenom": "",
+      "telephone": "+33787835196",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0055_CL438",
+      "numeroClient": "CL438",
+      "nom": "dabaya",
+      "prenom": "adeline",
+      "telephone": "+33664264902",
+      "adresse": "46 avenue roger salengro",
+      "ville": "champigny sur marne",
+      "codePostal": "94500",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0056_CL147",
+      "numeroClient": "CL147",
+      "nom": "dabaya",
+      "prenom": "cecile",
+      "telephone": "+33775790051",
+      "adresse": "",
+      "ville": "champigny sur marne",
+      "codePostal": "94500",
+      "destination": "",
+      "tarifSpecial": "242",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0057_CL148",
+      "numeroClient": "CL148",
+      "nom": "dady",
+      "prenom": "romeo paul",
+      "telephone": "+33766141326",
+      "adresse": "",
+      "ville": "argenteuil",
+      "codePostal": "95100",
+      "destination": "douala",
+      "tarifSpecial": "246",
+      "historiqueActivite": {
+        "2024": "248",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0058_CL430",
+      "numeroClient": "CL430",
+      "nom": "damaris",
+      "prenom": "",
+      "telephone": "+33615499221",
+      "adresse": "",
+      "ville": "caen",
+      "codePostal": "14000",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0059_CL144",
+      "numeroClient": "CL144",
+      "nom": "daniel",
+      "prenom": "laure paule",
+      "telephone": "+33660154696",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "253",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "254",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0060_CL149",
+      "numeroClient": "CL149",
+      "nom": "davot",
+      "prenom": "sandrine",
+      "telephone": "+33769883708",
+      "adresse": "",
+      "ville": "st armel",
+      "codePostal": "35225",
+      "destination": "yaounde",
+      "tarifSpecial": "257",
+      "historiqueActivite": {
+        "2024": "259",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0061_CL150",
+      "numeroClient": "CL150",
+      "nom": "deffoe",
+      "prenom": "",
+      "telephone": "+33753961514",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0062_CL151",
+      "numeroClient": "CL151",
+      "nom": "defo kuate",
+      "prenom": "junior richard",
+      "telephone": "+33651585227",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0063_CL152",
+      "numeroClient": "CL152",
+      "nom": "deh",
+      "prenom": "annette",
+      "telephone": "+33754230808",
+      "adresse": "",
+      "ville": "st ouen l'aumone",
+      "codePostal": "95130",
+      "destination": "douala",
+      "tarifSpecial": "268",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0064_CL153",
+      "numeroClient": "CL153",
+      "nom": "delmeco",
+      "prenom": "guy",
+      "telephone": "+33616485963",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0065_CL154",
+      "numeroClient": "CL154",
+      "nom": "Deniel",
+      "prenom": "david",
+      "telephone": "+33660785744",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "276",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mars, nov,dec",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0066_CL155",
+      "numeroClient": "CL155",
+      "nom": "deugeu",
+      "prenom": "guy merlin",
+      "telephone": "+33641543453",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75017",
+      "destination": "douala",
+      "tarifSpecial": "281",
+      "historiqueActivite": {
+        "2024": "126",
+        "2025": "",
+        "2026": "janv, avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0067_CL156",
+      "numeroClient": "CL156",
+      "nom": "deugoue",
+      "prenom": "siaha",
+      "telephone": "+33752934877",
+      "adresse": "",
+      "ville": "grigny",
+      "codePostal": "91350",
+      "destination": "douala",
+      "tarifSpecial": "285",
+      "historiqueActivite": {
+        "2024": "287",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0068_CL157",
+      "numeroClient": "CL157",
+      "nom": "diana",
+      "prenom": "",
+      "telephone": "+33659898185",
+      "adresse": "",
+      "ville": "vertou",
+      "codePostal": "44120",
+      "destination": "yaounde",
+      "tarifSpecial": "290",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0069_CL198",
+      "numeroClient": "CL198",
+      "nom": "diboundje",
+      "prenom": "georges",
+      "telephone": "+33744915575",
+      "adresse": "",
+      "ville": "villepinte",
+      "codePostal": "93420",
+      "destination": "yaounde",
+      "tarifSpecial": "295",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0070_CL159",
+      "numeroClient": "CL159",
+      "nom": "dimalet",
+      "prenom": "irenée",
+      "telephone": "+33652039745",
+      "adresse": "",
+      "ville": "plougoumelen",
+      "codePostal": "56400",
+      "destination": "kribi",
+      "tarifSpecial": "300",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "nov",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0071_CL160",
+      "numeroClient": "CL160",
+      "nom": "diouy",
+      "prenom": "flore",
+      "telephone": "+33641448541",
+      "adresse": "",
+      "ville": "coutevroult",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "77580",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "avril",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0072_CL219",
+      "numeroClient": "CL219",
+      "nom": "dipita",
+      "prenom": "jules",
+      "telephone": "+33617358572",
+      "adresse": "",
+      "ville": "angers",
+      "codePostal": "49000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0073_CL161",
+      "numeroClient": "CL161",
+      "nom": "ditchou pewankep",
+      "prenom": "nadia",
+      "telephone": "+33752422117",
+      "adresse": "",
+      "ville": "le kremlin bicetre",
+      "codePostal": "94270",
+      "destination": "douala",
+      "tarifSpecial": "312",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0074_CL162",
+      "numeroClient": "CL162",
+      "nom": "djemdeu tchocha",
+      "prenom": "joel",
+      "telephone": "+33749278457",
+      "adresse": "",
+      "ville": "cergy",
+      "codePostal": "95800",
+      "destination": "douala",
+      "tarifSpecial": "317",
+      "historiqueActivite": {
+        "2024": "319",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0075_CL163",
+      "numeroClient": "CL163",
+      "nom": "djeuga",
+      "prenom": "aissatou",
+      "telephone": "+33768267752",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "204",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0076_CL164",
+      "numeroClient": "CL164",
+      "nom": "djibona",
+      "prenom": "marcelline",
+      "telephone": "+33773434564",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "douala",
+      "tarifSpecial": "326",
+      "historiqueActivite": {
+        "2024": "328",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0077_CL165",
+      "numeroClient": "CL165",
+      "nom": "djuikom",
+      "prenom": "patricia",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "332",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0078_CL166",
+      "numeroClient": "CL166",
+      "nom": "donald",
+      "prenom": "",
+      "telephone": "+33762267564",
+      "adresse": "",
+      "ville": "poitiers",
+      "codePostal": "86000",
+      "destination": "yaounde",
+      "tarifSpecial": "335",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0079_CL342",
+      "numeroClient": "CL342",
+      "nom": "doualla",
+      "prenom": "patrice",
+      "telephone": "+23777707970",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "950€/m3",
+      "historiqueActivite": {
+        "2024": "113",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0080_CL436",
+      "numeroClient": "CL436",
+      "nom": "dougueli",
+      "prenom": "geoges",
+      "telephone": "+33623116527",
+      "adresse": "10 rue de l'audience",
+      "ville": "saint prix",
+      "codePostal": "95390",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0081_",
+      "numeroClient": "CL486",
+      "nom": "dr Wansi",
+      "prenom": "347",
+      "telephone": "+33687283737",
+      "adresse": "",
+      "ville": "nanterre",
+      "codePostal": "92000",
+      "destination": "",
+      "tarifSpecial": "348",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0082_CL167",
+      "numeroClient": "CL167",
+      "nom": "ekanga",
+      "prenom": "christine",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "669747655",
+      "destination": "",
+      "tarifSpecial": "16",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0083_CL168",
+      "numeroClient": "CL168",
+      "nom": "ekoumi emale",
+      "prenom": "nadege",
+      "telephone": "+33616423924",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "356",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0084_CL451",
+      "numeroClient": "CL451",
+      "nom": "el oumar",
+      "prenom": "nourra",
+      "telephone": "+33760151762",
+      "adresse": "",
+      "ville": "saint gratien",
+      "codePostal": "95210",
+      "destination": "",
+      "tarifSpecial": "360",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0085_CL457",
+      "numeroClient": "CL457",
+      "nom": "El oumar",
+      "prenom": "nourra",
+      "telephone": "+33760151762",
+      "adresse": "",
+      "ville": "saint gratien",
+      "codePostal": "95210",
+      "destination": "",
+      "tarifSpecial": "360",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0086_",
+      "numeroClient": "CL487",
+      "nom": "elisabeth",
+      "prenom": "365",
+      "telephone": "+33783317572",
+      "adresse": "",
+      "ville": "angers",
+      "codePostal": "49000",
+      "destination": "douala",
+      "tarifSpecial": "366",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0087_CL170",
+      "numeroClient": "CL170",
+      "nom": "eloken",
+      "prenom": "amelie",
+      "telephone": "+33611853792",
+      "adresse": "",
+      "ville": "sainte luce sur loire",
+      "codePostal": "44980",
+      "destination": "yaounde",
+      "tarifSpecial": "370",
+      "historiqueActivite": {
+        "2024": "janv, dec, sept",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0088_CL171",
+      "numeroClient": "CL171",
+      "nom": "elon",
+      "prenom": "",
+      "telephone": "+33650459397",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0089_CL172",
+      "numeroClient": "CL172",
+      "nom": "elong",
+      "prenom": "christine",
+      "telephone": "+33755645545",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "377",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "378",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0090_",
+      "numeroClient": "CL488",
+      "nom": "elvis mouafo",
+      "prenom": "380",
+      "telephone": "+18",
+      "adresse": "39",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "1200€/m3",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": "janv, mars"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0091_CL174",
+      "numeroClient": "CL174",
+      "nom": "emadak",
+      "prenom": "sylvestre",
+      "telephone": "+33758587631",
+      "adresse": "69 rue de la glaciere",
+      "ville": "paris",
+      "codePostal": "75013",
+      "destination": "douala",
+      "tarifSpecial": "950€/m3",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0092_CL449",
+      "numeroClient": "CL449",
+      "nom": "emane",
+      "prenom": "christine",
+      "telephone": "+33664918211",
+      "adresse": "2 avenue michel debre",
+      "ville": "neuilly plaisance",
+      "codePostal": "93360",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0093_CL175",
+      "numeroClient": "CL175",
+      "nom": "embolo",
+      "prenom": "marie clementine",
+      "telephone": "+33788782966",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0094_CL176",
+      "numeroClient": "CL176",
+      "nom": "empeyrou mengue",
+      "prenom": "estelle",
+      "telephone": "+33682056952",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44100",
+      "destination": "yaounde",
+      "tarifSpecial": "397",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0095_CL177",
+      "numeroClient": "CL177",
+      "nom": "engome",
+      "prenom": "claudia",
+      "telephone": "+33613723497",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "douala",
+      "tarifSpecial": "401",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0096_CL178",
+      "numeroClient": "CL178",
+      "nom": "engoume bwelle",
+      "prenom": "olive",
+      "telephone": "+33663499853",
+      "adresse": "",
+      "ville": "bagnolet",
+      "codePostal": "93006",
+      "destination": "douala",
+      "tarifSpecial": "405",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0097_CL179",
+      "numeroClient": "CL179",
+      "nom": "essiben",
+      "prenom": "diane",
+      "telephone": "+33758107322",
+      "adresse": "",
+      "ville": "reze",
+      "codePostal": "44400",
+      "destination": "douala",
+      "tarifSpecial": "409",
+      "historiqueActivite": {
+        "2024": "411",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0098_CL180",
+      "numeroClient": "CL180",
+      "nom": "essomba",
+      "prenom": "josiane",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "259",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0099_CL181",
+      "numeroClient": "CL181",
+      "nom": "essomba",
+      "prenom": "marie gertrude",
+      "telephone": "+33635200440",
+      "adresse": "",
+      "ville": "aubervilliers",
+      "codePostal": "93300",
+      "destination": "yaounde",
+      "tarifSpecial": "417",
+      "historiqueActivite": {
+        "2024": "418",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0100_CL182",
+      "numeroClient": "CL182",
+      "nom": "etoh etoh",
+      "prenom": "florence",
+      "telephone": "+33652686483",
+      "adresse": "",
+      "ville": "massy",
+      "codePostal": "91300",
+      "destination": "yaounde",
+      "tarifSpecial": "422",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0101_CL183",
+      "numeroClient": "CL183",
+      "nom": "etoundi essomba",
+      "prenom": "josselyn",
+      "telephone": "+33766859051",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "427",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0102_",
+      "numeroClient": "CL489",
+      "nom": "ewoulou amougou",
+      "prenom": "429",
+      "telephone": "+33764828956",
+      "adresse": "",
+      "ville": "genevievre sur marne",
+      "codePostal": "94430",
+      "destination": "",
+      "tarifSpecial": "430",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0103_CL123",
+      "numeroClient": "CL123",
+      "nom": "eyenga ngah",
+      "prenom": "bibiane",
+      "telephone": "+33780305493",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "435",
+      "historiqueActivite": {
+        "2024": "126",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0104_CL186",
+      "numeroClient": "CL186",
+      "nom": "eyoman",
+      "prenom": "aline",
+      "telephone": "+33617864968",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "40",
+      "tarifSpecial": "439",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0105_CL187",
+      "numeroClient": "CL187",
+      "nom": "fabis",
+      "prenom": "",
+      "telephone": "+33651126860",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "dec",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0106_CL188",
+      "numeroClient": "CL188",
+      "nom": "fadil",
+      "prenom": "",
+      "telephone": "+33749072279",
+      "adresse": "",
+      "ville": "saint brieuc",
+      "codePostal": "22000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "janv, avril, juill, nov, dec",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0107_CL189",
+      "numeroClient": "CL189",
+      "nom": "Fertil",
+      "prenom": "jacinthe",
+      "telephone": "+33617853979",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0108_CL190",
+      "numeroClient": "CL190",
+      "nom": "fezeu",
+      "prenom": "joseph",
+      "telephone": "+33603661312",
+      "adresse": "",
+      "ville": "aubervilliers",
+      "codePostal": "93300",
+      "destination": "yaounde",
+      "tarifSpecial": "452",
+      "historiqueActivite": {
+        "2024": "oct, dec",
+        "2025": "avril",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0109_CL358",
+      "numeroClient": "CL358",
+      "nom": "fichant",
+      "prenom": "nicole",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "660952359",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0110_CL191",
+      "numeroClient": "CL191",
+      "nom": "fingoue tchuessa",
+      "prenom": "jean telis",
+      "telephone": "+33744968027",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "454",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0111_CL193",
+      "numeroClient": "CL193",
+      "nom": "fogaing",
+      "prenom": "eric",
+      "telephone": "+33644715298",
+      "adresse": "",
+      "ville": "villiers sur marne",
+      "codePostal": "94350",
+      "destination": "",
+      "tarifSpecial": "464",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0112_CL194",
+      "numeroClient": "CL194",
+      "nom": "fondjou",
+      "prenom": "arnold",
+      "telephone": "+33766069392",
+      "adresse": "",
+      "ville": "sarcelles",
+      "codePostal": "95200",
+      "destination": "douala",
+      "tarifSpecial": "469",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0113_CL426",
+      "numeroClient": "CL426",
+      "nom": "fopa",
+      "prenom": "olivier",
+      "telephone": "+33665300307",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75019",
+      "destination": "douala",
+      "tarifSpecial": "474",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0114_CL195",
+      "numeroClient": "CL195",
+      "nom": "fotso",
+      "prenom": "guy",
+      "telephone": "+33612833139",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "478",
+        "2025": "",
+        "2026": "janv, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0115_CL196",
+      "numeroClient": "CL196",
+      "nom": "fouda",
+      "prenom": "deborah",
+      "telephone": "+33665074048",
+      "adresse": "18 rue de fontenay",
+      "ville": "vincennes",
+      "codePostal": "94300",
+      "destination": "yaounde",
+      "tarifSpecial": "950€/m3",
+      "historiqueActivite": {
+        "2024": "485",
+        "2025": "",
+        "2026": "janv, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0116_CL197",
+      "numeroClient": "CL197",
+      "nom": "gaby",
+      "prenom": "ami oumar",
+      "telephone": "+33605684462",
+      "adresse": "",
+      "ville": "vitry sur seine",
+      "codePostal": "94400",
+      "destination": "yaounde",
+      "tarifSpecial": "489",
+      "historiqueActivite": {
+        "2024": "491",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0117_",
+      "numeroClient": "CL490",
+      "nom": "gisele",
+      "prenom": "492",
+      "telephone": "+33661249812",
+      "adresse": "",
+      "ville": "goezec",
+      "codePostal": "29190",
+      "destination": "yaounde",
+      "tarifSpecial": "493",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0118_",
+      "numeroClient": "CL491",
+      "nom": "gisele",
+      "prenom": "495",
+      "telephone": "+33699483729",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "16",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0119_CL201",
+      "numeroClient": "CL201",
+      "nom": "glawdys",
+      "prenom": "",
+      "telephone": "+33786449864",
+      "adresse": "",
+      "ville": "gourin",
+      "codePostal": "56110",
+      "destination": "douala",
+      "tarifSpecial": "498",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0120_CL476",
+      "numeroClient": "CL476",
+      "nom": "guiamogne kaam",
+      "prenom": "mirabelle",
+      "telephone": "+33744120464",
+      "adresse": "70 boulevard vincent auriol",
+      "ville": "paris",
+      "codePostal": "75000",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0121_",
+      "numeroClient": "CL492",
+      "nom": "gullit",
+      "prenom": "505",
+      "telephone": "+33652613856",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0122_CL204",
+      "numeroClient": "CL204",
+      "nom": "halimatou cameroun",
+      "prenom": "",
+      "telephone": "+23795565639",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0123_",
+      "numeroClient": "CL493",
+      "nom": "hamza",
+      "prenom": "510",
+      "telephone": "+33660421320",
+      "adresse": "39",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "650€/m3",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "janv, mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0124_CL206",
+      "numeroClient": "CL206",
+      "nom": "hassan",
+      "prenom": "",
+      "telephone": "+33751052781",
+      "adresse": "",
+      "ville": "lorient",
+      "codePostal": "56100",
+      "destination": "douala",
+      "tarifSpecial": "514",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0125_CL207",
+      "numeroClient": "CL207",
+      "nom": "heumi ada",
+      "prenom": "marius",
+      "telephone": "+33622891999",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "518",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0126_CL208",
+      "numeroClient": "CL208",
+      "nom": "hilary",
+      "prenom": "",
+      "telephone": "+33767100440",
+      "adresse": "",
+      "ville": "noisy le grand",
+      "codePostal": "93160",
+      "destination": "yaounde",
+      "tarifSpecial": "521",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0127_",
+      "numeroClient": "CL494",
+      "nom": "hugo",
+      "prenom": "524",
+      "telephone": "+33761607611",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "29000",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0128_CL210",
+      "numeroClient": "CL210",
+      "nom": "ika",
+      "prenom": "anne flore",
+      "telephone": "+33745980123",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75013",
+      "destination": "douala",
+      "tarifSpecial": "528",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0129_CL300",
+      "numeroClient": "CL300",
+      "nom": "ikele",
+      "prenom": "alphonsine",
+      "telephone": "+33609396668",
+      "adresse": "",
+      "ville": "machecoul",
+      "codePostal": "44270",
+      "destination": "",
+      "tarifSpecial": "532",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0130_CL251",
+      "numeroClient": "CL251",
+      "nom": "jaouen",
+      "prenom": "marguerite",
+      "telephone": "+33677391595",
+      "adresse": "",
+      "ville": "ploudalmezeau",
+      "codePostal": "29830",
+      "destination": "kribi",
+      "tarifSpecial": "537",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0131_CL212",
+      "numeroClient": "CL212",
+      "nom": "jean baptiste",
+      "prenom": "",
+      "telephone": "+33627071075",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0132_CL213",
+      "numeroClient": "CL213",
+      "nom": "jean emmanuel",
+      "prenom": "",
+      "telephone": "+33769256690",
+      "adresse": "",
+      "ville": "saint nazaire",
+      "codePostal": "44600",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0133_CL214",
+      "numeroClient": "CL214",
+      "nom": "jeanne d'arc",
+      "prenom": "",
+      "telephone": "+33751372779",
+      "adresse": "",
+      "ville": "concarneau",
+      "codePostal": "29900",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0134_CL215",
+      "numeroClient": "CL215",
+      "nom": "jessy",
+      "prenom": "",
+      "telephone": "+33614900458",
+      "adresse": "",
+      "ville": "auray",
+      "codePostal": "56400",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0135_CL216",
+      "numeroClient": "CL216",
+      "nom": "jodie",
+      "prenom": "",
+      "telephone": "+33676109025",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0136_",
+      "numeroClient": "CL495",
+      "nom": "joel",
+      "prenom": "552",
+      "telephone": "+33749278457",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0137_",
+      "numeroClient": "CL496",
+      "nom": "joseph",
+      "prenom": "553",
+      "telephone": "+33652122268",
+      "adresse": "",
+      "ville": "massy",
+      "codePostal": "91300",
+      "destination": "douala",
+      "tarifSpecial": "554",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0138_CL185",
+      "numeroClient": "CL185",
+      "nom": "kagho",
+      "prenom": "germain",
+      "telephone": "+237699517030",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0139_CL220",
+      "numeroClient": "CL220",
+      "nom": "kamba",
+      "prenom": "christian",
+      "telephone": "+0633090991237670394726",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0140_CL224",
+      "numeroClient": "CL224",
+      "nom": "kamchou akamse",
+      "prenom": "edwige",
+      "telephone": "+33658812485",
+      "adresse": "138 blvd de montparnasse",
+      "ville": "paris",
+      "codePostal": "75014",
+      "destination": "yaounde",
+      "tarifSpecial": "900€/m3",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0141_CL378",
+      "numeroClient": "CL378",
+      "nom": "kamdem",
+      "prenom": "romaric kevin",
+      "telephone": "+33653795880",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0142_CL221",
+      "numeroClient": "CL221",
+      "nom": "kameni",
+      "prenom": "bruno",
+      "telephone": "+33763037281",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "572",
+        "2025": "",
+        "2026": "mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0143_CL222",
+      "numeroClient": "CL222",
+      "nom": "kamga",
+      "prenom": "marie claire",
+      "telephone": "+33662051525",
+      "adresse": "",
+      "ville": "argenteuil",
+      "codePostal": "95100",
+      "destination": "yaounde",
+      "tarifSpecial": "577",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "mai, juil, sept, dec",
+        "2026": "janv, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0144_CL455",
+      "numeroClient": "CL455",
+      "nom": "kamga",
+      "prenom": "jean paul",
+      "telephone": "+41787876997",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "581",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0145_CL341",
+      "numeroClient": "CL341",
+      "nom": "kamgem",
+      "prenom": "papy roger",
+      "telephone": "+33613185252",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "585",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0146_CL225",
+      "numeroClient": "CL225",
+      "nom": "kekem",
+      "prenom": "calorine",
+      "telephone": "+33613742975",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75012",
+      "destination": "douala",
+      "tarifSpecial": "589",
+      "historiqueActivite": {
+        "2024": "590",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0147_CL226",
+      "numeroClient": "CL226",
+      "nom": "kembou",
+      "prenom": "ferdinand",
+      "telephone": "+33689291558",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44100",
+      "destination": "70",
+      "tarifSpecial": "594",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0148_CL227",
+      "numeroClient": "CL227",
+      "nom": "kemezangue",
+      "prenom": "gabriel",
+      "telephone": "+33642148086",
+      "adresse": "",
+      "ville": "ergue gaberic",
+      "codePostal": "29500",
+      "destination": "yaounde",
+      "tarifSpecial": "598",
+      "historiqueActivite": {
+        "2024": "600",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0149_CL236",
+      "numeroClient": "CL236",
+      "nom": "kempenie",
+      "prenom": "victorine",
+      "telephone": "+51",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0150_CL228",
+      "numeroClient": "CL228",
+      "nom": "keneke",
+      "prenom": "joseph gautier",
+      "telephone": "+33766800764",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0151_CL229",
+      "numeroClient": "CL229",
+      "nom": "kenmogne",
+      "prenom": "amie tata alice",
+      "telephone": "+33768323293",
+      "adresse": "",
+      "ville": "saint hilaire de clisson",
+      "codePostal": "44190",
+      "destination": "yaounde",
+      "tarifSpecial": "610",
+      "historiqueActivite": {
+        "2024": "612",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0152_CL261",
+      "numeroClient": "CL261",
+      "nom": "kilama",
+      "prenom": "marc",
+      "telephone": "+33758272986",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0153_CL230",
+      "numeroClient": "CL230",
+      "nom": "kingue",
+      "prenom": "marie louise",
+      "telephone": "+33689912405",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "619",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0154_CL231",
+      "numeroClient": "CL231",
+      "nom": "koinda",
+      "prenom": "donaghy",
+      "telephone": "+33635211205",
+      "adresse": "",
+      "ville": "angers",
+      "codePostal": "49000",
+      "destination": "douala",
+      "tarifSpecial": "623",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0155_CL232",
+      "numeroClient": "CL232",
+      "nom": "koja",
+      "prenom": "lucie",
+      "telephone": "+33678873259",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0156_CL233",
+      "numeroClient": "CL233",
+      "nom": "kom",
+      "prenom": "martiale",
+      "telephone": "+33752062998",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "yaounde",
+      "tarifSpecial": "630",
+      "historiqueActivite": {
+        "2024": "287",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0157_CL234",
+      "numeroClient": "CL234",
+      "nom": "kongue",
+      "prenom": "christian",
+      "telephone": "+33758686895",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "douala",
+      "tarifSpecial": "633",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0158_CL235",
+      "numeroClient": "CL235",
+      "nom": "kouam tekam",
+      "prenom": "leopold",
+      "telephone": "+33628706440",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0159_CL237",
+      "numeroClient": "CL237",
+      "nom": "kouba",
+      "prenom": "madeleine",
+      "telephone": "+06198046550646773551",
+      "adresse": "",
+      "ville": "briec",
+      "codePostal": "29510",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0160_CL238",
+      "numeroClient": "CL238",
+      "nom": "koukou",
+      "prenom": "guy cyrille",
+      "telephone": "+33609211034",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0161_CL239",
+      "numeroClient": "CL239",
+      "nom": "kounkana",
+      "prenom": "patrick",
+      "telephone": "+33629305230",
+      "adresse": "",
+      "ville": "boisemont",
+      "codePostal": "95000",
+      "destination": "douala et yaounde",
+      "tarifSpecial": "648",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "avril, sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0162_CL460",
+      "numeroClient": "CL460",
+      "nom": "lassagne",
+      "prenom": "nicolas",
+      "telephone": "+33629387773",
+      "adresse": "",
+      "ville": "bordeaux",
+      "codePostal": "33000",
+      "destination": "",
+      "tarifSpecial": "655",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0163_CL240",
+      "numeroClient": "CL240",
+      "nom": "laure",
+      "prenom": "",
+      "telephone": "+33753718059",
+      "adresse": "",
+      "ville": "reze",
+      "codePostal": "44400",
+      "destination": "kribi",
+      "tarifSpecial": "659",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0164_CL223",
+      "numeroClient": "CL223",
+      "nom": "laurent (rostand)",
+      "prenom": "",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "652437742",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0165_CL441",
+      "numeroClient": "CL441",
+      "nom": "laurent groupage",
+      "prenom": "",
+      "telephone": "+33751122706",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "600€/m3",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0166_",
+      "numeroClient": "CL497",
+      "nom": "le gal",
+      "prenom": "666",
+      "telephone": "+33637892021",
+      "adresse": "",
+      "ville": "courbevoie",
+      "codePostal": "92400",
+      "destination": "",
+      "tarifSpecial": "667",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0167_CL242",
+      "numeroClient": "CL242",
+      "nom": "le gloahec",
+      "prenom": "angele",
+      "telephone": "+33641222889",
+      "adresse": "",
+      "ville": "saint yvi",
+      "codePostal": "29140",
+      "destination": "douala",
+      "tarifSpecial": "672",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": "janv, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0168_CL243",
+      "numeroClient": "CL243",
+      "nom": "legallais",
+      "prenom": "justine",
+      "telephone": "+33621107810",
+      "adresse": "",
+      "ville": "la lande saint leger",
+      "codePostal": "27210",
+      "destination": "kribi",
+      "tarifSpecial": "678",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": "mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0169_CL250",
+      "numeroClient": "CL250",
+      "nom": "leutchie",
+      "prenom": "anastasie lyonelle",
+      "telephone": "+33753969678",
+      "adresse": "",
+      "ville": "evry courcouronnes",
+      "codePostal": "91000",
+      "destination": "douala",
+      "tarifSpecial": "683",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0170_",
+      "numeroClient": "CL498",
+      "nom": "lili manga",
+      "prenom": "686",
+      "telephone": "+33758274977",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0171_CL245",
+      "numeroClient": "CL245",
+      "nom": "liliane judith",
+      "prenom": "",
+      "telephone": "+33758861715",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0172_CL246",
+      "numeroClient": "CL246",
+      "nom": "limousin",
+      "prenom": "patrick",
+      "telephone": "+33684378948",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "693",
+      "destination": "yaounde",
+      "tarifSpecial": "890€/m3",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "avril, sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0173_CL247",
+      "numeroClient": "CL247",
+      "nom": "logo",
+      "prenom": "yannick",
+      "telephone": "+33769947290",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "697",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0174_CL248",
+      "numeroClient": "CL248",
+      "nom": "loubangui",
+      "prenom": "",
+      "telephone": "+33766081626",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "60",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0175_CL249",
+      "numeroClient": "CL249",
+      "nom": "louise",
+      "prenom": "",
+      "telephone": "+33650491265",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0176_CL448",
+      "numeroClient": "CL448",
+      "nom": "lydie",
+      "prenom": "",
+      "telephone": "+33644916823",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "704",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0177_CL132",
+      "numeroClient": "CL132",
+      "nom": "maboth",
+      "prenom": "caroline",
+      "telephone": "+33648134474",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75011",
+      "destination": "",
+      "tarifSpecial": "124",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0178_CL106",
+      "numeroClient": "CL106",
+      "nom": "mabou",
+      "prenom": "alain",
+      "telephone": "+33663752743",
+      "adresse": "",
+      "ville": "villiers le bel",
+      "codePostal": "95400",
+      "destination": "yaounde",
+      "tarifSpecial": "711",
+      "historiqueActivite": {
+        "2024": "713",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0179_CL252",
+      "numeroClient": "CL252",
+      "nom": "mahie",
+      "prenom": "helene",
+      "telephone": "+33777322238",
+      "adresse": "",
+      "ville": "château gontier",
+      "codePostal": "53200",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0180_CL253",
+      "numeroClient": "CL253",
+      "nom": "maitre martial",
+      "prenom": "",
+      "telephone": "+33782222618",
+      "adresse": "",
+      "ville": "melun",
+      "codePostal": "77000",
+      "destination": "yaounde",
+      "tarifSpecial": "720",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0181_CL425",
+      "numeroClient": "CL425",
+      "nom": "maitry",
+      "prenom": "madeleine",
+      "telephone": "+33676843270",
+      "adresse": "",
+      "ville": "colombes",
+      "codePostal": "92700",
+      "destination": "douala",
+      "tarifSpecial": "724",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0182_CL255",
+      "numeroClient": "CL255",
+      "nom": "makela",
+      "prenom": "laurence",
+      "telephone": "+33642402157",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "29000",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0183_CL256",
+      "numeroClient": "CL256",
+      "nom": "malonga",
+      "prenom": "gisele",
+      "telephone": "+33751153354",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "",
+      "destination": "kribi ou yaounde",
+      "tarifSpecial": "44000",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0184_CL257",
+      "numeroClient": "CL257",
+      "nom": "malonga",
+      "prenom": "nicole",
+      "telephone": "+33761281936",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "",
+      "destination": "kribi",
+      "tarifSpecial": "29000",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "nov",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0185_CL258",
+      "numeroClient": "CL258",
+      "nom": "maman therese du braden",
+      "prenom": "",
+      "telephone": "+33644897708",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "29000",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0186_CL259",
+      "numeroClient": "CL259",
+      "nom": "mamoudou",
+      "prenom": "",
+      "telephone": "+33664720258",
+      "adresse": "",
+      "ville": "orleans",
+      "codePostal": "45000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0187_CL260",
+      "numeroClient": "CL260",
+      "nom": "mangoua",
+      "prenom": "nathalie",
+      "telephone": "+06662013830652759115",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "yaounde",
+      "tarifSpecial": "742",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0188_CL262",
+      "numeroClient": "CL262",
+      "nom": "marius",
+      "prenom": "",
+      "telephone": "+33668102905",
+      "adresse": "",
+      "ville": "montereau fault yonne",
+      "codePostal": "77130",
+      "destination": "",
+      "tarifSpecial": "745",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0189_CL263",
+      "numeroClient": "CL263",
+      "nom": "marlise",
+      "prenom": "",
+      "telephone": "+33652137786",
+      "adresse": "",
+      "ville": "bouguenais",
+      "codePostal": "44340",
+      "destination": "",
+      "tarifSpecial": "749",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0190_CL479",
+      "numeroClient": "CL479",
+      "nom": "martial",
+      "prenom": "",
+      "telephone": "+33758256697",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "45",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0191_CL264",
+      "numeroClient": "CL264",
+      "nom": "massoki",
+      "prenom": "michel",
+      "telephone": "+33613354171",
+      "adresse": "14 allee des fauvettes",
+      "ville": "pavillon sous bois",
+      "codePostal": "93320",
+      "destination": "douala",
+      "tarifSpecial": "750€/m3",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": "mars, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0192_CL265",
+      "numeroClient": "CL265",
+      "nom": "master keys",
+      "prenom": "bertrand fokoua",
+      "telephone": "+237697342005",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "740€/m3",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0193_CL266",
+      "numeroClient": "CL266",
+      "nom": "matip",
+      "prenom": "marie therese",
+      "telephone": "+33625904535",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "766",
+      "historiqueActivite": {
+        "2024": "328",
+        "2025": "",
+        "2026": "janv, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0194_CL267",
+      "numeroClient": "CL267",
+      "nom": "matouke",
+      "prenom": "aimée",
+      "telephone": "+33686157702",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "douala",
+      "tarifSpecial": "770",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0195_CL470",
+      "numeroClient": "CL470",
+      "nom": "mazaudon",
+      "prenom": "celestine",
+      "telephone": "+33624953491",
+      "adresse": "40 avenue de bercy",
+      "ville": "paris",
+      "codePostal": "75012",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0196_CL444",
+      "numeroClient": "CL444",
+      "nom": "mbala",
+      "prenom": "patrice",
+      "telephone": "+33767100429",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0197_CL268",
+      "numeroClient": "CL268",
+      "nom": "mbamoto",
+      "prenom": "valentine",
+      "telephone": "+33617562949",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "",
+      "tarifSpecial": "781",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0198_CL269",
+      "numeroClient": "CL269",
+      "nom": "mbekek",
+      "prenom": "rachelle",
+      "telephone": "+33685903920",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "785",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "avril, sept, nov",
+        "2026": "mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0199_CL270",
+      "numeroClient": "CL270",
+      "nom": "mbekek",
+      "prenom": "thierry",
+      "telephone": "+33672167174",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0200_CL271",
+      "numeroClient": "CL271",
+      "nom": "mbida",
+      "prenom": "francis",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "485",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0201_CL272",
+      "numeroClient": "CL272",
+      "nom": "mbonda",
+      "prenom": "bertin",
+      "telephone": "+33759621926",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0202_CL458",
+      "numeroClient": "CL458",
+      "nom": "mbondo",
+      "prenom": "joseph",
+      "telephone": "+33605896323",
+      "adresse": "61 rue de douar",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0203_CL273",
+      "numeroClient": "CL273",
+      "nom": "mbota moukoudi",
+      "prenom": "christophe",
+      "telephone": "+33619195019",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0204_CL468",
+      "numeroClient": "CL468",
+      "nom": "mbouche",
+      "prenom": "celestin",
+      "telephone": "+33670156453",
+      "adresse": "",
+      "ville": "lanester",
+      "codePostal": "56600",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0205_",
+      "numeroClient": "CL499",
+      "nom": "me x hyacinthe",
+      "prenom": "806",
+      "telephone": "+33766590096",
+      "adresse": "",
+      "ville": "la plaine saint denis",
+      "codePostal": "93210",
+      "destination": "",
+      "tarifSpecial": "807",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0206_CL279",
+      "numeroClient": "CL279",
+      "nom": "mefouet wamba",
+      "prenom": "",
+      "telephone": "+33699962569",
+      "adresse": "",
+      "ville": "melun",
+      "codePostal": "77000",
+      "destination": "",
+      "tarifSpecial": "811",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0207_CL280",
+      "numeroClient": "CL280",
+      "nom": "megako",
+      "prenom": "sylvie",
+      "telephone": "+33641955902",
+      "adresse": "",
+      "ville": "saint denis",
+      "codePostal": "93200",
+      "destination": "douala",
+      "tarifSpecial": "815",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0208_CL281",
+      "numeroClient": "CL281",
+      "nom": "mens",
+      "prenom": "josephine",
+      "telephone": "+33675916848",
+      "adresse": "",
+      "ville": "cast",
+      "codePostal": "29150",
+      "destination": "douala",
+      "tarifSpecial": "820",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0209_CL282",
+      "numeroClient": "CL282",
+      "nom": "meutchie",
+      "prenom": "sophie",
+      "telephone": "+33626878670",
+      "adresse": "",
+      "ville": "drancy",
+      "codePostal": "93700",
+      "destination": "yaounde",
+      "tarifSpecial": "825",
+      "historiqueActivite": {
+        "2024": "651",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0210_CL283",
+      "numeroClient": "CL283",
+      "nom": "michla mere resto",
+      "prenom": "",
+      "telephone": "+33745326463",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0211_CL274",
+      "numeroClient": "CL274",
+      "nom": "missongui",
+      "prenom": "",
+      "telephone": "+33753401746",
+      "adresse": "",
+      "ville": "noisy le sec",
+      "codePostal": "93130",
+      "destination": "douala",
+      "tarifSpecial": "831",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0212_CL434",
+      "numeroClient": "CL434",
+      "nom": "mitamag",
+      "prenom": "patrice",
+      "telephone": "+33773321374",
+      "adresse": "18 rue paul serusier",
+      "ville": "saint ave",
+      "codePostal": "56890",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0213_CL284",
+      "numeroClient": "CL284",
+      "nom": "moliko",
+      "prenom": "nolberto",
+      "telephone": "+33684560884",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "kribi",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "248",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0214_CL285",
+      "numeroClient": "CL285",
+      "nom": "molo",
+      "prenom": "marie fleure",
+      "telephone": "+33765238548",
+      "adresse": "",
+      "ville": "chenevrieres sur marne",
+      "codePostal": "94430",
+      "destination": "douala",
+      "tarifSpecial": "843",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0215_CL286",
+      "numeroClient": "CL286",
+      "nom": "monfort",
+      "prenom": "catherine",
+      "telephone": "+33663725150",
+      "adresse": "",
+      "ville": "concarneau",
+      "codePostal": "29900",
+      "destination": "douala",
+      "tarifSpecial": "848",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0216_CL344",
+      "numeroClient": "CL344",
+      "nom": "motto",
+      "prenom": "pierre",
+      "telephone": "+33784841802",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "852",
+      "historiqueActivite": {
+        "2024": "585",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0217_CL287",
+      "numeroClient": "CL287",
+      "nom": "mouakeng",
+      "prenom": "beatrice",
+      "telephone": "+33628642950",
+      "adresse": "",
+      "ville": "acheres ville",
+      "codePostal": "78260",
+      "destination": "",
+      "tarifSpecial": "856",
+      "historiqueActivite": {
+        "2024": "40",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0218_CL288",
+      "numeroClient": "CL288",
+      "nom": "moufo",
+      "prenom": "philippe",
+      "telephone": "+33603767051",
+      "adresse": "",
+      "ville": "fresnes",
+      "codePostal": "94260",
+      "destination": "douala",
+      "tarifSpecial": "861",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0219_CL289",
+      "numeroClient": "CL289",
+      "nom": "moukam yossa",
+      "prenom": "david",
+      "telephone": "+33658811800",
+      "adresse": "",
+      "ville": "sucy bonneuil",
+      "codePostal": "94340",
+      "destination": "douala",
+      "tarifSpecial": "865",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0220_CL290",
+      "numeroClient": "CL290",
+      "nom": "moukouri",
+      "prenom": "vanessa",
+      "telephone": "+33646251039",
+      "adresse": "",
+      "ville": "nanteuil les meaux",
+      "codePostal": "77100",
+      "destination": "douala",
+      "tarifSpecial": "870",
+      "historiqueActivite": {
+        "2024": "fev, opct",
+        "2025": "sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0221_CL291",
+      "numeroClient": "CL291",
+      "nom": "moutome",
+      "prenom": "patrick",
+      "telephone": "+33758521005",
+      "adresse": "",
+      "ville": "le mans",
+      "codePostal": "72100",
+      "destination": "douala",
+      "tarifSpecial": "875",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0222_CL292",
+      "numeroClient": "CL292",
+      "nom": "mpondo",
+      "prenom": "",
+      "telephone": "+33618391386",
+      "adresse": "",
+      "ville": "le mans",
+      "codePostal": "72100",
+      "destination": "douala",
+      "tarifSpecial": "879",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mai, juill",
+        "2026": "avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0223_CL428",
+      "numeroClient": "CL428",
+      "nom": "mvogo",
+      "prenom": "marianne",
+      "telephone": "+237698635995",
+      "adresse": "Gloabal access solution SARL",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "850€/m3",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0224_CL478",
+      "numeroClient": "CL478",
+      "nom": "nama pilarski",
+      "prenom": "marie therese",
+      "telephone": "+33641541013",
+      "adresse": "44 rue philippe de girard",
+      "ville": "paris",
+      "codePostal": "75018",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0225_CL293",
+      "numeroClient": "CL293",
+      "nom": "nana gervaise",
+      "prenom": "",
+      "telephone": "+33783537690",
+      "adresse": "",
+      "ville": "limeil brevannes",
+      "codePostal": "94450",
+      "destination": "douala",
+      "tarifSpecial": "891",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0226_CL294",
+      "numeroClient": "CL294",
+      "nom": "nana kemajou",
+      "prenom": "bachelin",
+      "telephone": "+33612130494",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75019",
+      "destination": "douala",
+      "tarifSpecial": "896",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0227_CL295",
+      "numeroClient": "CL295",
+      "nom": "nancy amie nee",
+      "prenom": "",
+      "telephone": "+33757549757",
+      "adresse": "",
+      "ville": "sannois",
+      "codePostal": "95110",
+      "destination": "yaounde",
+      "tarifSpecial": "899",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0228_CL462",
+      "numeroClient": "CL462",
+      "nom": "nasser",
+      "prenom": "",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0229_CL296",
+      "numeroClient": "CL296",
+      "nom": "nathalie",
+      "prenom": "",
+      "telephone": "+33631302727",
+      "adresse": "",
+      "ville": "concarneau",
+      "codePostal": "29900",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0230_CL297",
+      "numeroClient": "CL297",
+      "nom": "nathalie",
+      "prenom": "",
+      "telephone": "+33665738220",
+      "adresse": "",
+      "ville": "montigny le bretonneux",
+      "codePostal": "78180",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0231_CL298",
+      "numeroClient": "CL298",
+      "nom": "ndengue",
+      "prenom": "regine",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "695265807",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0232_CL299",
+      "numeroClient": "CL299",
+      "nom": "ndeutou",
+      "prenom": "armel",
+      "telephone": "+33610466066",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75018",
+      "destination": "yaounde",
+      "tarifSpecial": "910",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0233_CL353",
+      "numeroClient": "CL353",
+      "nom": "ndjamen",
+      "prenom": "roger",
+      "telephone": "+33699511963",
+      "adresse": "",
+      "ville": "goussainville",
+      "codePostal": "95190",
+      "destination": "",
+      "tarifSpecial": "914",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0234_CL301",
+      "numeroClient": "CL301",
+      "nom": "ndjocko",
+      "prenom": "",
+      "telephone": "+33784528124",
+      "adresse": "",
+      "ville": "poullaouen",
+      "codePostal": "29246",
+      "destination": "yaounde",
+      "tarifSpecial": "918",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0235_CL211",
+      "numeroClient": "CL211",
+      "nom": "ndjountche",
+      "prenom": "jackson",
+      "telephone": "+33684868337",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "758",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0236_CL302",
+      "numeroClient": "CL302",
+      "nom": "ndoky",
+      "prenom": "dikoumé",
+      "telephone": "+23799955323",
+      "adresse": "",
+      "ville": "meaux",
+      "codePostal": "77100",
+      "destination": "douala",
+      "tarifSpecial": "926",
+      "historiqueActivite": {
+        "2024": "651",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0237_CL303",
+      "numeroClient": "CL303",
+      "nom": "ndomb",
+      "prenom": "",
+      "telephone": "+33616773915",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0238_CL304",
+      "numeroClient": "CL304",
+      "nom": "ndoni",
+      "prenom": "therese",
+      "telephone": "+33677673814",
+      "adresse": "",
+      "ville": "grigny",
+      "codePostal": "91350",
+      "destination": "kribi",
+      "tarifSpecial": "933",
+      "historiqueActivite": {
+        "2024": "fev, dec",
+        "2025": "avril, mai",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0239_CL305",
+      "numeroClient": "CL305",
+      "nom": "ndoumbe",
+      "prenom": "alexandre",
+      "telephone": "+33784736291",
+      "adresse": "",
+      "ville": "concarneau",
+      "codePostal": "29900",
+      "destination": "douala",
+      "tarifSpecial": "938",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": "mars, avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0240_CL306",
+      "numeroClient": "CL306",
+      "nom": "ndoumbe",
+      "prenom": "catherine",
+      "telephone": "+33766143215",
+      "adresse": "",
+      "ville": "saint denis",
+      "codePostal": "93200",
+      "destination": "douala/yaounde",
+      "tarifSpecial": "941",
+      "historiqueActivite": {
+        "2024": "943",
+        "2025": "",
+        "2026": "janv, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0241_CL307",
+      "numeroClient": "CL307",
+      "nom": "ndzie",
+      "prenom": "justine",
+      "telephone": "+33680475975",
+      "adresse": "",
+      "ville": "bussy saint georges",
+      "codePostal": "77600",
+      "destination": "yaounde",
+      "tarifSpecial": "946",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0242_CL308",
+      "numeroClient": "CL308",
+      "nom": "negue tela",
+      "prenom": "heliane",
+      "telephone": "+33610049038",
+      "adresse": "",
+      "ville": "nanterre",
+      "codePostal": "92000",
+      "destination": "yaounde",
+      "tarifSpecial": "951",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mai, nov, dec",
+        "2026": "janv, avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0243_CL466",
+      "numeroClient": "CL466",
+      "nom": "nekui",
+      "prenom": "yves bertrand",
+      "telephone": "+33753027112",
+      "adresse": "20 rue du clos feuquieres",
+      "ville": "paris",
+      "codePostal": "75015",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0244_CL469",
+      "numeroClient": "CL469",
+      "nom": "nekui",
+      "prenom": "yves",
+      "telephone": "+33753027112",
+      "adresse": "rue des pierreries",
+      "ville": "yerres",
+      "codePostal": "91330",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0245_CL309",
+      "numeroClient": "CL309",
+      "nom": "ngako",
+      "prenom": "clotilde",
+      "telephone": "+33768898142",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0246_CL310",
+      "numeroClient": "CL310",
+      "nom": "ngako",
+      "prenom": "hermann",
+      "telephone": "+33763524917",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "44000",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0247_CL311",
+      "numeroClient": "CL311",
+      "nom": "ngalle",
+      "prenom": "veronique",
+      "telephone": "+33668261323",
+      "adresse": "",
+      "ville": "quimperle",
+      "codePostal": "29300",
+      "destination": "yaounde",
+      "tarifSpecial": "968",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0248_CL312",
+      "numeroClient": "CL312",
+      "nom": "ngaye",
+      "prenom": "marie antoinette",
+      "telephone": "+33668709743",
+      "adresse": "",
+      "ville": "evry courcouronnes",
+      "codePostal": "91000",
+      "destination": "douala",
+      "tarifSpecial": "973",
+      "historiqueActivite": {
+        "2024": "fev",
+        "2025": "janv, mai, juill",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0249_CL158",
+      "numeroClient": "CL158",
+      "nom": "ngbwa akoa",
+      "prenom": "didier",
+      "telephone": "+33667261515",
+      "adresse": "",
+      "ville": "nanterre",
+      "codePostal": "92000",
+      "destination": "",
+      "tarifSpecial": "979",
+      "historiqueActivite": {
+        "2024": "382",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0250_CL313",
+      "numeroClient": "CL313",
+      "nom": "ngo bikai",
+      "prenom": "sylvie",
+      "telephone": "+33668248112",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "yaounde",
+      "tarifSpecial": "982",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0251_CL314",
+      "numeroClient": "CL314",
+      "nom": "ngo tjeu",
+      "prenom": "tata philo",
+      "telephone": "+33664721683",
+      "adresse": "",
+      "ville": "vertou",
+      "codePostal": "44120",
+      "destination": "douala",
+      "tarifSpecial": "986",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0252_CL463",
+      "numeroClient": "CL463",
+      "nom": "ngondji kengne",
+      "prenom": "delizia",
+      "telephone": "",
+      "adresse": "6 avenue du marechal lyautey",
+      "ville": "nogent sur marne",
+      "codePostal": "94130",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0253_CL474",
+      "numeroClient": "CL474",
+      "nom": "ngongang",
+      "prenom": "antoinette",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "614027481",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0254_CL473",
+      "numeroClient": "CL473",
+      "nom": "ngono",
+      "prenom": "elisabeth",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "767128762",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0255_CL315",
+      "numeroClient": "CL315",
+      "nom": "ngouette",
+      "prenom": "",
+      "telephone": "+33771052573",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0256_CL456",
+      "numeroClient": "CL456",
+      "nom": "niobe",
+      "prenom": "georges",
+      "telephone": "+33758049013",
+      "adresse": "5 allée des hautes herbes",
+      "ville": "noisy le grand",
+      "codePostal": "93160",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0257_CL316",
+      "numeroClient": "CL316",
+      "nom": "nitcheu",
+      "prenom": "ariane",
+      "telephone": "+23799949042",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "890€/m3",
+      "historiqueActivite": {
+        "2024": "1006",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0258_CL317",
+      "numeroClient": "CL317",
+      "nom": "njantou",
+      "prenom": "christian",
+      "telephone": "+33607532044",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0259_CL318",
+      "numeroClient": "CL318",
+      "nom": "njitock",
+      "prenom": "yves",
+      "telephone": "+33699558499",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "fev",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0260_CL319",
+      "numeroClient": "CL319",
+      "nom": "nkana",
+      "prenom": "francoise",
+      "telephone": "+33664006758",
+      "adresse": "",
+      "ville": "evry courcouronnes",
+      "codePostal": "91000",
+      "destination": "yaounde",
+      "tarifSpecial": "1014",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": "mars"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0261_CL321",
+      "numeroClient": "CL321",
+      "nom": "nkolo",
+      "prenom": "marie therese",
+      "telephone": "+32466086222",
+      "adresse": "",
+      "ville": "lanester",
+      "codePostal": "56600",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0262_CL320",
+      "numeroClient": "CL320",
+      "nom": "nkolo edou",
+      "prenom": "prisca",
+      "telephone": "+33751368148",
+      "adresse": "",
+      "ville": "lorient",
+      "codePostal": "56000",
+      "destination": "yaounde",
+      "tarifSpecial": "1020",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0263_CL322",
+      "numeroClient": "CL322",
+      "nom": "nkuigoua",
+      "prenom": "thomas",
+      "telephone": "+237697519889",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "651",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0264_CL323",
+      "numeroClient": "CL323",
+      "nom": "nlemba",
+      "prenom": "joseph",
+      "telephone": "+33777368502",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44100",
+      "destination": "douala",
+      "tarifSpecial": "1026",
+      "historiqueActivite": {
+        "2024": "1027",
+        "2025": "",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0265_CL324",
+      "numeroClient": "CL324",
+      "nom": "noah atangana",
+      "prenom": "joseph",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0266_CL325",
+      "numeroClient": "CL325",
+      "nom": "normana",
+      "prenom": "nathalie",
+      "telephone": "+33623167278",
+      "adresse": "",
+      "ville": "la rochelle",
+      "codePostal": "17000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0267_CL446",
+      "numeroClient": "CL446",
+      "nom": "normandin",
+      "prenom": "",
+      "telephone": "+17",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "1032",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0268_CL326",
+      "numeroClient": "CL326",
+      "nom": "noubou",
+      "prenom": "yannick",
+      "telephone": "+33751359724",
+      "adresse": "",
+      "ville": "quintin",
+      "codePostal": "22800",
+      "destination": "yaounde",
+      "tarifSpecial": "1038",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0269_CL327",
+      "numeroClient": "CL327",
+      "nom": "nougloure",
+      "prenom": "armand",
+      "telephone": "+33619665462",
+      "adresse": "",
+      "ville": "saint brieuc",
+      "codePostal": "22000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0270_CL328",
+      "numeroClient": "CL328",
+      "nom": "noumbissi",
+      "prenom": "annie",
+      "telephone": "+33630394558",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0271_CL329",
+      "numeroClient": "CL329",
+      "nom": "noussi",
+      "prenom": "tatiana",
+      "telephone": "+33781624128",
+      "adresse": "9 rue frederic juliot curie",
+      "ville": "sainte genevieve des bois",
+      "codePostal": "91700",
+      "destination": "yaounde",
+      "tarifSpecial": "950€/m3",
+      "historiqueActivite": {
+        "2024": "454",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0272_CL330",
+      "numeroClient": "CL330",
+      "nom": "Ntsa",
+      "prenom": "victoire",
+      "telephone": "+33783797247",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35700",
+      "destination": "douala",
+      "tarifSpecial": "1054",
+      "historiqueActivite": {
+        "2024": "1055",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0273_",
+      "numeroClient": "CL500",
+      "nom": "ntsama",
+      "prenom": "1057",
+      "telephone": "+29",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "",
+      "tarifSpecial": "1058",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0274_CL331",
+      "numeroClient": "CL331",
+      "nom": "nyamsi",
+      "prenom": "anne",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "613119170",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0275_CL332",
+      "numeroClient": "CL332",
+      "nom": "nyom",
+      "prenom": "christine",
+      "telephone": "+33751463912",
+      "adresse": "50 lance",
+      "ville": "noyal chatillon sur seche",
+      "codePostal": "35230",
+      "destination": "",
+      "tarifSpecial": "600€/m3",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mai, sept, dec",
+        "2026": "mars, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0276_CL333",
+      "numeroClient": "CL333",
+      "nom": "nzie bienvenue",
+      "prenom": "georges pharell",
+      "telephone": "+33695832095",
+      "adresse": "",
+      "ville": "ploneis",
+      "codePostal": "29710",
+      "destination": "douala",
+      "tarifSpecial": "1070",
+      "historiqueActivite": {
+        "2024": "287",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0277_CL334",
+      "numeroClient": "CL334",
+      "nom": "nzie nguiamba",
+      "prenom": "alain",
+      "telephone": "+234699966031",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0278_CL335",
+      "numeroClient": "CL335",
+      "nom": "ollivier",
+      "prenom": "dorette",
+      "telephone": "+33614839545",
+      "adresse": "",
+      "ville": "dinan",
+      "codePostal": "22100",
+      "destination": "",
+      "tarifSpecial": "1078",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0279_CL336",
+      "numeroClient": "CL336",
+      "nom": "onana",
+      "prenom": "josiane",
+      "telephone": "+33648420595",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35000",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0280_CL337",
+      "numeroClient": "CL337",
+      "nom": "onana",
+      "prenom": "benoit",
+      "telephone": "+237659255600",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "1085",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0281_CL338",
+      "numeroClient": "CL338",
+      "nom": "oncle et tante daouda",
+      "prenom": "alima",
+      "telephone": "+33781911257",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "1089",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0282_CL339",
+      "numeroClient": "CL339",
+      "nom": "padja nana",
+      "prenom": "armel",
+      "telephone": "+33751383391",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0283_CL340",
+      "numeroClient": "CL340",
+      "nom": "pageau",
+      "prenom": "christine",
+      "telephone": "+33778158520",
+      "adresse": "",
+      "ville": "suce sur erdre",
+      "codePostal": "44240",
+      "destination": "kribi",
+      "tarifSpecial": "1094",
+      "historiqueActivite": {
+        "2024": "janv",
+        "2025": "mai, nov, dec",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0284_CL343",
+      "numeroClient": "CL343",
+      "nom": "pessinou",
+      "prenom": "augustin",
+      "telephone": "+33604482729",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0285_CL345",
+      "numeroClient": "CL345",
+      "nom": "pieumy",
+      "prenom": "zachée",
+      "telephone": "+33753147675",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "yaounde",
+      "tarifSpecial": "1101",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0286_CL346",
+      "numeroClient": "CL346",
+      "nom": "pinard",
+      "prenom": "noelle",
+      "telephone": "+33611553645",
+      "adresse": "",
+      "ville": "saint etienne de mont luc",
+      "codePostal": "44360",
+      "destination": "",
+      "tarifSpecial": "1105",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0287_CL347",
+      "numeroClient": "CL347",
+      "nom": "poret",
+      "prenom": "marie",
+      "telephone": "+33630226444",
+      "adresse": "",
+      "ville": "deauville",
+      "codePostal": "14800",
+      "destination": "yaounde",
+      "tarifSpecial": "1109",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0288_CL429",
+      "numeroClient": "CL429",
+      "nom": "portenart",
+      "prenom": "henriette",
+      "telephone": "+33603547717",
+      "adresse": "10 rue des moustiers",
+      "ville": "thorigny sur marne",
+      "codePostal": "77400",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0289_",
+      "numeroClient": "CL501",
+      "nom": "portier",
+      "prenom": "1117",
+      "telephone": "+33673464486",
+      "adresse": "22 avenue ernest jolly",
+      "ville": "carrieres sous poissy",
+      "codePostal": "78955",
+      "destination": "yaounde",
+      "tarifSpecial": "900€/m3",
+      "historiqueActivite": {
+        "2024": "126",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0290_CL349",
+      "numeroClient": "CL349",
+      "nom": "quinquis",
+      "prenom": "sabine",
+      "telephone": "+33644770164",
+      "adresse": "",
+      "ville": "chateaulin",
+      "codePostal": "29150",
+      "destination": "yaounde",
+      "tarifSpecial": "1123",
+      "historiqueActivite": {
+        "2024": "oct, dec",
+        "2025": "juillet, dec",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0291_CL351",
+      "numeroClient": "CL351",
+      "nom": "raoul",
+      "prenom": "",
+      "telephone": "+33755276309",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0292_CL352",
+      "numeroClient": "CL352",
+      "nom": "roger fanch",
+      "prenom": "",
+      "telephone": "+33698027326",
+      "adresse": "",
+      "ville": "nanterre",
+      "codePostal": "92000",
+      "destination": "douala",
+      "tarifSpecial": "1129",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0293_CL452",
+      "numeroClient": "CL452",
+      "nom": "rombhot",
+      "prenom": "lazare junior",
+      "telephone": "+33662667280",
+      "adresse": "9 rue georges sand",
+      "ville": "chenôve",
+      "codePostal": "21300",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0294_CL356",
+      "numeroClient": "CL356",
+      "nom": "rostand palestin",
+      "prenom": "",
+      "telephone": "+33664952581",
+      "adresse": "106",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "550€/m3",
+      "historiqueActivite": {
+        "2024": "113",
+        "2025": "",
+        "2026": "mars"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0295_CL443",
+      "numeroClient": "CL443",
+      "nom": "roulet ndom bardot",
+      "prenom": "",
+      "telephone": "+33758632652",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0296_CL357",
+      "numeroClient": "CL357",
+      "nom": "roux",
+      "prenom": "marie madeleine",
+      "telephone": "+33683184863",
+      "adresse": "",
+      "ville": "corai",
+      "codePostal": "29730",
+      "destination": "yaounde",
+      "tarifSpecial": "1143",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0297_CL359",
+      "numeroClient": "CL359",
+      "nom": "royal grill",
+      "prenom": "",
+      "telephone": "+2376755488980695152743",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "107",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0298_CL360",
+      "numeroClient": "CL360",
+      "nom": "ruth",
+      "prenom": "",
+      "telephone": "+33612031045",
+      "adresse": "",
+      "ville": "villejuif",
+      "codePostal": "94400",
+      "destination": "",
+      "tarifSpecial": "1150",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0299_CL361",
+      "numeroClient": "CL361",
+      "nom": "safi simo",
+      "prenom": "beatrice",
+      "telephone": "+33615928224",
+      "adresse": "",
+      "ville": "limeil brevannes",
+      "codePostal": "94450",
+      "destination": "yaounde",
+      "tarifSpecial": "1155",
+      "historiqueActivite": {
+        "2024": "1156",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0300_CL373",
+      "numeroClient": "CL373",
+      "nom": "saint marc",
+      "prenom": "solange",
+      "telephone": "+33618128693",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala et yaoude",
+      "tarifSpecial": "1160",
+      "historiqueActivite": {
+        "2024": "janv",
+        "2025": "avril",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0301_CL362",
+      "numeroClient": "CL362",
+      "nom": "sal",
+      "prenom": "michel",
+      "telephone": "+33763156756",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "1165",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0302_CL363",
+      "numeroClient": "CL363",
+      "nom": "samekomba",
+      "prenom": "andre",
+      "telephone": "+33667173097",
+      "adresse": "",
+      "ville": "clohars fouesnant",
+      "codePostal": "29950",
+      "destination": "",
+      "tarifSpecial": "1169",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0303_CL364",
+      "numeroClient": "CL364",
+      "nom": "sarl alpha distribution",
+      "prenom": "",
+      "telephone": "+33651190341",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0304_CL365",
+      "numeroClient": "CL365",
+      "nom": "scarlette",
+      "prenom": "",
+      "telephone": "+33758673903",
+      "adresse": "",
+      "ville": "asnieres sur seine",
+      "codePostal": "92600",
+      "destination": "yaounde",
+      "tarifSpecial": "1174",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0305_CL366",
+      "numeroClient": "CL366",
+      "nom": "seido",
+      "prenom": "doris",
+      "telephone": "+33617736905",
+      "adresse": "",
+      "ville": "pontoise",
+      "codePostal": "95300",
+      "destination": "douala",
+      "tarifSpecial": "1179",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0306_CL423",
+      "numeroClient": "CL423",
+      "nom": "seppo (ndjaka)",
+      "prenom": "elisabeth",
+      "telephone": "+33609561514",
+      "adresse": "",
+      "ville": "bourg la reine",
+      "codePostal": "92340",
+      "destination": "douala",
+      "tarifSpecial": "1183",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0307_CL367",
+      "numeroClient": "CL367",
+      "nom": "sevin",
+      "prenom": "frederic",
+      "telephone": "+33611691641",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "fev",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0308_CL403",
+      "numeroClient": "CL403",
+      "nom": "shneider",
+      "prenom": "roger",
+      "telephone": "+33699270054",
+      "adresse": "",
+      "ville": "neuvy en mauges",
+      "codePostal": "49000",
+      "destination": "kribi",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0309_CL471",
+      "numeroClient": "CL471",
+      "nom": "siani",
+      "prenom": "mireille",
+      "telephone": "+33602262313",
+      "adresse": "11 rue d'alger",
+      "ville": "st germain en laye",
+      "codePostal": "78100",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0310_CL368",
+      "numeroClient": "CL368",
+      "nom": "siewe",
+      "prenom": "justin",
+      "telephone": "+33688877452",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": "janv, mars, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0311_CL431",
+      "numeroClient": "CL431",
+      "nom": "sigha",
+      "prenom": "lucas",
+      "telephone": "+33781545776",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "51",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0312_CL254",
+      "numeroClient": "CL254",
+      "nom": "simo",
+      "prenom": "gabin",
+      "telephone": "+237650242251",
+      "adresse": "tarif à augmenter",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "950€/m3",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0313_CL369",
+      "numeroClient": "CL369",
+      "nom": "simo",
+      "prenom": "mireille",
+      "telephone": "+33695637577",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44200",
+      "destination": "107",
+      "tarifSpecial": "1207",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0314_CL370",
+      "numeroClient": "CL370",
+      "nom": "sipa",
+      "prenom": "romeo",
+      "telephone": "+33663181698",
+      "adresse": "",
+      "ville": "savigny sur orge",
+      "codePostal": "91600",
+      "destination": "yaounde ou douala",
+      "tarifSpecial": "1211",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "mai, juillet, dec",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0315_CL371",
+      "numeroClient": "CL371",
+      "nom": "sissako",
+      "prenom": "marie ange",
+      "telephone": "+33652171112",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "1218",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0316_CL372",
+      "numeroClient": "CL372",
+      "nom": "SM njindou issiaka",
+      "prenom": "",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "753535440",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0317_CL276",
+      "numeroClient": "CL276",
+      "nom": "soh",
+      "prenom": "",
+      "telephone": "+237697286380",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0318_CL374",
+      "numeroClient": "CL374",
+      "nom": "sonkeng",
+      "prenom": "beatrice",
+      "telephone": "+33648688746",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "douala",
+      "tarifSpecial": "1225",
+      "historiqueActivite": {
+        "2024": "1006",
+        "2025": "",
+        "2026": "janv,avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0319_CL437",
+      "numeroClient": "CL437",
+      "nom": "souffron",
+      "prenom": "laurent",
+      "telephone": "+33695156859",
+      "adresse": "161 rue des garennes",
+      "ville": "saint fargeaux",
+      "codePostal": "77310",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0320_CL375",
+      "numeroClient": "CL375",
+      "nom": "steeve",
+      "prenom": "",
+      "telephone": "+33784721004",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35000",
+      "destination": "",
+      "tarifSpecial": "1234",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0321_CL377",
+      "numeroClient": "CL377",
+      "nom": "suzanne",
+      "prenom": "",
+      "telephone": "+33769275997",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0322_CL379",
+      "numeroClient": "CL379",
+      "nom": "tagne",
+      "prenom": "patrick",
+      "telephone": "+33751270259",
+      "adresse": "",
+      "ville": "ancenis",
+      "codePostal": "44510",
+      "destination": "",
+      "tarifSpecial": "1239",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0323_CL380",
+      "numeroClient": "CL380",
+      "nom": "takogue tasse",
+      "prenom": "ambroise",
+      "telephone": "+33699179870",
+      "adresse": "",
+      "ville": "meaux",
+      "codePostal": "77100",
+      "destination": "douala",
+      "tarifSpecial": "1244",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "avril, juill, sept",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0324_CL381",
+      "numeroClient": "CL381",
+      "nom": "talla",
+      "prenom": "felix eden",
+      "telephone": "+33744193702",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0325_CL382",
+      "numeroClient": "CL382",
+      "nom": "tallec",
+      "prenom": "rachelle",
+      "telephone": "+06120955710780561244",
+      "adresse": "",
+      "ville": "douarnenez",
+      "codePostal": "29100",
+      "destination": "yaounde",
+      "tarifSpecial": "1251",
+      "historiqueActivite": {
+        "2024": "oct",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0326_CL383",
+      "numeroClient": "CL383",
+      "nom": "tamba",
+      "prenom": "alain",
+      "telephone": "+33753694153",
+      "adresse": "",
+      "ville": "montmorency",
+      "codePostal": "95230",
+      "destination": "douala",
+      "tarifSpecial": "1256",
+      "historiqueActivite": {
+        "2024": "378",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0327_CL384",
+      "numeroClient": "CL384",
+      "nom": "tamtho djocko",
+      "prenom": "simeon",
+      "telephone": "+33766141350",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "70",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0328_CL386",
+      "numeroClient": "CL386",
+      "nom": "tankeu",
+      "prenom": "olivier",
+      "telephone": "+33602713280",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44300",
+      "destination": "",
+      "tarifSpecial": "1263",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0329_CL385",
+      "numeroClient": "CL385",
+      "nom": "tankeu",
+      "prenom": "",
+      "telephone": "+33749465689",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "1266",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0330_CL464",
+      "numeroClient": "CL464",
+      "nom": "taptue",
+      "prenom": "francis",
+      "telephone": "+33611240775",
+      "adresse": "promenade des anges",
+      "ville": "st cyr l'ecole",
+      "codePostal": "78210",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0331_CL387",
+      "numeroClient": "CL387",
+      "nom": "tata philo",
+      "prenom": "",
+      "telephone": "+33664721683",
+      "adresse": "",
+      "ville": "nantes",
+      "codePostal": "44000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0332_CL277",
+      "numeroClient": "CL277",
+      "nom": "tawa",
+      "prenom": "",
+      "telephone": "+33699149858",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0333_CL388",
+      "numeroClient": "CL388",
+      "nom": "tawa",
+      "prenom": "guy",
+      "telephone": "+33623500352",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "1278",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0334_CL467",
+      "numeroClient": "CL467",
+      "nom": "tchakam",
+      "prenom": "olivier",
+      "telephone": "+33667212790",
+      "adresse": "34 rue carnot",
+      "ville": "le kremlin bicetre",
+      "codePostal": "94270",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0335_CL475",
+      "numeroClient": "CL475",
+      "nom": "tchakam",
+      "prenom": "olivier",
+      "telephone": "+33667212790",
+      "adresse": "34 rue carnot",
+      "ville": "le kremlin bicetre",
+      "codePostal": "94270",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0336_CL389",
+      "numeroClient": "CL389",
+      "nom": "tchakounte",
+      "prenom": "guy merlin",
+      "telephone": "+33753053926",
+      "adresse": "",
+      "ville": "poitiers",
+      "codePostal": "86000",
+      "destination": "douala",
+      "tarifSpecial": "1287",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0337_CL442",
+      "numeroClient": "CL442",
+      "nom": "tchakounte",
+      "prenom": "helene",
+      "telephone": "+33690435601",
+      "adresse": "",
+      "ville": "aubervilliers",
+      "codePostal": "93000",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0338_CL459",
+      "numeroClient": "CL459",
+      "nom": "tchapkem fotsing",
+      "prenom": "germain",
+      "telephone": "+33783290060",
+      "adresse": "70 boulevard paul vaillant",
+      "ville": "ivry sur seine",
+      "codePostal": "94200",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0339_CL143",
+      "numeroClient": "CL143",
+      "nom": "tchedjou",
+      "prenom": "",
+      "telephone": "+23777214142",
+      "adresse": "Pacet SARL",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0340_CL447",
+      "numeroClient": "CL447",
+      "nom": "tchentchoua djukoua",
+      "prenom": "nadege",
+      "telephone": "+33781845333",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0341_CL390",
+      "numeroClient": "CL390",
+      "nom": "tchoffotiyo",
+      "prenom": "",
+      "telephone": "+23774170555",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "janv, mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0342_CL391",
+      "numeroClient": "CL391",
+      "nom": "tchokossy",
+      "prenom": "",
+      "telephone": "+33643219890",
+      "adresse": "",
+      "ville": "etrechy",
+      "codePostal": "91580",
+      "destination": "",
+      "tarifSpecial": "1304",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0343_CL392",
+      "numeroClient": "CL392",
+      "nom": "tchokouadeu",
+      "prenom": "christian",
+      "telephone": "+33634167198",
+      "adresse": "",
+      "ville": "paris",
+      "codePostal": "75018",
+      "destination": "",
+      "tarifSpecial": "1308",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0344_CL393",
+      "numeroClient": "CL393",
+      "nom": "tchonang",
+      "prenom": "gilbert tony",
+      "telephone": "+33680728880",
+      "adresse": "pharmacie des mordacs 11 place georges marchai",
+      "ville": "champigny sur marne",
+      "codePostal": "94500",
+      "destination": "douala",
+      "tarifSpecial": "750€/m3",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "janv, mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0345_CL445",
+      "numeroClient": "CL445",
+      "nom": "tchoubet",
+      "prenom": "angelet",
+      "telephone": "+33651298698",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "douala",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0346_CL394",
+      "numeroClient": "CL394",
+      "nom": "tchoumbi",
+      "prenom": "annie",
+      "telephone": "+33637214250",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": "janv"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0347_CL395",
+      "numeroClient": "CL395",
+      "nom": "teacher",
+      "prenom": "",
+      "telephone": "+33659846970",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "40",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0348_CL408",
+      "numeroClient": "CL408",
+      "nom": "teacher sam",
+      "prenom": "",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "695782017",
+      "destination": "",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0349_CL396",
+      "numeroClient": "CL396",
+      "nom": "tehaya zenabou",
+      "prenom": "",
+      "telephone": "+40",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0350_CL397",
+      "numeroClient": "CL397",
+      "nom": "tekoudjou",
+      "prenom": "philibert",
+      "telephone": "+237677752710",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "39",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0351_CL398",
+      "numeroClient": "CL398",
+      "nom": "tekougom",
+      "prenom": "fayel",
+      "telephone": "+33613040537",
+      "adresse": "",
+      "ville": "le mans",
+      "codePostal": "72000",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0352_CL399",
+      "numeroClient": "CL399",
+      "nom": "tiembe",
+      "prenom": "idriss",
+      "telephone": "+33772379176",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0353_CL400",
+      "numeroClient": "CL400",
+      "nom": "tolmer",
+      "prenom": "thierry",
+      "telephone": "+33674081803",
+      "adresse": "",
+      "ville": "caen",
+      "codePostal": "",
+      "destination": "yaounde",
+      "tarifSpecial": "14000",
+      "historiqueActivite": {
+        "2024": "47",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0354_CL401",
+      "numeroClient": "CL401",
+      "nom": "topiko",
+      "prenom": "prisca",
+      "telephone": "+33753104102",
+      "adresse": "",
+      "ville": "saint denis",
+      "codePostal": "93200",
+      "destination": "",
+      "tarifSpecial": "1338",
+      "historiqueActivite": {
+        "2024": "89",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0355_CL439",
+      "numeroClient": "CL439",
+      "nom": "toure",
+      "prenom": "",
+      "telephone": "+33644887096",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0356_CL402",
+      "numeroClient": "CL402",
+      "nom": "toutcho",
+      "prenom": "jean",
+      "telephone": "+33782299979",
+      "adresse": "",
+      "ville": "plogonnec",
+      "codePostal": "29180",
+      "destination": "douala",
+      "tarifSpecial": "1344",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0357_CL404",
+      "numeroClient": "CL404",
+      "nom": "trevarin",
+      "prenom": "marie nicole",
+      "telephone": "+33630934268",
+      "adresse": "",
+      "ville": "ergue gaberic",
+      "codePostal": "29500",
+      "destination": "yaounde",
+      "tarifSpecial": "1349",
+      "historiqueActivite": {
+        "2024": "1350",
+        "2025": "",
+        "2026": "janv, mars, avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0358_CL450",
+      "numeroClient": "CL450",
+      "nom": "tsagadigui",
+      "prenom": "eugene",
+      "telephone": "+33658562606",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "39",
+      "destination": "kribi",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0359_CL406",
+      "numeroClient": "CL406",
+      "nom": "vouffo",
+      "prenom": "blanche",
+      "telephone": "+33675406319",
+      "adresse": "",
+      "ville": "montreuil",
+      "codePostal": "93100",
+      "destination": "douala",
+      "tarifSpecial": "1357",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "avril",
+        "2026": "juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0360_CL192",
+      "numeroClient": "CL192",
+      "nom": "vounang",
+      "prenom": "fleurette",
+      "telephone": "+33669520579",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "yaounde",
+      "tarifSpecial": "1362",
+      "historiqueActivite": {
+        "2024": "56",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0361_CL407",
+      "numeroClient": "CL407",
+      "nom": "vounang",
+      "prenom": "gaston",
+      "telephone": "",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "663746320",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0362_CL125",
+      "numeroClient": "CL125",
+      "nom": "wabo",
+      "prenom": "blaise",
+      "telephone": "+33755729802",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "1368",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0363_CL409",
+      "numeroClient": "CL409",
+      "nom": "wanda",
+      "prenom": "christian",
+      "telephone": "+33688155296",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "douala",
+      "tarifSpecial": "1371",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0364_CL410",
+      "numeroClient": "CL410",
+      "nom": "wandji",
+      "prenom": "gilbert",
+      "telephone": "+33661991676",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "1375",
+      "destination": "yaounde",
+      "tarifSpecial": "1200€/m3",
+      "historiqueActivite": {
+        "2024": "1376",
+        "2025": "",
+        "2026": "janv, mars, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0365_CL412",
+      "numeroClient": "CL412",
+      "nom": "wandze",
+      "prenom": "wilfried",
+      "telephone": "+33660432637",
+      "adresse": "",
+      "ville": "antony",
+      "codePostal": "92160",
+      "destination": "douala",
+      "tarifSpecial": "1380",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0366_CL411",
+      "numeroClient": "CL411",
+      "nom": "wemba",
+      "prenom": "francois",
+      "telephone": "+33610306937",
+      "adresse": "",
+      "ville": "brest",
+      "codePostal": "29200",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0367_CL413",
+      "numeroClient": "CL413",
+      "nom": "willy",
+      "prenom": "",
+      "telephone": "+33695378046",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0368_CL416",
+      "numeroClient": "CL416",
+      "nom": "yahaya",
+      "prenom": "",
+      "telephone": "+07533570830647284787",
+      "adresse": "",
+      "ville": "rennes",
+      "codePostal": "35700",
+      "destination": "douala",
+      "tarifSpecial": "1389",
+      "historiqueActivite": {
+        "2024": "18",
+        "2025": "",
+        "2026": "mars, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0369_CL414",
+      "numeroClient": "CL414",
+      "nom": "yakam",
+      "prenom": "joseph",
+      "telephone": "+33695481772",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "yaounde",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "46",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0370_CL435",
+      "numeroClient": "CL435",
+      "nom": "yakam nana",
+      "prenom": "carine",
+      "telephone": "+33664245865",
+      "adresse": "83 rue paul langevin",
+      "ville": "lamballe",
+      "codePostal": "22400",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0371_CL415",
+      "numeroClient": "CL415",
+      "nom": "yankoua",
+      "prenom": "goldefroy",
+      "telephone": "+7804554080625726119",
+      "adresse": "",
+      "ville": "orly",
+      "codePostal": "94310",
+      "destination": "douala",
+      "tarifSpecial": "1401",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0372_CL417",
+      "numeroClient": "CL417",
+      "nom": "yetchom",
+      "prenom": "clovis",
+      "telephone": "+33624618242",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "",
+      "destination": "douala",
+      "tarifSpecial": "106",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": "avril"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0373_CL418",
+      "numeroClient": "CL418",
+      "nom": "yoga",
+      "prenom": "vanessa",
+      "telephone": "+06137873280623389622",
+      "adresse": "",
+      "ville": "lagny sur marne",
+      "codePostal": "77400",
+      "destination": "douala",
+      "tarifSpecial": "1409",
+      "historiqueActivite": {
+        "2024": "880",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0374_CL419",
+      "numeroClient": "CL419",
+      "nom": "youmani",
+      "prenom": "marina",
+      "telephone": "+33778907691",
+      "adresse": "",
+      "ville": "",
+      "codePostal": "106",
+      "destination": "douala",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "33",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0375_CL420",
+      "numeroClient": "CL420",
+      "nom": "youssoupha",
+      "prenom": "",
+      "telephone": "+33782550108",
+      "adresse": "",
+      "ville": "lamballe",
+      "codePostal": "22400",
+      "destination": "",
+      "tarifSpecial": "38",
+      "historiqueActivite": {
+        "2024": "dec",
+        "2025": "juil, dec",
+        "2026": "janv, avril, juin"
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0376_CL440",
+      "numeroClient": "CL440",
+      "nom": "ze",
+      "prenom": "suzanne leonie",
+      "telephone": "+33617574260",
+      "adresse": "",
+      "ville": "rouen",
+      "codePostal": "76000",
+      "destination": "yaounde",
+      "tarifSpecial": "",
+      "historiqueActivite": {
+        "2024": "51",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0377_CL421",
+      "numeroClient": "CL421",
+      "nom": "zogo",
+      "prenom": "yannick",
+      "telephone": "+33751226100",
+      "adresse": "",
+      "ville": "quimper",
+      "codePostal": "29000",
+      "destination": "",
+      "tarifSpecial": "1424",
+      "historiqueActivite": {
+        "2024": "",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "excel_0378_CL422",
+      "numeroClient": "CL422",
+      "nom": "zongo leta",
+      "prenom": "fleurette",
+      "telephone": "+33622612063",
+      "adresse": "",
+      "ville": "draveil",
+      "codePostal": "91210",
+      "destination": "yaounde",
+      "tarifSpecial": "1428",
+      "historiqueActivite": {
+        "2024": "107",
+        "2025": "",
+        "2026": ""
+      },
+      "envois": [],
+      "source": "import_excel",
+      "importedAt": "2026-09-01T10:18:23.179Z"
+    },
+    {
+      "id": "q79DDzOKvKo6NHzMxox9",
+      "nom": "ABALO",
+      "prenom": "Jefferson",
+      "adresse": "15 rue des ecoles",
+      "codePostal": "95500",
+      "telephone": "0676492528",
+      "envois": [
+        {
+          "expediteur": "",
+          "colis": ""
+        }
+      ],
+      "createdAt": "2026-08-10T06:12:58.797Z"
+    }
+  ]
+}

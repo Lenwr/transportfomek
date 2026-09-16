@@ -1,4 +1,5 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
 import { computed, ref } from "vue"
 import { addDoc, collection, deleteDoc, doc, orderBy, query, runTransaction, serverTimestamp } from "firebase/firestore"
 import { useCollection } from "vuefire"
@@ -6,6 +7,7 @@ import { toast } from "vue3-toastify"
 import { db } from "../components/firebaseConfig"
 import { generateInvoicePdf } from "../utils/invoicePdf"
 import { useAuthStore } from "../stores/useAuthStore"
+import { sendDocumentBySMS } from "../utils/twilioDocuments"
 
 const documentsCol = collection(db, "billingDocuments")
 const documentsSnap = useCollection(query(documentsCol, orderBy("createdAt", "desc")))
@@ -33,6 +35,7 @@ const form = ref({
 
 const items = ref([{ label: "", qty: 1, unitPriceTTC: 0 }])
 const saving = ref(false)
+const sendingSMS = ref("")
 const historySearch = ref("")
 const historyType = ref("")
 const historyStatus = ref("")
@@ -215,7 +218,7 @@ function convertQuoteToInvoice(item) {
 
 async function removeDocument(item) {
   if (!item?.id) return
-  if (!window.confirm(`Supprimer ${item.type || "document"} ${item.number || ""} ?`)) return
+  if (!await confirmToast(`Supprimer ${item.type || "document"} ${item.number || ""} ?`)) return
 
   try {
     await deleteDoc(doc(db, "billingDocuments", item.id))
@@ -399,6 +402,29 @@ function generatePDF(document = null) {
   })
 }
 
+async function sendBySMS(document = null) {
+  const payload = document || buildPayload()
+  const phone = payload.billTo?.phone
+  if (!phone) return toast("Renseigne le téléphone du client.", { type: "warning" })
+  const key = document ? (payload.id || payload.number) : "draft"
+  sendingSMS.value = key
+  try {
+    const label = payload.type === "DEVIS" ? "devis" : "facture"
+    const message = [
+      `Transport Fomek - Votre ${label} ${payload.number || ""}`,
+      `Montant total : ${money(payload.totals?.totalTTC || 0)}`,
+      payload.type === "FACTURE" ? `Reste à payer : ${money(payload.totals?.due || 0)}` : "Validité : 30 jours",
+      "Merci pour votre confiance.",
+    ].join("\n")
+    await sendDocumentBySMS({ phoneNumber: phone, message })
+    toast(`${payload.type === "DEVIS" ? "Devis" : "Facture"} envoyé par SMS.`, { type: "success" })
+  } catch (error) {
+    toast(error.message || "Envoi SMS impossible.", { type: "error" })
+  } finally {
+    sendingSMS.value = ""
+  }
+}
+
 async function saveDocument() {
   const hasItems = items.value.some((item) => item.label && Number(item.qty || 0) > 0)
   if (!form.value.clientName || !hasItems) {
@@ -578,6 +604,9 @@ async function saveDocument() {
           <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm hover:border-cyan-200" @click="generatePDF()">
             Générer PDF
           </button>
+          <button type="button" class="rounded-lg border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-bold text-cyan-800 shadow-sm hover:bg-cyan-100 disabled:opacity-50" :disabled="sendingSMS === 'draft' || !form.clientPhone" @click="sendBySMS()">
+            {{ sendingSMS === 'draft' ? "Envoi..." : "Envoyer par SMS" }}
+          </button>
           <button type="submit" class="rounded-lg bg-cyan-700 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-cyan-800 disabled:opacity-60" :disabled="saving">
             {{ saving ? "Enregistrement..." : "Enregistrer" }}
           </button>
@@ -609,6 +638,9 @@ async function saveDocument() {
                 </div>
                 <button type="button" class="rounded-md border border-slate-200 px-2 py-1 text-xs font-bold text-slate-600" @click="generatePDF(doc)">
                   PDF
+                </button>
+                <button type="button" class="rounded-md border border-cyan-200 bg-cyan-50 px-2 py-1 text-xs font-bold text-cyan-800 disabled:opacity-50" :disabled="sendingSMS === (doc.id || doc.number) || !doc.billTo?.phone" @click="sendBySMS(doc)">
+                  {{ sendingSMS === (doc.id || doc.number) ? "Envoi..." : "SMS" }}
                 </button>
               </div>
             </div>
@@ -710,6 +742,9 @@ async function saveDocument() {
             <button type="button" class="rounded-lg bg-cyan-700 px-3 py-2 text-xs font-bold text-white" @click="generatePDF(item)">
               PDF
             </button>
+            <button type="button" class="rounded-lg border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs font-bold text-cyan-800 disabled:opacity-50" :disabled="sendingSMS === (item.id || item.number) || !item.billTo?.phone" @click="sendBySMS(item)">
+              {{ sendingSMS === (item.id || item.number) ? "Envoi..." : "SMS" }}
+            </button>
             <button type="button" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700" @click="duplicateDocument(item)">
               Dupliquer
             </button>
@@ -767,6 +802,9 @@ async function saveDocument() {
                 <div class="flex justify-end gap-2">
                   <button type="button" class="rounded-lg bg-cyan-700 px-3 py-2 text-xs font-bold text-white" @click="generatePDF(item)">
                     PDF
+                  </button>
+                  <button type="button" class="rounded-lg border border-cyan-200 bg-cyan-50 px-3 py-2 text-xs font-bold text-cyan-800 disabled:opacity-50" :disabled="sendingSMS === (item.id || item.number) || !item.billTo?.phone" @click="sendBySMS(item)">
+                    {{ sendingSMS === (item.id || item.number) ? "Envoi..." : "SMS" }}
                   </button>
                   <button type="button" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50" @click="duplicateDocument(item)">
                     Dupliquer

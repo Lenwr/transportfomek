@@ -1,5 +1,7 @@
 <script setup>
-import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue"
+import { confirmToast } from "../utils/confirmToast.js"
+import { groupScannedPackages, recipientKey } from "../utils/scannedPackages"
+import { computed, ref, onMounted, watch, nextTick } from "vue"
 import { useFirestore, useDocument } from "vuefire"
 import { doc, updateDoc, getDoc } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
@@ -11,6 +13,7 @@ import { format } from "date-fns"
 import frLocale from "date-fns/locale/fr"
 import { jsPDF } from "jspdf"
 import { useAuthStore } from "../stores/useAuthStore.js"
+import { transportFomekTrackingUrl } from "../utils/publicTracking"
 
 const db = useFirestore()
 const auth = getAuth()
@@ -26,6 +29,7 @@ const docRef = doc(db, "chargements", detailId.value)
 const chargementSource = useDocument(docRef)
 
 const displayScanner = ref(false)
+const scannerSection = ref(null)
 const scannedText = ref("")
 const statutSelectionne = ref("réceptionné")
 const transitDateInput = ref("")
@@ -36,22 +40,17 @@ const processingScan = ref(false)
 const processingScanQueue = ref(false)
 const scanQueue = ref([])
 const lastQueuedScan = ref({ text: "", at: 0 })
+const scanCooldownUntil = ref(0)
 const sendingTrackingLinks = ref(false)
 const financialPickups = ref([])
 const loadingFinancialStats = ref(false)
+const packageSearch = ref("")
+const removingPackageId = ref("")
 
 const companyProfile = ref({ nom: "TRANSPORT FOMEK" })
 const statutsColisMap = ref(new Map())
 const enlevementCache = new Map()
-
-/* =========================================================
-   Mode scanner USB / clavier
-========================================================= */
-const usbScanEnabled = ref(true)
-const usbInputRef = ref(null)
-const keyboardBuffer = ref("")
-const lastKeyTs = ref(0)
-const keyboardTimeoutMs = 80
+const canViewFinancial = computed(() => authStore.isSuperAdmin || authStore.hasPermission("billing"))
 
 /* =========================================================
    Computeds
@@ -64,6 +63,66 @@ const chargement = computed(() => {
     ...src,
   }
 })
+
+function buildTrackingRecipientsForContainer(chargementId) {
+  const recipients = []
+
+  for (const enlevement of enlevements.value || []) {
+    for (const colisGroup of enlevement.colis || []) {
+      for (const detail of colisGroup.details || []) {
+
+        // Le colis doit appartenir au chargement concerné
+        if (detail.voyageId !== chargementId) continue
+
+        const numero =
+          detail.numero ||
+          detail.numeroColis ||
+          detail.trackingCode ||
+          enlevement.numero
+
+        const phone =
+          enlevement.telephoneDestinataire ||
+          colisGroup.telephoneDestinataire ||
+          enlevement.telephone ||
+          enlevement.phone
+
+        if (!numero || !phone) continue
+
+        const trackingUrl = transportFomekTrackingUrl(numero)
+
+        recipients.push({
+          phone,
+          numero,
+          destinataire:
+            enlevement.destinataire ||
+            colisGroup.destinataire ||
+            "Client",
+
+          expediteur:
+            enlevement.expediteur ||
+            colisGroup.expediteur ||
+            "",
+
+          destination:
+            detail.destination ||
+            enlevement.destination ||
+            "",
+
+          trackingUrl,
+
+          enlevementId: enlevement.id,
+          packageId: detail.packageId,
+        })
+      }
+    }
+  }
+
+  return recipients
+}
+
+const TRACKING_SMS_URL =
+  "https://us-central1-fomektrack.cloudfunctions.net/sendTrackingLinks"
+
 
 watch(
   () => chargement.value?.statutGlobal,
@@ -118,6 +177,30 @@ const colisFiltresTries = computed(() =>
     .slice()
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 )
+
+function packageIdentity(item = {}, index = 0) {
+  return String(item.id || `${item.clientId || "colis"}-${item.colisIndex ?? 0}-${item.detailIndex ?? index}`)
+}
+
+const filteredContainerPackages = computed(() => {
+  const query = packageSearch.value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .trim()
+    .toLowerCase()
+  if (!query) return colisFiltresTries.value
+
+  return colisFiltresTries.value.filter((item) =>
+    [item.coli, item.expediteur, item.destinataire, item.telephoneDestinataireDirect,
+      item.telephoneDestinataire, item.telephoneDestinataireWhatsapp, item.clientId]
+      .filter(Boolean)
+      .join(" ")
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .toLowerCase()
+      .includes(query)
+  )
+})
 
 const totalQty = computed(() =>
   colissage.value.reduce((s, r) => s + Number(r.qty || 0), 0)
@@ -232,12 +315,6 @@ function setLocalStatusForItems(items, status) {
   }
 
   statutsColisMap.value = map
-}
-
-function focusUsbInput() {
-  nextTick(() => {
-    usbInputRef.value?.focus?.()
-  })
 }
 
 function normalizeScanText(text) {
@@ -423,6 +500,7 @@ async function buildItemsFromWholeEnlevement(clientId) {
     telephoneDestinataire: data.telephoneDestinataireDirect || data.telephoneDestinataire || "",
     telephoneDestinataireDirect: data.telephoneDestinataireDirect || data.telephoneDestinataire || "",
     telephoneDestinataireWhatsapp: data.telephoneDestinataireWhatsapp || "",
+    destination: data.destination || "Cameroun",
     coli: row.coli,
     nombreDeColis: Number(data.nombreDeColis) || rows.length,
     clientId,
@@ -478,6 +556,11 @@ watch(
   }
 )
 
+watch(canViewFinancial, async (allowed) => {
+  if (allowed) await loadFinancialStats()
+  else financialPickups.value = []
+})
+
 /* =========================================================
    Colissage
 ========================================================= */
@@ -486,6 +569,10 @@ function parseLabelFromColi(coli = "") {
   const label = (m ? m[1] : coli).trim()
   return label || "Divers"
 }
+
+const scannedRecipientGroups = computed(() => groupScannedPackages(colisFiltresTries.value))
+const displayedContainerPackages = computed(() => groupScannedPackages(filteredContainerPackages.value).flatMap(group => group.items))
+const startsRecipientGroup = index => index === 0 || recipientKey(displayedContainerPackages.value[index]?.destinataire) !== recipientKey(displayedContainerPackages.value[index - 1]?.destinataire)
 
 const colissage = computed(() => {
   const counts = new Map()
@@ -558,6 +645,11 @@ const formatMoney = (value) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(Number(value) || 0)
 
 async function loadFinancialStats() {
+  if (!canViewFinancial.value) {
+    financialPickups.value = []
+    return
+  }
+
   const clientIds = [...new Set((chargement.value?.packagesTable || []).map((item) => item.clientId).filter(Boolean))]
   if (!clientIds.length) {
     financialPickups.value = []
@@ -589,7 +681,8 @@ async function processScanPayload(text) {
   if (!payload) return
 
   const now = Date.now()
-  if (payload === lastQueuedScan.value.text && now - lastQueuedScan.value.at < 800) return
+  if (now < scanCooldownUntil.value) return
+  if (payload === lastQueuedScan.value.text && now - lastQueuedScan.value.at < 4000) return
 
   lastQueuedScan.value = { text: payload, at: now }
   scanQueue.value.push(payload)
@@ -760,14 +853,22 @@ async function processScanPayloadNow(text) {
           }
         }
 
-        await updateDoc(enlevRef, { colis: arr })
-        enlevementCache.set(clientId, { ...data, colis: arr })
+        try {
+          await updateDoc(enlevRef, { colis: arr })
+          enlevementCache.set(clientId, { ...data, colis: arr })
+        } catch (statusError) {
+          // Le colis est déjà enregistré dans le conteneur. Une restriction de rôle
+          // ne doit pas transformer ce succès en faux message d'erreur.
+          console.warn("Statut de l'enlèvement non synchronisé après le scan", statusError)
+        }
       }
     }
 
+    scanQueue.value = []
+    scanCooldownUntil.value = Date.now() + 3500
     toast(newItems.length > 1 ? `✅ ${newItems.length} colis ajoutés avec succès` : "✅ Colis ajouté avec succès", {
       type: "success",
-      autoClose: 1500,
+      autoClose: 4000,
     })
 
     setLocalStatusForItems(newItems, "réceptionné")
@@ -786,7 +887,6 @@ async function processScanPayloadNow(text) {
     }
   } finally {
     processingScan.value = false
-    focusUsbInput()
   }
 }
 
@@ -797,50 +897,44 @@ async function onDecode(text) {
   await processScanPayload(text)
 }
 
-/* =========================================================
-   USB scanner mode clavier
-========================================================= */
-function handleGlobalKeydown(e) {
-  if (!usbScanEnabled.value) return
-
-  const activeTag = document.activeElement?.tagName?.toLowerCase()
-  const isTypingInRealField =
-    activeTag === "input" ||
-    activeTag === "textarea" ||
-    document.activeElement?.isContentEditable
-
-  if (document.activeElement === usbInputRef.value) return
-
-  if (isTypingInRealField) {
-    return
-  }
-
-  const now = Date.now()
-  if (now - lastKeyTs.value > keyboardTimeoutMs) {
-    keyboardBuffer.value = ""
-  }
-  lastKeyTs.value = now
-
-  if (e.key === "Enter") {
-    const payload = keyboardBuffer.value.trim()
-    keyboardBuffer.value = ""
-    if (payload) {
-      e.preventDefault()
-      processScanPayload(payload)
-    }
-    return
-  }
-
-  if (e.key.length === 1) {
-    keyboardBuffer.value += e.key
-  }
+async function toggleScanner() {
+  displayScanner.value = !displayScanner.value
+  if (!displayScanner.value) return
+  await nextTick()
+  scannerSection.value?.scrollIntoView({ behavior: "smooth", block: "start" })
 }
 
-function onUsbInputEnter() {
-  const payload = String(usbInputRef.value?.value || "").trim()
-  if (!payload) return
-  usbInputRef.value.value = ""
-  processScanPayload(payload)
+async function removePackageFromContainer(item, index) {
+  const label = item?.coli || "ce colis"
+  if (!await confirmToast(`Retirer « ${label} » de ce conteneur ?`)) return
+
+  const targetKey = packageIdentity(item, index)
+  removingPackageId.value = targetKey
+  try {
+    const current = Array.isArray(chargement.value?.packagesTable) ? chargement.value.packagesTable : []
+    let removed = false
+    const packagesTable = current.filter((candidate, candidateIndex) => {
+      if (!removed && (candidate === item || packageIdentity(candidate, candidateIndex) === targetKey)) {
+        removed = true
+        return false
+      }
+      return true
+    })
+
+    if (!removed) {
+      toast("Colis introuvable dans ce conteneur.", { type: "warning" })
+      return
+    }
+
+    await updateDoc(docRef, { packagesTable })
+    chargementSource.value = { ...(chargementSource.value || {}), packagesTable }
+    toast("Colis retiré du conteneur.", { type: "success", autoClose: 3000 })
+  } catch (error) {
+    console.error("Erreur retrait colis du conteneur", error)
+    toast("Impossible de retirer le colis du conteneur.", { type: "error", autoClose: 4000 })
+  } finally {
+    removingPackageId.value = ""
+  }
 }
 
 /* =========================================================
@@ -1021,7 +1115,7 @@ async function sendTrackingLinksToShippers() {
       return
     }
 
-    const confirmation = window.confirm(
+    const confirmation = await confirmToast(
       `Envoyer les liens de suivi par SMS à ${preview.recipientCount} expéditeur(s) `
       + `pour ${preview.shipmentCount} envoi(s) ?\n\n`
       + `${preview.skipped || 0} enlèvement(s) seront ignorés faute de téléphone ou de numéro de suivi.`
@@ -1051,8 +1145,8 @@ function drawHeader(pdf) {
   pdf.setFontSize(14)
   pdf.text("TRANSPORT FOMEK", 20, 18)
   pdf.setFontSize(11)
-  pdf.text("15 rue des écoles, 95500 Le Thillay", 20, 24)
-  pdf.text("Tél : 06 03 67 50 62", 20, 30)
+  pdf.text("15 rue des Écoles, 95500 Le Thillay", 20, 24)
+  pdf.text("Tél : 06 95 93 19 92", 20, 30)
   pdf.setFontSize(16)
   pdf.text("LISTE DE COLISSAGE", 105, 18, { align: "center" })
 }
@@ -1062,7 +1156,20 @@ function drawMeta(pdf) {
   const chargeDate = getChargeDateStr.value
 
   const portDepart = "Le Havre"
-  const portArrivee = "Port Autonome de Lomé"
+  const destinations = [
+    chargement.value?.destination,
+    chargement.value?.portArrivee,
+    ...(chargement.value?.packagesTable || []).map((item) => item.destination),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+
+  const portArrivee = destinations.includes("kribi")
+    ? "Port Autonome de Kribi"
+    : "Port Autonome de Douala"
   const incoterm = "CFR"
   const tc = chargement.value?.tc || chargement.value?.contenaire || ""
   const plomb = chargement.value?.plomb || ""
@@ -1209,8 +1316,8 @@ function drawScannedListHeader(pdf) {
   pdf.setFontSize(14)
   pdf.text("TRANSPORT FOMEK", 20, 18)
   pdf.setFontSize(11)
-  pdf.text("15 rue des écoles, 95500 Le Thillay", 20, 24)
-  pdf.text("Tél : 06 03 67 50 62", 20, 30)
+  pdf.text("15 rue des Écoles, 95500 Le Thillay", 20, 24)
+  pdf.text("Tél : 06 95 93 19 92", 20, 30)
   pdf.setFontSize(16)
   pdf.text("LISTE DES COLIS SCANNÉS", 105, 18, { align: "center" })
 }
@@ -1225,7 +1332,7 @@ function drawScannedListMeta(pdf) {
   y += 8
   pdf.text(`Date : ${chargeDate}`, 20, y)
   y += 8
-  pdf.text(`Nombre de groupes : ${colisGroupesParExpediteur.value.length}`, 20, y)
+  pdf.text(`Nombre de groupes : ${scannedRecipientGroups.value.length}`, 20, y)
   y += 8
   pdf.text(`Nombre total de lignes scannées : ${colisFiltresTries.value.length}`, 20, y)
 }
@@ -1242,14 +1349,14 @@ function exportListeScanneePDF() {
     const bottomMargin = 20
     const limitY = pageH - bottomMargin
 
-    if (!colisGroupesParExpediteur.value.length) {
+    if (!scannedRecipientGroups.value.length) {
       pdf.setFontSize(12)
       pdf.text("Aucun colis scanné.", 20, y)
       pdf.save(`liste_scannes_${detailId.value}.pdf`)
       return
     }
 
-    for (const group of colisGroupesParExpediteur.value) {
+    for (const group of scannedRecipientGroups.value) {
       if (y > limitY - 30) {
         pdf.addPage()
         drawScannedListHeader(pdf)
@@ -1259,14 +1366,14 @@ function exportListeScanneePDF() {
       pdf.setFillColor(230, 230, 230)
       pdf.rect(20, y, 170, 10, "F")
       pdf.setFontSize(12)
-      pdf.text(`Expéditeur : ${group.expediteur}`, 23, y + 7)
+      pdf.text(`Destinataire : ${group.destinataire}`, 23, y + 7)
       y += 7
 
       pdf.setFontSize(10)
 
-      if (group.destinataire) {
+      if (group.expediteur) {
         y += 6
-        pdf.text(`Destinataire : ${group.destinataire}`, 24, y)
+        pdf.text(`Expéditeur(s) : ${group.expediteur}`, 24, y)
       }
 
       if (group.telephoneDestinataire) {
@@ -1328,7 +1435,7 @@ function exportListeScanneePDF() {
 
       pdf.setFontSize(10)
       pdf.text(
-        `Total ${group.expediteur} : ${group.items.length} ligne(s) scannée(s) / ${group.totalColis} coli(s)`,
+        `Total ${group.destinataire} : ${group.items.length} ligne(s) scannée(s) / ${group.totalColis} coli(s)`,
         24,
         y + 6
       )
@@ -1341,7 +1448,7 @@ function exportListeScanneePDF() {
       y = 40
     }
 
-    const totalGlobalColis = colisGroupesParExpediteur.value.reduce(
+    const totalGlobalColis = scannedRecipientGroups.value.reduce(
       (sum, group) => sum + Number(group.totalColis || 0),
       0
     )
@@ -1373,12 +1480,6 @@ onMounted(async () => {
 
   await chargerStatutsColis()
 
-  window.addEventListener("keydown", handleGlobalKeydown)
-  focusUsbInput()
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener("keydown", handleGlobalKeydown)
 })
 </script>
 
@@ -1396,17 +1497,9 @@ onBeforeUnmount(() => {
           <button
             class="w-full rounded-lg bg-cyan-700 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-cyan-800 xl:w-auto"
             type="button"
-            @click="displayScanner = !displayScanner"
+            @click="toggleScanner"
           >
             {{ displayScanner ? "Arreter camera" : "Scan camera" }}
-          </button>
-
-          <button
-            class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-cyan-200 hover:text-cyan-800 xl:w-auto"
-            type="button"
-            @click="focusUsbInput"
-          >
-            Activer douchette
           </button>
 
           <button
@@ -1438,6 +1531,23 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
+    <section
+      v-if="displayScanner"
+      ref="scannerSection"
+      class="scanner-card min-w-0 scroll-mt-20 overflow-hidden rounded-lg border border-slate-900 bg-slate-950 shadow-sm"
+    >
+      <div class="flex items-center justify-between border-b border-slate-800 px-4 py-3">
+        <div>
+          <p class="text-sm font-bold text-white">Caméra de scan</p>
+          <p class="mt-0.5 text-xs text-slate-400">Place le QR code ou le code-barres dans le cadre.</p>
+        </div>
+        <button class="rounded-md bg-white/10 px-3 py-1.5 text-xs font-bold text-white" type="button" @click="toggleScanner">Fermer</button>
+      </div>
+      <div class="scanner-shell flex min-h-[280px] w-full max-w-full items-center justify-center overflow-hidden">
+        <StreamBarcodeReader @decode="onDecode" />
+      </div>
+    </section>
+
     <div class="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <article class="min-w-0 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
         <p class="text-sm font-medium text-slate-500">Lignes scannées</p>
@@ -1460,7 +1570,7 @@ onBeforeUnmount(() => {
       </article>
     </div>
 
-    <section class="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+    <section v-if="canViewFinancial" class="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
       <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p class="text-xs font-bold uppercase tracking-wide text-emerald-700">Bilan du conteneur</p>
@@ -1522,7 +1632,7 @@ onBeforeUnmount(() => {
             <div class="min-w-0">
               <h3 class="font-bold text-slate-950">Scan opérationnel</h3>
               <p class="mt-1 break-words text-sm leading-6 text-slate-500">
-                Utilise la caméra ou une douchette USB. Le colis est ajouté au chargement et marqué réceptionné.
+                Utilise la caméra pour ajouter le colis au chargement et le marquer réceptionné.
               </p>
             </div>
             <span
@@ -1534,35 +1644,10 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="mt-4 space-y-3">
-            <label class="flex min-w-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-3">
-              <input v-model="usbScanEnabled" type="checkbox" class="checkbox checkbox-sm" />
-              <span class="min-w-0 text-sm font-medium text-slate-700">Douchette USB active</span>
-            </label>
-
-            <input
-              ref="usbInputRef"
-              type="text"
-              class="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-              placeholder="Scanner ici puis Entrée"
-              @keydown.enter.prevent="onUsbInputEnter"
-            />
-
             <div class="rounded-lg bg-slate-50 p-3">
               <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Dernier scan</p>
               <p class="mt-1 break-all text-sm text-slate-700">{{ scannedText || "Aucun scan pour le moment" }}</p>
             </div>
-          </div>
-        </section>
-
-        <section
-          v-if="displayScanner"
-          class="min-w-0 overflow-hidden rounded-lg border border-slate-900 bg-slate-950 shadow-sm"
-        >
-          <div class="border-b border-slate-800 px-4 py-3">
-            <p class="text-sm font-bold text-white">Caméra</p>
-          </div>
-          <div class="scanner-shell flex min-h-[280px] w-full max-w-full items-center justify-center overflow-hidden">
-            <StreamBarcodeReader @decode="onDecode" />
           </div>
         </section>
 
@@ -1663,12 +1748,22 @@ onBeforeUnmount(() => {
           <div class="flex flex-col gap-1 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div class="min-w-0">
               <h3 class="font-bold text-slate-950">Colis scannés</h3>
-              <p class="text-sm text-slate-500">Liste détaillée des colis entrés dans le conteneur.</p>
+              <p class="text-sm text-slate-500">Colis regroupés par destinataire, destinataires et articles classés de A à Z.</p>
             </div>
+            <label class="mt-3 block w-full sm:mt-0 sm:max-w-sm">
+              <span class="sr-only">Rechercher un colis</span>
+              <input
+                v-model="packageSearch"
+                type="search"
+                class="block h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
+                placeholder="Colis, expéditeur, destinataire, téléphone…"
+              />
+            </label>
           </div>
 
           <div class="md:hidden divide-y divide-slate-100">
-            <article v-for="(item, i) in colisFiltresTries" :key="item.id || i" class="min-w-0 p-4">
+            <article v-for="(item, i) in displayedContainerPackages" :key="item.id || i" class="min-w-0 p-4">
+              <h4 v-if="startsRecipientGroup(i)" class="mb-4 rounded-lg bg-cyan-50 p-3 font-bold text-cyan-950">{{ item.destinataire?.trim() || 'Sans destinataire' }}</h4>
               <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div class="min-w-0">
                   <p class="break-words font-bold text-slate-950">{{ item.coli || "Colis" }}</p>
@@ -1684,10 +1779,18 @@ onBeforeUnmount(() => {
                 <p>Total colis : {{ item.nombreDeColis || 0 }}</p>
                 <p>Date : {{ formatDateTime(item.date) }}</p>
               </div>
+              <button
+                class="mt-4 w-full rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                type="button"
+                :disabled="removingPackageId === packageIdentity(item, i)"
+                @click="removePackageFromContainer(item, i)"
+              >
+                {{ removingPackageId === packageIdentity(item, i) ? "Retrait…" : "Retirer du conteneur" }}
+              </button>
             </article>
 
-            <p v-if="!colisFiltresTries.length" class="px-5 py-10 text-center text-slate-500">
-              Aucun colis scanné pour le moment.
+            <p v-if="!displayedContainerPackages.length" class="px-5 py-10 text-center text-slate-500">
+              {{ packageSearch ? "Aucun colis ne correspond à la recherche." : "Aucun colis scanné pour le moment." }}
             </p>
           </div>
 
@@ -1703,11 +1806,16 @@ onBeforeUnmount(() => {
                   <th class="px-5 py-3">Total colis</th>
                   <th class="px-5 py-3">Date scan</th>
                   <th class="px-5 py-3">Statut</th>
+                  <th class="px-5 py-3 text-right">Action</th>
                 </tr>
               </thead>
 
               <tbody class="divide-y divide-slate-100">
-                <tr v-for="(item, i) in colisFiltresTries" :key="item.id || i" class="hover:bg-slate-50">
+                <template v-for="(item, i) in displayedContainerPackages" :key="item.id || i">
+                <tr v-if="startsRecipientGroup(i)" class="bg-cyan-50">
+                  <th colspan="9" scope="rowgroup" class="px-5 py-3 text-left font-bold text-cyan-950">Destinataire : {{ item.destinataire?.trim() || 'Sans destinataire' }}</th>
+                </tr>
+                <tr class="hover:bg-slate-50">
                   <td class="whitespace-nowrap px-5 py-4 font-semibold text-slate-950">{{ item.expediteur || "-" }}</td>
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ item.destinataire || "-" }}</td>
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ item.telephoneDestinataireDirect || item.telephoneDestinataire || "-" }}</td>
@@ -1720,11 +1828,22 @@ onBeforeUnmount(() => {
                       {{ getStatutColis(item) }}
                     </span>
                   </td>
+                  <td class="whitespace-nowrap px-5 py-4 text-right">
+                    <button
+                      class="rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="button"
+                      :disabled="removingPackageId === packageIdentity(item, i)"
+                      @click="removePackageFromContainer(item, i)"
+                    >
+                      {{ removingPackageId === packageIdentity(item, i) ? "Retrait…" : "Retirer" }}
+                    </button>
+                  </td>
                 </tr>
 
-                <tr v-if="!colisFiltresTries.length">
-                  <td class="px-5 py-10 text-center text-slate-500" colspan="8">
-                    Aucun colis scanné pour le moment.
+                </template>
+                <tr v-if="!displayedContainerPackages.length">
+                  <td class="px-5 py-10 text-center text-slate-500" colspan="9">
+                    {{ packageSearch ? "Aucun colis ne correspond à la recherche." : "Aucun colis scanné pour le moment." }}
                   </td>
                 </tr>
               </tbody>
@@ -1790,6 +1909,25 @@ table {
 .scanner-shell :deep(canvas) {
   height: auto;
   object-fit: contain;
+}
+
+@media (max-width: 640px) {
+  .scanner-card {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+  }
+
+  .scanner-shell {
+    min-height: 240px;
+    max-height: 52vh;
+  }
+
+  .scanner-shell :deep(video),
+  .scanner-shell :deep(canvas) {
+    width: 100%;
+    max-height: 52vh;
+    object-fit: cover;
+  }
 }
 
 th,

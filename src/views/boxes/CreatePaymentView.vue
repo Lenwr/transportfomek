@@ -202,18 +202,16 @@ function generateInvoicePDF(inv) {
   // Header
   fontB()
   docPdf.setFontSize(12)
-  docPdf.text(safeSpaces(inv.seller?.name || "AARON TRAVEL"), mx, y)
+  docPdf.text("TRANSPORT FOMEK", mx, y)
   addLine(6)
 
   fontN()
   docPdf.setFontSize(9.5)
   const sellerLines = [
-    inv.seller?.address1,
-    `TVA: ${inv.seller?.tva || ""}   SIRET: ${inv.seller?.siret || ""}`,
-    inv.seller?.phone ? `Tel: ${inv.seller.phone}` : "",
-    inv.seller?.website ? safeSpaces(inv.seller.website) : "",
-    inv.seller?.email ? safeSpaces(inv.seller.email) : "",
-  ].filter(Boolean)
+    "15 rue des Écoles, 95500 Le Thillay",
+    "Tel: +33 6 95 93 19 92",
+    "https://transportfomek.vercel.app",
+  ]
 
   sellerLines.forEach((l) => {
     docPdf.text(safeSpaces(l), mx, y)
@@ -338,11 +336,8 @@ function generateInvoicePDF(inv) {
   fontN()
   docPdf.setFontSize(10)
   const payLines = [
-    "IBAN : FR46200401010125200472C03349",
-    "BIC : PSSTFRPPSCE",
-    "PAR CHÈQUE : AARON TRAVEL",
-    "PAYPAL : aarontravel@outlook.fr",
-    "PayLib : 06.03.67.50.62",
+    "PAR CHÈQUE : TRANSPORT FOMEK",
+    "Pour les autres moyens de paiement : +33 6 95 93 19 92",
   ]
   payLines.forEach((l) => {
     ensure(6)

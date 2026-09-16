@@ -1,4 +1,6 @@
 <script setup>
+import { confirmToast } from "../../utils/confirmToast.js"
+import { messagingEndpoint } from "../../utils/messagingEndpoint"
 import { computed, ref } from "vue"
 import { RouterLink } from "vue-router"
 import { getAuth } from "firebase/auth"
@@ -369,7 +371,7 @@ async function sendBoxesBroadcast() {
     const token = await auth.currentUser?.getIdToken(true)
     if (!token) throw new Error("Session expiree. Reconnecte-toi.")
 
-    const response = await fetch(`${FUNCTIONS_BASE_URL}/sendBoxTenantBroadcastSMS`, {
+    const response = await fetch(messagingEndpoint("sendBoxTenantBroadcastSMS"), {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -424,7 +426,7 @@ async function sendBoxesBroadcast() {
 async function closeContract(location) {
   if (!location?.id || location.status === "closed" || closingContractId.value) return
 
-  const confirmed = window.confirm(
+  const confirmed = await confirmToast(
     `Clôturer le contrat de ${location.clientName} et libérer le box ${location.boxCode} ?`
   )
   if (!confirmed) return

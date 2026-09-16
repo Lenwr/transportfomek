@@ -31,7 +31,7 @@ async function logout() {
           <li><router-link to="/customers">Mes clients</router-link></li>
           <li><router-link to="/pickup-requests">Mes Demandes</router-link></li>
           <li><router-link to="/liste">Mes colis</router-link></li>
-          <li><router-link to="/pricing">Grille tarifaire</router-link></li>
+          <li><router-link to="/pricing">Catalogue</router-link></li>
 
         </ul>
       </div>

@@ -199,6 +199,14 @@
             </button>
             <button
               type="button"
+              class="rounded-lg border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm font-bold text-cyan-800 shadow-sm hover:bg-cyan-100 disabled:cursor-not-allowed disabled:opacity-50"
+              :disabled="sendingSMS || !client.phone"
+              @click="sendQuoteBySMS"
+            >
+              {{ sendingSMS ? "Envoi..." : "Envoyer par SMS" }}
+            </button>
+            <button
+              type="button"
               class="rounded-lg bg-cyan-700 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-cyan-800 disabled:opacity-60"
               :disabled="saving"
               @click="saveQuote"
@@ -242,6 +250,7 @@ import { addDoc, collection, doc, runTransaction, serverTimestamp } from "fireba
 import { toast } from "vue3-toastify"
 import { db } from "../components/firebaseConfig"
 import { generateInvoicePdf } from "../utils/invoicePdf"
+import { sendDocumentBySMS } from "../utils/twilioDocuments"
 
 const documentsCol = collection(db, "billingDocuments")
 const todayISO = () => new Date().toISOString().slice(0, 10)
@@ -256,6 +265,7 @@ const discountType = ref("amount")
 const discountValue = ref(0)
 const notes = ref("")
 const saving = ref(false)
+const sendingSMS = ref(false)
 const lastQuoteNumber = ref("")
 
 const client = reactive({
@@ -396,6 +406,28 @@ function generatePDF() {
   })
 }
 
+async function sendQuoteBySMS() {
+  if (!validateQuote()) return
+  if (!client.phone) return toast("Renseigne le téléphone du client.", { type: "warning" })
+  sendingSMS.value = true
+  try {
+    const payload = buildPayload(lastQuoteNumber.value || "")
+    const message = [
+      `Transport Fomek - Votre devis ${payload.number || ""}`,
+      `Volume total : ${totalVolume.value.toFixed(3)} m³`,
+      `Montant total : ${money(totalPrice.value)}`,
+      "Validité : 30 jours.",
+      "Merci pour votre confiance.",
+    ].join("\n")
+    await sendDocumentBySMS({ phoneNumber: client.phone, message })
+    toast("Devis envoyé par SMS.", { type: "success" })
+  } catch (error) {
+    toast(error.message || "Envoi SMS impossible.", { type: "error" })
+  } finally {
+    sendingSMS.value = false
+  }
+}
+
 async function saveQuote() {
   if (!validateQuote()) return
 
@@ -427,7 +459,7 @@ async function saveQuote() {
 function prepareEmail() {
   if (!validateQuote()) return
 
-  const subject = encodeURIComponent(`Devis Aaron Travel - ${client.name}`)
+  const subject = encodeURIComponent(`Devis Transport Fomek - ${client.name}`)
   const body = encodeURIComponent(
     [
       `Bonjour ${client.name},`,
@@ -436,7 +468,7 @@ function prepareEmail() {
       `Volume total : ${totalVolume.value.toFixed(3)} m3.`,
       "",
       "Cordialement,",
-      "Aaron Travel",
+      "Transport Fomek",
     ].join("\n")
   )
 

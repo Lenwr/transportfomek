@@ -259,6 +259,7 @@
   </template>
   
   <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
   import { ref, onMounted, computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import {
@@ -490,7 +491,7 @@
     try {
       if (!demande.value) return
 
-      const ok = window.confirm("Refuser cette demande et envoyer un SMS au client ?")
+      const ok = await confirmToast("Refuser cette demande et envoyer un SMS au client ?")
       if (!ok) return
 
       submitting.value = true

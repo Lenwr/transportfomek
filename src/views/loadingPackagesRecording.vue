@@ -1,4 +1,5 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
 import { computed, ref } from "vue"
 import { useCollection, useFirestore } from "vuefire"
 import { collection, addDoc, doc, deleteDoc, serverTimestamp, updateDoc } from "firebase/firestore"
@@ -121,7 +122,7 @@ async function submitForm() {
 }
 
 async function deleteLoad(id) {
-  const ok = window.confirm("Supprimer ce chargement ?")
+  const ok = await confirmToast("Supprimer ce chargement ?")
   if (!ok) return
 
   try {
@@ -221,7 +222,7 @@ async function deleteLoad(id) {
                     :to="`/chargementsDetails/${item.id}`"
                     class="rounded-lg bg-cyan-700 px-3 py-2 text-xs font-bold text-white hover:bg-cyan-800"
                   >
-                    Scanner
+                    Ouvrir
                   </RouterLink>
                   <button
                     class="rounded-lg border border-cyan-200 bg-white px-3 py-2 text-xs font-bold text-cyan-800 hover:bg-cyan-50"

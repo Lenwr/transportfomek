@@ -30,7 +30,6 @@ const navSections = [
       { label: "Nouvel enlevement", path: "/form", icon: "NE", permission: "form" },
       { label: "Clients", path: "/customers", icon: "CL", permission: "customers" },
       { label: "Demandes", path: "/pickup-requests", icon: "DM", permission: "pickupRequests" },
-      { label: "Scan demande", path: "/pickup-request-scan", icon: "SD", permission: "pickupRequestScan", activePaths: ["/pickup-request-scan", "/validate-request"] },
       { label: "Scan livraison", path: "/delivery-scan", icon: "SL", permission: "deliveryScan", activePaths: ["/delivery-scan", "/sign"] },
     ],
   },
@@ -50,7 +49,7 @@ const navSections = [
   {
     title: "Administration",
     items: [
-      { label: "Tarifs", path: "/pricing", icon: "TR", superAdminOnly: true },
+      { label: "Catalogue", path: "/pricing", icon: "CA", superAdminOnly: true },
       { label: "Paramètres", path: "/settings", icon: "PA", superAdminOnly: true },
       { label: "Journal", path: "/activity-log", icon: "JL", superAdminOnly: true },
     ],
@@ -81,17 +80,12 @@ const visibleNavSections = computed(() =>
 const visibleQuickActions = computed(() =>
   !store.initialized || isClientUser.value ? [] : quickActions.filter(canSeeItem)
 )
-const mobileNavItems = computed(() =>
-  visibleNavSections.value.flatMap((section) => section.items).slice(0, 5)
-)
-
 const titles = {
   "/": "Dashboard",
   "/activity-log": "Journal d’activité",
   "/liste": "Enlevements",
   "/scan": "Scan colis",
   "/delivery-scan": "Scan livraison",
-  "/pickup-request-scan": "Scan demande client",
   "/sign": "Signature livraison",
   "/recording": "Chargements conteneurs",
   "/customers": "Clients",
@@ -99,7 +93,7 @@ const titles = {
   "/billing-documents": "Factures & devis",
   "/calculator": "Calculateur",
   "/client-followup": "Suivi client",
-  "/pricing": "Grille tarifaire",
+  "/pricing": "Catalogue",
   "/settings": "Paramètres",
 }
 
@@ -432,7 +426,7 @@ const getBadgeCount = (item) => {
         </div>
       </header>
 
-      <main class="min-h-[calc(100vh-5rem)] min-w-0 max-w-full overflow-x-hidden px-3 py-4 pb-24 sm:px-6 sm:py-6 sm:pb-24 lg:px-8 lg:pb-8">
+      <main class="min-h-[calc(100vh-5rem)] min-w-0 max-w-full overflow-x-hidden px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:pb-8">
         <RouterView v-slot="{ Component, route: currentRoute }">
           <Transition name="page" mode="out-in">
             <component :is="Component" :key="currentRoute.fullPath" />
@@ -441,17 +435,5 @@ const getBadgeCount = (item) => {
       </main>
     </div>
 
-    <nav class="fixed inset-x-3 bottom-3 z-30 grid grid-cols-5 gap-1 rounded-2xl border border-white/70 bg-white/95 p-2 shadow-[0_18px_55px_rgba(7,59,85,0.24)] backdrop-blur-xl lg:hidden">
-      <RouterLink
-        v-for="item in mobileNavItems"
-        :key="`mobile-${item.path}`"
-        :to="item.path"
-        class="flex min-w-0 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-bold"
-        :class="isActive(item.path) ? 'bg-[#073b55] text-white' : 'text-slate-500'"
-      >
-        <span class="text-[11px]">{{ item.icon }}</span>
-        <span class="w-full truncate text-center">{{ item.label }}</span>
-      </RouterLink>
-    </nav>
   </div>
 </template>

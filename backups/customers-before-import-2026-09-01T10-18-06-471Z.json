@@ -1,0 +1,22 @@
+{
+  "project": "fomektrack",
+  "exportedAt": "2026-09-01T10:18:06.471Z",
+  "count": 1,
+  "customers": [
+    {
+      "id": "q79DDzOKvKo6NHzMxox9",
+      "nom": "ABALO",
+      "prenom": "Jefferson",
+      "adresse": "15 rue des ecoles",
+      "codePostal": "95500",
+      "telephone": "0676492528",
+      "envois": [
+        {
+          "expediteur": "",
+          "colis": ""
+        }
+      ],
+      "createdAt": "2026-08-10T06:12:58.797Z"
+    }
+  ]
+}

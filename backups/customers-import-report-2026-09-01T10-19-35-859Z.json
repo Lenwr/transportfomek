@@ -1,0 +1,1520 @@
+{
+  "mode": "simulation",
+  "excel": 377,
+  "existing": 378,
+  "importable": 0,
+  "skipped": 377,
+  "counter": 501,
+  "backupPath": "/Users/user/Documents/suivi/transportFomekGestion/backups/customers-before-import-2026-09-01T10-19-35-859Z.json",
+  "duplicates": [
+    {
+      "numeroClient": "CL100",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL472",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL101",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL102",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL103",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL104",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL108",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL105",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL405",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL107",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL109",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL110",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL111",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL112",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL113",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL114",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL480",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL116",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL117",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL376",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL118",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL481",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL119",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL354",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL120",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL121",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL122",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL477",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL124",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL126",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL127",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL128",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL129",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL130",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL203",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL131",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL482",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL461",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL134",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL135",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL432",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL136",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL137",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL138",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL139",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL140",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL483",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL141",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL142",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL145",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL484",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL485",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL146",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL438",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL147",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL148",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL430",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL144",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL149",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL150",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL151",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL152",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL153",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL154",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL155",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL156",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL157",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL198",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL159",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL160",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL219",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL161",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL162",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL163",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL164",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL165",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL166",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL342",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL436",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL486",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL167",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL168",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL451",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL457",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL487",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL170",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL171",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL172",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL488",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL174",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL449",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL175",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL176",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL177",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL178",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL179",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL180",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL181",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL182",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL183",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL489",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL123",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL186",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL187",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL188",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL189",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL190",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL358",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL191",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL193",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL194",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL426",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL195",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL196",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL197",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL490",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL491",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL201",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL476",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL492",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL204",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL493",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL206",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL207",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL208",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL494",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL210",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL300",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL251",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL212",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL213",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL214",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL215",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL216",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL495",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL496",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL185",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL220",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL224",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL378",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL221",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL222",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL455",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL341",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL225",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL226",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL227",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL236",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL228",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL229",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL261",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL230",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL231",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL232",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL233",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL234",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL235",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL237",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL238",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL239",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL460",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL240",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL223",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL441",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL497",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL242",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL243",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL250",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL498",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL245",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL246",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL247",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL248",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL249",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL448",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL132",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL106",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL252",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL253",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL425",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL255",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL256",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL257",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL258",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL259",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL260",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL262",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL263",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL479",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL264",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL265",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL266",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL267",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL470",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL444",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL268",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL269",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL270",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL271",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL272",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL458",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL273",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL468",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL499",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL279",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL280",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL281",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL282",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL283",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL274",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL434",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL284",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL285",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL286",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL344",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL287",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL288",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL289",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL290",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL291",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL292",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL428",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL478",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL293",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL294",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL295",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL462",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL296",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL297",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL298",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL299",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL353",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL301",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL211",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL302",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL303",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL304",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL305",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL306",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL307",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL308",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL466",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL469",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL309",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL310",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL311",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL312",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL158",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL313",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL314",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL463",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL474",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL473",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL315",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL456",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL316",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL317",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL318",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL319",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL321",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL320",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL322",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL323",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL324",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL325",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL446",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL326",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL327",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL328",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL329",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL330",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL500",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL331",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL332",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL333",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL334",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL335",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL336",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL337",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL338",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL339",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL340",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL343",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL345",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL346",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL347",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL429",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL501",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL349",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL351",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL352",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL452",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL356",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL443",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL357",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL359",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL360",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL361",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL373",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL362",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL363",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL364",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL365",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL366",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL423",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL367",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL403",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL471",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL368",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL431",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL254",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL369",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL370",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL371",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL372",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL276",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL374",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL437",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL375",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL377",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL379",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL380",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL381",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL382",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL383",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL384",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL386",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL385",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL464",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL387",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL277",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL388",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL467",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL475",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL389",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL442",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL459",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL143",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL447",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL390",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL391",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL392",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL393",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL445",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL394",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL395",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL408",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL396",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL397",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL398",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL399",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL400",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL401",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL439",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL402",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL404",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL450",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL406",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL192",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL407",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL125",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL409",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL410",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL412",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL411",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL413",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL416",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL414",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL435",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL415",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL417",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL418",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL419",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL420",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL440",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL421",
+      "raison": "numero_client_existant"
+    },
+    {
+      "numeroClient": "CL422",
+      "raison": "numero_client_existant"
+    }
+  ],
+  "pending": []
+}

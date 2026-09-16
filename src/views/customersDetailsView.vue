@@ -83,6 +83,7 @@
   </script>
   
   <template>
+    <div>
     <div class="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
       <!-- Titre -->
       <span class="bg-indigo-600 text-white my-6 px-12 py-3 rounded-lg shadow-lg text-2xl font-semibold">
@@ -135,10 +136,11 @@
           </span>
   
           <div class="flex gap-2">
-            <router-link :to="'/liste/' + item.id">
-              <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition duration-300">
-                Voir
-              </button>
+            <router-link
+              :to="{ name: 'listeDetails', params: { id: item.id } }"
+              class="rounded-lg bg-indigo-500 px-4 py-2 text-white transition duration-300 hover:bg-indigo-600"
+            >
+              Voir
             </router-link>
   
             <button
@@ -196,6 +198,7 @@
         </div>
       </div>
     </dialog>
+    </div>
   </template>
   
   <style scoped>

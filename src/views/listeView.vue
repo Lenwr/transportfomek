@@ -1,7 +1,9 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
 import { computed, ref, watch } from "vue"
-import { doc, writeBatch } from "firebase/firestore"
-import { db, listeEnlevements } from "../components/firebaseConfig"
+import { collection, doc, writeBatch } from "firebase/firestore"
+import { useCollection } from "vuefire"
+import { db } from "../components/firebaseConfig"
 import {
   canonicalizeStatut,
   formatCurrency,
@@ -11,7 +13,7 @@ import {
   parsePrixToNumber,
 } from "../components/useEnlevementsUtils"
 
-const paymentStatuses = ["", "Non Payé", "Reste à payer", "Payé"]
+const paymentStatuses = ["", "Non Payé", "Acompte", "Payé"]
 const deliveryStatuses = ["", "En attente", "réceptionné", "expédié", "disponible pour retrait", "livré"]
 
 const selectedDestination = ref("")
@@ -27,6 +29,7 @@ const currentPage = ref(1)
 const pageSize = ref(25)
 const selectedIds = ref([])
 const isDeleting = ref(false)
+const listeEnlevements = useCollection(collection(db, "enlevements"))
 
 const columns = [
   { key: "date", label: "Date" },
@@ -285,7 +288,7 @@ async function deleteSelectedEnlevements() {
   if (!selectedIds.value.length || isDeleting.value) return
 
   const count = selectedIds.value.length
-  const confirmed = window.confirm(`Supprimer définitivement ${count} enlèvement${count > 1 ? "s" : ""} sélectionné${count > 1 ? "s" : ""} ?`)
+  const confirmed = await confirmToast(`Supprimer définitivement ${count} enlèvement${count > 1 ? "s" : ""} sélectionné${count > 1 ? "s" : ""} ?`)
   if (!confirmed) return
 
   isDeleting.value = true
@@ -321,7 +324,7 @@ function toggleColumn(key) {
 function paymentClass(statut) {
   const s = canonicalizeStatut(statut)
   if (s === "Payé") return "bg-green-50 text-green-700"
-  if (s === "Reste à payer") return "bg-amber-50 text-amber-700"
+  if (s === "Acompte") return "bg-amber-50 text-amber-700"
   return "bg-red-50 text-red-700"
 }
 

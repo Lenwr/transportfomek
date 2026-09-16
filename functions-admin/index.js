@@ -6,7 +6,6 @@ admin.initializeApp();
 setGlobalOptions({ region: "us-central1", maxInstances: 10 });
 
 const db = admin.firestore();
-const INTERNAL_ROLES = new Set(["admin", "superAdmin", "manager", "chauffeur", "driver", "staff"]);
 const PERMISSION_KEYS = new Set([
   "dashboard", "planning", "driversMap", "clientFollowup", "liste", "form",
   "pickupRequests", "pickupRequestScan", "deliveryScan", "recording", "tracking",
@@ -20,6 +19,10 @@ function cleanEmail(value) {
 function cleanPermissions(value) {
   if (!Array.isArray(value)) return [];
   return value.map((item) => String(item || "").trim()).filter((item) => PERMISSION_KEYS.has(item));
+}
+
+function validInternalRole(value) {
+  return value === "superAdmin" || (/^[a-z0-9_-]{2,50}$/.test(value) && value !== "client");
 }
 
 function temporaryPassword() {
@@ -61,7 +64,8 @@ exports.createInternalAccess = endpoint(async (req, res) => {
   const generatedPassword = String(password || "").trim() || temporaryPassword();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) return res.status(400).json({ success: false, error: "Email invalide" });
-  if (!INTERNAL_ROLES.has(userRole)) return res.status(400).json({ success: false, error: "Rôle interne invalide" });
+  if (!validInternalRole(userRole)) return res.status(400).json({ success: false, error: "Rôle interne invalide" });
+  if (userRole !== "superAdmin" && !(await db.collection("roles").doc(userRole).get()).exists) return res.status(400).json({ success: false, error: "Ce rôle n’existe pas" });
   if (generatedPassword.length < 8) return res.status(400).json({ success: false, error: "Mot de passe trop court" });
 
   let authUser;
@@ -96,7 +100,8 @@ exports.updateUserAccess = endpoint(async (req, res) => {
   const userId = String(uid || "").trim();
   const userRole = String(role || "admin").trim();
   if (!userId) return res.status(400).json({ success: false, error: "uid requis" });
-  if (!INTERNAL_ROLES.has(userRole) && userRole !== "client") return res.status(400).json({ success: false, error: "Rôle invalide" });
+  if (userRole !== "client" && !validInternalRole(userRole)) return res.status(400).json({ success: false, error: "Rôle invalide" });
+  if (userRole !== "client" && userRole !== "superAdmin" && !(await db.collection("roles").doc(userRole).get()).exists) return res.status(400).json({ success: false, error: "Ce rôle n’existe pas" });
 
   const superAdmin = userRole === "superAdmin";
   const authUpdate = { disabled: Boolean(disabled) };

@@ -12,8 +12,8 @@ service cloud.firestore {
 
     function userRole() {
       return !signedIn() ? "" :
+        exists(userPath()) && get(userPath()).data.role != null ? get(userPath()).data.role :
         request.auth.token.role != null ? request.auth.token.role :
-        exists(userPath()) ? get(userPath()).data.role :
         "";
     }
 
@@ -38,8 +38,21 @@ service cloud.firestore {
     function isInternalUser() {
       return signedIn() && (
         isSuperAdmin() ||
-        userRole() in ["admin", "superAdmin", "manager", "staff"]
+        (
+          exists(userPath()) &&
+          get(userPath()).data.accessType == "internal" &&
+          userRole() != "" &&
+          userRole() != "client" &&
+          exists(/databases/$(database)/documents/roles/$(userRole()))
+        )
       );
+    }
+
+    function hasPermission(permission) {
+      return signedIn() && exists(userPath()) &&
+        get(userPath()).data.accessType == "internal" &&
+        get(userPath()).data.permissions is list &&
+        permission in get(userPath()).data.permissions;
     }
 
     function isClientUser() {
@@ -88,8 +101,22 @@ service cloud.firestore {
 
     match /enlevements/{enlevementId} {
       allow create: if true;
-      allow read: if isInternalUser() || (isClientUser() && resource.data.customerId == userClientId());
-      allow update, delete: if isInternalUser();
+      allow get: if isInternalUser() || hasPermission("recording") || (isClientUser() && resource.data.customerId == userClientId());
+      allow list: if isInternalUser() || (isClientUser() && resource.data.customerId == userClientId());
+      allow update: if isInternalUser() || (
+        hasPermission("recording") &&
+        request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          "colis", "deliveryStatus", "transitDate", "shippingDate",
+          "estimatedDeliveryAt", "scheduleAdjustmentDays", "scheduleReason",
+          "scheduleUpdatedAt"
+        ])
+      );
+      allow delete: if isInternalUser();
+    }
+
+    match /chargements/{chargementId} {
+      allow read, create, update: if isInternalUser() || hasPermission("recording");
+      allow delete: if isInternalUser();
     }
 
     match /pickupRequests/{requestId} {
@@ -155,6 +182,10 @@ service cloud.firestore {
       // Firebase Authentication, sans dépendre de la lecture récursive du rôle.
       allow read: if (signedIn() && userId == request.auth.uid) || isSuperAdmin();
       allow create, update, delete: if isSuperAdmin();
+    }
+
+    match /roles/{roleId} {
+      allow read, write: if isSuperAdmin();
     }
 
     match /activityLogs/{logId} {

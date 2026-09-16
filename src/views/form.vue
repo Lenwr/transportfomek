@@ -9,9 +9,6 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
-  query,
-  where,
-  orderBy,
   getDocs,
   runTransaction
 } from "firebase/firestore";
@@ -25,7 +22,6 @@ import {
 
 import { ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import SelectCustomersView from "../views/selectCustomersView.vue";
 import { useAuthStore } from "../stores/useAuthStore";
 import { logActivity } from "../utils/activityLog";
 import DestinationSelect from "../components/DestinationSelect.vue";
@@ -61,6 +57,8 @@ const storage = getStorage();
 
 const catalogLoading = ref(false);
 const catalogItems = ref([]);
+const customerDirectory = ref([]);
+const activeCustomerSearch = ref("");
 const isSubmitting = ref(false);
 const PUBLIC_FORM_COOLDOWN_MS = 30 * 60 * 1000;
 
@@ -68,11 +66,20 @@ const loadCatalogItems = async () => {
   try {
     catalogLoading.value = true;
     const col = collection(db, "pricingCatalog", "active", "items");
-    const q = query(col, where("isActive", "==", true), orderBy("sort", "asc"));
-    const snap = await getDocs(q);
-    catalogItems.value = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const snap = await getDocs(col);
+    catalogItems.value = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() }))
+      .filter((item) => item.isActive !== false)
+      .sort((a, b) =>
+        (Number(a.sort) || 100) - (Number(b.sort) || 100) ||
+        String(a.label || "").localeCompare(String(b.label || ""), "fr")
+      );
   } catch (e) {
-    console.warn("Catalogue tarifaire indisponible, saisie libre activée", e);
+    console.error("Catalogue indisponible", e);
+    toast("Impossible de charger le catalogue. Vérifie les droits Firebase.", {
+      type: "error",
+      autoClose: 2500
+    });
     catalogItems.value = [];
   } finally {
     catalogLoading.value = false;
@@ -150,6 +157,7 @@ const genererNumeroSuivi = () => {
 };
 
 const customer = ref({
+  numeroExpediteur: "",
   expediteur: "",
   statut: "",
   telephoneExpediteur: "",
@@ -160,17 +168,186 @@ const customer = ref({
   typeDeFret: "",
   destination: "",
   prix: "",
+  montantPaye: "",
   modeDePaiement: "",
   resteAPayer: "",
   date: "",
   image: []
 });
+const destinationCallingCodes = [
+  { code: "+237", label: "Cameroun" },
+  { code: "+33", label: "France" },
+  { code: "+241", label: "Gabon" },
+  { code: "+242", label: "Congo" },
+  { code: "+243", label: "RD Congo" },
+  { code: "+236", label: "Centrafrique" },
+  { code: "+235", label: "Tchad" },
+  { code: "+240", label: "Guinée équatoriale" },
+  { code: "+225", label: "Côte d’Ivoire" },
+  { code: "+221", label: "Sénégal" },
+  { code: "+223", label: "Mali" },
+  { code: "+234", label: "Nigeria" },
+  { code: "+32", label: "Belgique" },
+  { code: "+49", label: "Allemagne" },
+  { code: "+44", label: "Royaume-Uni" },
+  { code: "+1", label: "USA / Canada" },
+];
+const destinationDirectCode = ref("+237");
+const destinationWhatsappCode = ref("+237");
+const withCallingCode = (value, callingCode) => {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (raw.startsWith("+")) return `+${raw.slice(1).replace(/\D/g, "")}`;
+  if (raw.startsWith("00")) return `+${raw.slice(2).replace(/\D/g, "")}`;
+  const localDigits = raw.replace(/\D/g, "").replace(/^0/, "");
+  return localDigits ? `${callingCode}${localDigits}` : "";
+};
+const selectedCustomerId = ref("");
+const selectedClientNumber = ref("");
 
-const colisList = ref([{ nom: "", quantite: 1, statutColis: "réceptionné" }]);
+const fillFromCustomer = (client) => {
+  selectedCustomerId.value = client.id || "";
+  selectedClientNumber.value = client.numeroClient || "";
+  customer.value.numeroExpediteur = client.numeroClient || "";
+  customer.value.expediteur = `${client.nom || ""} ${client.prenom || ""}`.trim();
+  customer.value.telephoneExpediteur = client.telephone || client.phone || "";
+  customer.value.adresseExpediteur = [
+    client.adresse || client.adresseComplete || "",
+    client.codePostal || "",
+    client.ville || ""
+  ].filter(Boolean).join(", ");
+  toast(`Client ${client.numeroClient || ""} sélectionné`, { type: "success", autoClose: 1000 });
+  activeCustomerSearch.value = "";
+};
+
+const customerSuggestions = computed(() => {
+  const raw = activeCustomerSearch.value === "number"
+    ? customer.value.numeroExpediteur
+    : customer.value.expediteur;
+  const terms = normalize(raw).split(/\s+/).filter(Boolean);
+  if (!terms.length) return [];
+  return customerDirectory.value.filter((client) => {
+    const searchable = normalize(`${client.numeroClient || ""} ${client.nom || ""} ${client.prenom || ""} ${client.telephone || ""}`);
+    return terms.every((term) => searchable.includes(term));
+  }).slice(0, 8);
+});
+
+const startCustomerSearch = (field) => {
+  activeCustomerSearch.value = field;
+  selectedCustomerId.value = "";
+  selectedClientNumber.value = "";
+};
+
+const loadCustomerDirectory = async () => {
+  try {
+    const snap = await getDocs(collection(db, "customers"));
+    customerDirectory.value = snap.docs.map((item) => ({ id: item.id, ...item.data() }));
+  } catch (error) {
+    console.warn("Répertoire clients indisponible", error);
+  }
+};
+
+const emptyPackage = () => ({ nom: "", quantite: 1, statutColis: "réceptionné", customArticle: false });
+const colisList = ref([emptyPackage()]);
+
+const selectCatalogArticle = (colis, value) => {
+  if (value === "__custom__") {
+    colis.nom = "";
+    colis.customArticle = true;
+  } else {
+    colis.nom = value;
+    colis.customArticle = false;
+  }
+};
 const existingImageUrls = ref([]);
 
 const totalPackages = computed(() =>
   colisList.value.reduce((sum, colis) => sum + (Number(colis.quantite) || 0), 0)
+);
+
+const priceManuallyEdited = ref(false);
+const destinationKey = (value = "") =>
+  normalize(value).replace(/[^a-z0-9]/g, "").toUpperCase();
+
+const suggestedPricing = computed(() => {
+  const destination = destinationKey(customer.value.destination);
+  let total = 0;
+  let pricedLines = 0;
+  let unpricedLines = 0;
+
+  for (const colis of colisList.value) {
+    if (!colis.nom) continue;
+    const article = catalogItems.value.find((item) => normalize(item.label) === normalize(colis.nom));
+    if (!article) {
+      unpricedLines += 1;
+      continue;
+    }
+    if (article.pricingType === "PER_INCH_BY_DESTINATION") {
+      unpricedLines += 1;
+      continue;
+    }
+
+    const prices = article.pricesByDestination || {};
+    const priceEntry = Object.entries(prices).find(([key]) => destinationKey(key) === destination);
+    const unitPrice = Number(priceEntry?.[1]);
+    if (!destination || !priceEntry || !Number.isFinite(unitPrice)) {
+      unpricedLines += 1;
+      continue;
+    }
+
+    total += unitPrice * (Number(colis.quantite) || 1);
+    pricedLines += 1;
+  }
+
+  return { total, pricedLines, unpricedLines };
+});
+
+watch(
+  () => suggestedPricing.value.total,
+  (total) => {
+    if (!isEdit.value && !priceManuallyEdited.value && suggestedPricing.value.pricedLines > 0) {
+      customer.value.prix = String(total);
+    }
+  }
+);
+
+const markPriceAsEdited = () => {
+  priceManuallyEdited.value = true;
+};
+
+const applyCatalogPrice = () => {
+  customer.value.prix = String(suggestedPricing.value.total);
+  priceManuallyEdited.value = false;
+};
+
+const amountNumber = (value) => {
+  const parsed = Number(String(value ?? "").replace(/\s/g, "").replace(",", "."));
+  return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+};
+
+watch(
+  () => [customer.value.prix, customer.value.montantPaye],
+  ([totalValue, paidValue]) => {
+    if (totalValue === "" || totalValue === null || totalValue === undefined) {
+      customer.value.resteAPayer = "";
+      return;
+    }
+    const total = amountNumber(totalValue);
+    const paid = Math.min(amountNumber(paidValue), total);
+    const due = Math.max(0, total - paid);
+    customer.value.resteAPayer = String(Number(due.toFixed(2)));
+    customer.value.statut = paid <= 0 ? "Non Payé" : due > 0 ? "Acompte" : "Payé";
+  }
+);
+
+watch(
+  () => customer.value.statut,
+  (status) => {
+    if (status !== "Payé") return;
+    const total = amountNumber(customer.value.prix);
+    customer.value.montantPaye = String(Number(total.toFixed(2)));
+    customer.value.resteAPayer = "0";
+  }
 );
 
 const requiredFields = computed(() => [
@@ -244,6 +421,7 @@ watch(
     if (!isEdit.value || !d) return;
 
     customer.value = {
+      numeroExpediteur: d.numeroClient || "",
       expediteur: d.expediteur || "",
       statut: d.statut || "",
       telephoneExpediteur: d.telephoneExpediteur || "",
@@ -254,6 +432,7 @@ watch(
       typeDeFret: d.typeDeFret || "",
       destination: d.destination || "",
       prix: d.prix || "",
+      montantPaye: d.montantPaye ?? d.montantPayé ?? Math.max(0, amountNumber(d.prix) - amountNumber(d.resteAPayer)),
       modeDePaiement: d.modeDePaiement || "",
       resteAPayer: d.resteAPayer || "",
       date: d.date || "",
@@ -273,23 +452,24 @@ watch(
         return {
           nom: g.nom || g.article || "",
           quantite: Number(qty) || 1,
-          statutColis: stat
+          statutColis: stat,
+          customArticle: false
         };
       });
     } else {
-      colisList.value = [{ nom: "", quantite: 1, statutColis: "réceptionné" }];
+      colisList.value = [emptyPackage()];
     }
   },
   { immediate: true, deep: true }
 );
 
 const ajouterColis = () => {
-  colisList.value.push({ nom: "", quantite: 1, statutColis: "réceptionné" });
+  colisList.value.push(emptyPackage());
 };
 
 const supprimerColis = (index) => {
   if (colisList.value.length === 1) {
-    colisList.value[0] = { nom: "", quantite: 1, statutColis: "réceptionné" };
+    colisList.value[0] = emptyPackage();
     return;
   }
   colisList.value.splice(index, 1);
@@ -351,21 +531,27 @@ const send = async () => {
       ? [...existingImageUrls.value, ...uploadedNewUrls]
       : uploadedNewUrls;
 
+    const telephoneDestinataire = withCallingCode(customer.value.telephoneDestinataire, destinationDirectCode.value);
+    const telephoneDestinataireWhatsapp = withCallingCode(customer.value.telephoneDestinataireWhatsapp, destinationWhatsappCode.value);
+
     const payloadBase = {
+      numeroClient: selectedClientNumber.value || customer.value.numeroExpediteur || "",
       expediteur: customer.value.expediteur || "",
       statut: customer.value.statut || "",
       imageUrl: finalImageUrls,
       telephoneExpediteur: customer.value.telephoneExpediteur || "",
       adresseExpediteur: customer.value.adresseExpediteur || "",
       destinataire: customer.value.destinataire || "",
-      telephoneDestinataire: customer.value.telephoneDestinataire || "",
-      telephoneDestinataireDirect: customer.value.telephoneDestinataire || "",
-      telephoneDestinataireWhatsapp: customer.value.telephoneDestinataireWhatsapp || "",
+      telephoneDestinataire,
+      telephoneDestinataireDirect: telephoneDestinataire,
+      telephoneDestinataireWhatsapp,
       typeDeFret: customer.value.typeDeFret || "",
       destination: customer.value.destination || "",
       nombreDeColis: colisData.reduce((acc, c) => acc + c.quantite, 0),
       colis: colisData,
       prix: customer.value.prix || "",
+      montantTotal: customer.value.prix || "",
+      montantPaye: customer.value.montantPaye || "0",
       modeDePaiement: customer.value.modeDePaiement || "",
       resteAPayer: customer.value.resteAPayer || "",
       date: customer.value.date || ""
@@ -409,9 +595,9 @@ const send = async () => {
           clientPhone: customer.value.telephoneExpediteur || "",
           clientAdresse: customer.value.adresseExpediteur || "",
           destinataire: customer.value.destinataire || "",
-          telephoneDestinataire: customer.value.telephoneDestinataire || "",
-          telephoneDestinataireDirect: customer.value.telephoneDestinataire || "",
-          telephoneDestinataireWhatsapp: customer.value.telephoneDestinataireWhatsapp || "",
+          telephoneDestinataire,
+          telephoneDestinataireDirect: telephoneDestinataire,
+          telephoneDestinataireWhatsapp,
           typeDeFret: customer.value.typeDeFret || "",
           destination: customer.value.destination || "",
           nombreDeColis: colisData.reduce((acc, c) => acc + c.quantite, 0),
@@ -480,6 +666,7 @@ const send = async () => {
         });
 
         customer.value = {
+          numeroExpediteur: "",
           expediteur: "",
           statut: "",
           telephoneExpediteur: "",
@@ -490,13 +677,14 @@ const send = async () => {
           typeDeFret: "",
           destination: "",
           prix: "",
+          montantPaye: "",
           modeDePaiement: "",
           resteAPayer: "",
           date: "",
           image: []
         };
 
-        colisList.value = [{ nom: "", quantite: 1, statutColis: "réceptionné" }];
+        colisList.value = [emptyPackage()];
         existingImageUrls.value = [];
         await router.push({ name: "soumission" });
         return;
@@ -508,7 +696,8 @@ const send = async () => {
         ...payloadBase,
         numero: numeroSuivi,
         deliveryStatus: "En attente",
-        customerId: props.myId || "",
+        customerId: selectedCustomerId.value || props.myId || "",
+        numeroClient: selectedClientNumber.value || "",
         createdAt: serverTimestamp()
       });
 
@@ -525,6 +714,7 @@ const send = async () => {
       });
 
       customer.value = {
+        numeroExpediteur: "",
         expediteur: "",
         statut: "",
         telephoneExpediteur: "",
@@ -535,14 +725,18 @@ const send = async () => {
         typeDeFret: "",
         destination: "",
         prix: "",
+        montantPaye: "",
         modeDePaiement: "",
         resteAPayer: "",
         date: "",
         image: []
       };
 
-      colisList.value = [{ nom: "", quantite: 1, statutColis: "réceptionné" }];
+      colisList.value = [emptyPackage()];
       existingImageUrls.value = [];
+      selectedCustomerId.value = "";
+      selectedClientNumber.value = "";
+      priceManuallyEdited.value = false;
     }
   } catch (error) {
     console.error("Erreur formulaire :", error);
@@ -554,6 +748,7 @@ const send = async () => {
 
 onMounted(() => {
   loadCatalogItems();
+  loadCustomerDirectory();
 });
 </script>
 
@@ -589,10 +784,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-
-    <section v-if="!isEdit && !isPublicClientMode" class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <SelectCustomersView />
-    </section>
 
     <form :class="formGridClass" @submit.prevent="send">
       <div class="space-y-6">
@@ -640,7 +831,7 @@ onMounted(() => {
               <select id="statut" v-model="customer.statut" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
                 <option value="">Choisir un statut</option>
                 <option>Non Payé</option>
-                <option>Reste à payer</option>
+                <option>Acompte</option>
                 <option>Payé</option>
               </select>
             </label>
@@ -653,9 +844,15 @@ onMounted(() => {
             <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
               <p class="text-sm font-bold uppercase tracking-wide text-slate-500">Expediteur</p>
               <div class="mt-4 space-y-4">
-                <label class="block">
+                <label class="relative block">
                   <span class="text-sm font-semibold text-slate-700">Nom complet</span>
-                  <input id="expediteur" v-model="customer.expediteur" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Nom et prenoms" />
+                  <input id="expediteur" v-model="customer.expediteur" autocomplete="off" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Nom et prenoms" @focus="activeCustomerSearch = 'name'" @input="startCustomerSearch('name')" @blur="activeCustomerSearch = ''" />
+                  <div v-if="!isPublicClientMode && activeCustomerSearch === 'name' && customerSuggestions.length" class="absolute left-0 right-0 top-full z-30 mt-1 max-h-64 overflow-y-auto rounded-lg border border-slate-200 bg-white p-1 shadow-xl">
+                    <button v-for="client in customerSuggestions" :key="client.id" type="button" class="flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-left hover:bg-cyan-50" @mousedown.prevent="fillFromCustomer(client)">
+                      <span><span class="block font-semibold text-slate-900">{{ client.nom }} {{ client.prenom }}</span><span class="block text-xs text-slate-500">{{ client.telephone || 'Sans téléphone' }}</span></span>
+                      <span class="shrink-0 text-xs font-bold text-cyan-800">{{ client.numeroClient || 'Sans n°' }}</span>
+                    </button>
+                  </div>
                 </label>
                 <label class="block">
                   <span class="text-sm font-semibold text-slate-700">Telephone</span>
@@ -677,11 +874,21 @@ onMounted(() => {
                 </label>
                 <label class="block">
                   <span class="text-sm font-semibold text-slate-700">Telephone direct</span>
-                  <input id="telephoneDestinataire" v-model="customer.telephoneDestinataire" type="tel" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="+237 numéro direct" />
+                  <div class="mt-2 flex min-w-0 gap-2">
+                    <select v-model="destinationDirectCode" aria-label="Indicatif téléphone direct" class="h-11 w-36 shrink-0 rounded-lg border border-slate-300 bg-white px-2 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
+                      <option v-for="country in destinationCallingCodes" :key="country.code" :value="country.code">{{ country.code }} · {{ country.label }}</option>
+                    </select>
+                    <input id="telephoneDestinataire" v-model="customer.telephoneDestinataire" type="tel" class="h-11 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Numéro direct" />
+                  </div>
                 </label>
                 <label class="block">
                   <span class="text-sm font-semibold text-slate-700">WhatsApp</span>
-                  <input id="telephoneDestinataireWhatsapp" v-model="customer.telephoneDestinataireWhatsapp" type="tel" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="+237 numéro WhatsApp" />
+                  <div class="mt-2 flex min-w-0 gap-2">
+                    <select v-model="destinationWhatsappCode" aria-label="Indicatif WhatsApp" class="h-11 w-36 shrink-0 rounded-lg border border-slate-300 bg-white px-2 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
+                      <option v-for="country in destinationCallingCodes" :key="country.code" :value="country.code">{{ country.code }} · {{ country.label }}</option>
+                    </select>
+                    <input id="telephoneDestinataireWhatsapp" v-model="customer.telephoneDestinataireWhatsapp" type="tel" class="h-11 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Numéro WhatsApp" />
+                  </div>
                 </label>
               </div>
             </div>
@@ -692,16 +899,12 @@ onMounted(() => {
           <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h3 class="text-lg font-bold text-slate-950">Colis</h3>
-              <p class="mt-1 text-sm text-slate-500">Ajoute les articles et quantites. Les details seront generes pour les QR codes.</p>
+              <p class="mt-1 text-sm text-slate-500">Sélectionne les articles du catalogue et leurs quantités. Les détails seront générés pour les QR codes.</p>
             </div>
             <button type="button" class="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-cyan-800" @click="ajouterColis">
               Ajouter un colis
             </button>
           </div>
-
-          <datalist id="articleOptions">
-            <option v-for="opt in articleOptions" :key="opt" :value="opt" />
-          </datalist>
 
           <p v-if="catalogLoading" class="mt-3 text-xs font-medium text-slate-500">Chargement des articles...</p>
           <p v-else-if="!articleOptions.length" class="mt-3 text-xs font-medium text-slate-500">Aucun article actif dans le catalogue.</p>
@@ -713,8 +916,16 @@ onMounted(() => {
                 <input v-model.number="colis.quantite" type="number" min="1" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-center text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" />
               </label>
               <label class="block">
-                <span class="text-xs font-bold uppercase tracking-wide text-slate-400">Article</span>
-                <input v-model="colis.nom" type="text" list="articleOptions" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Carton, television, valise..." />
+                <span class="text-xs font-bold uppercase tracking-wide text-slate-400">Article du catalogue</span>
+                <select v-if="articleOptions.length && !colis.customArticle" :value="colis.nom" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" @change="selectCatalogArticle(colis, $event.target.value)">
+                  <option value="">Choisir un article</option>
+                  <option v-for="opt in articleOptions" :key="opt" :value="opt">{{ opt }}</option>
+                  <option value="__custom__">Autre article (saisie libre)</option>
+                </select>
+                <div v-else class="mt-2 flex gap-2">
+                  <input v-model="colis.nom" type="text" class="h-11 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="Saisir le nom de l’article" />
+                  <button v-if="articleOptions.length" type="button" class="rounded-lg border border-slate-300 px-3 text-xs font-bold text-slate-600" @click="colis.customArticle = false; colis.nom = ''">Catalogue</button>
+                </div>
               </label>
               <button type="button" class="mt-6 h-11 rounded-lg border border-red-200 bg-red-50 text-sm font-bold text-red-700 hover:bg-red-100" @click="supprimerColis(index)">
                 X
@@ -747,7 +958,7 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="mt-5 grid gap-4 md:grid-cols-2">
+          <div class="mt-5 grid gap-4 md:grid-cols-3">
             <label class="block md:col-span-2">
               <span class="text-sm font-semibold text-slate-700">Ajouter des photos</span>
               <input id="image" type="file" multiple accept="image/*" class="mt-2 block w-full rounded-lg border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-sm text-slate-700 file:mr-4 file:rounded-md file:border-0 file:bg-cyan-700 file:px-3 file:py-2 file:text-sm file:font-bold file:text-white" @change="handleFileChange" />
@@ -755,16 +966,29 @@ onMounted(() => {
             </label>
 
             <label v-if="!isPublicClientMode" class="block">
-              <span class="text-sm font-semibold text-slate-700">Prix</span>
-              <input id="prix" v-model="customer.prix" type="text" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="0" />
+              <span class="text-sm font-semibold text-slate-700">Prix total</span>
+              <input id="prix" v-model="customer.prix" type="number" min="0" step="0.01" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="0" @input="markPriceAsEdited" />
+              <span v-if="suggestedPricing.pricedLines" class="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                Prix catalogue : <strong class="text-cyan-800">{{ suggestedPricing.total }} €</strong>
+                <button v-if="priceManuallyEdited" type="button" class="font-bold text-cyan-700 underline" @click="applyCatalogPrice">Réappliquer</button>
+              </span>
+              <span v-if="suggestedPricing.unpricedLines" class="mt-1 block text-xs font-medium text-amber-700">
+                {{ suggestedPricing.unpricedLines }} article(s) sans prix pour cette destination.
+              </span>
             </label>
 
             <label v-if="!isPublicClientMode" class="block">
-              <span class="text-sm font-semibold text-slate-700">Reste a payer</span>
-              <input id="resteAPayer" v-model="customer.resteAPayer" type="text" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="0" />
+              <span class="text-sm font-semibold text-slate-700">Montant payé</span>
+              <input id="montantPaye" v-model="customer.montantPaye" type="number" min="0" :max="amountNumber(customer.prix)" step="0.01" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" placeholder="0" />
             </label>
 
-            <label v-if="!isPublicClientMode" class="block md:col-span-2">
+            <label v-if="!isPublicClientMode" class="block">
+              <span class="text-sm font-semibold text-slate-700">Reste à payer</span>
+              <input id="resteAPayer" :value="customer.resteAPayer" type="number" readonly class="mt-2 h-11 w-full cursor-not-allowed rounded-lg border border-slate-300 bg-slate-100 px-3 text-sm font-bold text-slate-950" placeholder="0" />
+              <span class="mt-1 block text-xs text-slate-500">Calculé automatiquement.</span>
+            </label>
+
+            <label v-if="!isPublicClientMode" class="block md:col-span-3">
               <span class="text-sm font-semibold text-slate-700">Mode de paiement</span>
               <select id="modeDePaiement" v-model="customer.modeDePaiement" class="mt-2 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
                 <option value="">Choisir un mode</option>

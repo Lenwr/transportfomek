@@ -36,7 +36,7 @@ export const canonicalizeStatut = (s) => {
   const n = norm(s)
   if (n === 'paye' || n === 'payee' || n === 'paye(e)') return 'Payé'
   if (n === 'nonpaye' || n === 'non paye' || n === 'non-payé' || n === 'non-paye') return 'Non Payé'
-  if (n === 'resteapayer' || n === 'reste a payer' || n === 'reste-à-payer') return 'Reste à payer'
+  if (n === 'acompte' || n === 'accompte' || n === 'resteapayer' || n === 'reste a payer' || n === 'reste-à-payer') return 'Acompte'
   return s || ''
 }
 

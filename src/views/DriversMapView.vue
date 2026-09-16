@@ -1,4 +1,6 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
+import { messagingEndpoint } from "../utils/messagingEndpoint"
 import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
@@ -620,14 +622,14 @@ function buildClientFormMessage(client, link, mode = "todo") {
   const name = client.name || "client"
   if (mode === "missed") {
     return [
-      `AARON TRAVEL - Bonjour ${name},`,
+      `TRANSPORT FOMEK - Bonjour ${name},`,
       "suite a notre dernier passage, merci de completer ce formulaire pour enregistrer votre enlevement :",
       link,
     ].join("\n")
   }
 
   return [
-    `AARON TRAVEL - Bonjour ${name},`,
+    `TRANSPORT FOMEK - Bonjour ${name},`,
     "merci de remplir ce formulaire avant l'arrivée du chauffeur :",
     link,
   ].join("\n")
@@ -685,7 +687,7 @@ async function sendDriverLink() {
 
     sending.value = true
     const token = await user.getIdToken()
-    const response = await fetch("https://us-central1-aarontravelgestion.cloudfunctions.net/sendDriverLinkSMS", {
+    const response = await fetch(messagingEndpoint("sendDriverLinkSMS"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -740,7 +742,7 @@ async function sendBulkClientPickupLink() {
       const clientWithInvite = { ...client, inviteId }
       const link = buildClientPickupLink(client, inviteId)
       const message = buildClientFormMessage(client, link, clientMessageMode.value)
-      const response = await fetch("https://us-central1-aarontravelgestion.cloudfunctions.net/sendInvoiceSMS", {
+      const response = await fetch(messagingEndpoint("sendInvoiceSMS"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -802,7 +804,7 @@ function removeStop(stopId) {
 async function deletePlannedPickup(stop) {
   try {
     if (!stop?.docId) return
-    const ok = window.confirm("Supprimer ce ramassage du jour ?")
+    const ok = await confirmToast("Supprimer ce ramassage du jour ?")
     if (!ok) return
 
     await updateDoc(doc(db, "plannedPickups", stop.docId), {

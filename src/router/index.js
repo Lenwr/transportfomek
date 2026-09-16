@@ -7,8 +7,6 @@ import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import { db } from "../components/firebaseConfig.js"
 
-const INTERNAL_ROLES = ["admin", "superAdmin", "manager", "staff"]
-
 // Views
 import HomeView from "../views/HomeView.vue"
 import Form from "../views/form.vue"
@@ -27,7 +25,6 @@ import VolumeCalculator from "../views/volumeCalculator.vue"
 import EnlevementsStats from "../views/EnlevementsStats.vue"
 import ValidateRequestView from "../views/ValidateRequestView.vue"
 import PickupRequestsListView from "../views/PickupRequestsListView.vue"
-import PickupRequestScanView from "../views/PickupRequestScanView.vue"
 import PricingAdmin from "../views/admin/PricingAdmin.vue"
 import AdminSettingsView from "../views/admin/AdminSettingsView.vue"
 import Tenant from "../views/tenant.vue"
@@ -61,7 +58,6 @@ const router = createRouter({
     { path: "/activity-log", name: "activityLog", component: ActivityLogView, meta: { authNeeded: true, superAdminOnly: true } },
     { path: "/client-followup", name: "clientFollowup", component: ClientFollowupView, meta: { authNeeded: true, permission: "clientFollowup" } },
     { path: "/pickup-requests", name: "pickupRequests", component: PickupRequestsListView, meta: { authNeeded: true, permission: "pickupRequests" } },
-    { path: "/pickup-request-scan", name: "pickupRequestScan", component: PickupRequestScanView, meta: { authNeeded: true, permission: "pickupRequestScan" } },
     { path: "/stats-enlevements", name: "EnlevementsStats", component: EnlevementsStats, meta: { authNeeded: true, permission: "liste" } },
 
     { path: "/liste", name: "liste", component: ListeView, meta: { authNeeded: true, permission: "liste" } },
@@ -93,6 +89,20 @@ const router = createRouter({
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 })
+
+function firstAllowedRoute(permissions = []) {
+  const routesByPermission = [
+    ["dashboard", "home"],
+    ["recording", "recording"],
+    ["liste", "liste"],
+    ["clientFollowup", "clientFollowup"],
+    ["pickupRequests", "pickupRequests"],
+    ["deliveryScan", "deliveryScan"],
+    ["customers", "customers"],
+    ["billing", "billingDocuments"],
+  ]
+  return routesByPermission.find(([permission]) => permissions.includes(permission))?.[1] || "login"
+}
 
 /* =========================
    Auth guard (fiable)
@@ -148,7 +158,7 @@ router.beforeEach(async (to, from, next) => {
         token?.claims?.superAdmin === true ||
         userData?.superAdmin === true
       const resolvedRole = isSuperAdmin ? "superAdmin" : explicitRole || "admin"
-      const isInternalUser = INTERNAL_ROLES.includes(resolvedRole)
+      const isInternalUser = isSuperAdmin || userData?.accessType === "internal" || (!!resolvedRole && resolvedRole !== "client")
       const permissions = Array.isArray(userData?.permissions) ? userData.permissions : []
 
       if (userData?.disabled === true) {
@@ -187,13 +197,12 @@ router.beforeEach(async (to, from, next) => {
           type: "warning",
           autoClose: 1200,
         })
-        return next({ name: "home" })
+        return next({ name: firstAllowedRoute(permissions) })
       }
 
       if (
         to.meta?.permission &&
         !isSuperAdmin &&
-        permissions.length > 0 &&
         !permissions.includes(to.meta.permission)
       ) {
         toast("Accès non autorisé pour ce compte.", {
@@ -201,7 +210,7 @@ router.beforeEach(async (to, from, next) => {
           type: "warning",
           autoClose: 1400,
         })
-        return next({ name: "home" })
+        return next({ name: firstAllowedRoute(permissions) })
       }
     } catch (error) {
       console.warn("Impossible de vérifier le rôle utilisateur", error)

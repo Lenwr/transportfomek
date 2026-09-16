@@ -4,8 +4,6 @@ import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebas
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../components/firebaseConfig.js";
 
-const INTERNAL_ROLES = ["admin", "superAdmin", "manager", "staff"];
-
 function resolveUserAccess(userData = {}, claims = {}) {
   const explicitRole = userData?.role || claims?.role || "";
   const isSuperAdmin =
@@ -14,9 +12,23 @@ function resolveUserAccess(userData = {}, claims = {}) {
     explicitRole === "superAdmin";
   const role = isSuperAdmin ? "superAdmin" : explicitRole;
   const clientId = userData?.clientId || claims?.clientId || "";
-  const isInternal = INTERNAL_ROLES.includes(role);
+  const isInternal = isSuperAdmin || userData?.accessType === "internal" || (!!role && role !== "client");
 
   return { role, clientId, isInternal };
+}
+
+function firstAllowedRoute(permissions = []) {
+  const routesByPermission = [
+    ["dashboard", "home"],
+    ["recording", "recording"],
+    ["liste", "liste"],
+    ["clientFollowup", "clientFollowup"],
+    ["pickupRequests", "pickupRequests"],
+    ["deliveryScan", "deliveryScan"],
+    ["customers", "customers"],
+    ["billing", "billingDocuments"],
+  ];
+  return routesByPermission.find(([permission]) => permissions.includes(permission))?.[1] || "login";
 }
 
 export const useAuthStore = defineStore({
@@ -42,8 +54,6 @@ export const useAuthStore = defineStore({
       state.role === "superAdmin" ||
       state.claims?.role === "superAdmin" ||
       state.claims?.superAdmin === true ||
-      !Array.isArray(state.permissions) ||
-      state.permissions.length === 0 ||
       state.permissions.includes(permission),
   },
 
@@ -58,7 +68,8 @@ export const useAuthStore = defineStore({
           const { role, isInternal } = resolveUserAccess(userData, token?.claims || {});
 
           if (isInternal) {
-            await router.replace({ name: "home" });
+            const permissions = Array.isArray(userData?.permissions) ? userData.permissions : [];
+            await router.replace({ name: role === "superAdmin" ? "home" : firstAllowedRoute(permissions) });
           } else {
             await signOut(auth);
             throw new Error(

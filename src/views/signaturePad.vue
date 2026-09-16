@@ -5,9 +5,13 @@ import { useRoute } from "vue-router"
 
 const route = useRoute()
 const detailId = ref(route.params.id)
-const colisIndex = ref(parseInt(route.query.colisIndex))
+const parsedColisIndex = Number.parseInt(String(route.query.colisIndex ?? "0"), 10)
+const parsedDetailIndex = route.query.detailIndex !== undefined
+  ? Number.parseInt(String(route.query.detailIndex), 10)
+  : null
+const colisIndex = ref(Number.isInteger(parsedColisIndex) ? parsedColisIndex : 0)
 const detailIndex = ref(
-  route.query.detailIndex !== undefined ? parseInt(route.query.detailIndex) : null
+  Number.isInteger(parsedDetailIndex) ? parsedDetailIndex : null
 )
 </script>
 

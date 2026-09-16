@@ -131,7 +131,7 @@ function renderInvoiceLikeModel(data, options = {}) {
 
   pdf.setFont("helvetica", "bold")
   pdf.setFontSize(14)
-  pdf.text(normalizePdfText(seller.title || seller.name || "AARON TRAVEL"), mx, y)
+  pdf.text(normalizePdfText(seller.title || seller.name || "TRANSPORT FOMEK"), mx, y)
 
   y += 8
   pdf.setFont("helvetica", "bold")
@@ -462,18 +462,15 @@ function toModelData(input) {
       footer: provider.footer || "",
 
       seller: {
-        title: provider.title || "CGL/ Aaron travel",
-        contactName: provider.contactName || "Boubakar CAMARA",
-        tva: provider.tva || "FR61828534214",
-        siret: provider.siret || "82853421400014",
+        title: provider.title || "TRANSPORT FOMEK",
+        contactName: provider.contactName || "",
+        tva: provider.tva || "",
+        siret: provider.siret || "",
         addressLines:
-          provider.addressLines || [
-            "15 rue des écoles, 95500 Le Thillay",
-            "11 rue des velettes, 92150 Suresnes",
-          ],
-        phone: provider.phone || "+33 6 03 67 50 62",
-        website: provider.website || "http://www.aaron-travel.com",
-        email: provider.email || "aarontravel@outlook.fr",
+          provider.addressLines || ["15 rue des Écoles, 95500 Le Thillay"],
+        phone: provider.phone || "+33 6 95 93 19 92",
+        website: provider.website || "https://transportfomek.vercel.app",
+        email: provider.email || "",
       },
 
       client: {
@@ -494,11 +491,11 @@ function toModelData(input) {
       items: normalizedItems,
 
       payment: {
-        primaryTitle: pay?.primary?.title || "PAYPAL",
-        primaryValue: pay?.primary?.value || "aarontravel@outlook.fr",
-        iban: pay?.iban || "FR4620041010125200472C03349",
-        bic: pay?.bic || "PSSTFRPPSCE",
-        chequeTo: pay?.chequeTo || "AARON TRAVEL",
+        primaryTitle: pay?.primary?.title || "MODALITÉS DE PAIEMENT",
+        primaryValue: pay?.primary?.value || "",
+        iban: pay?.iban || "",
+        bic: pay?.bic || "",
+        chequeTo: pay?.chequeTo || "TRANSPORT FOMEK",
         other: pay?.other || "",
       },
 
@@ -574,18 +571,15 @@ function toModelData(input) {
     footer: "",
 
     seller: {
-      title: seller?.title || seller?.name || "CGL/ Aaron travel",
-      contactName: seller?.contactName || "Boubakar CAMARA",
-      tva: seller?.tva || seller?.vat || "FR61828534214",
-      siret: seller?.siret || "82853421400014",
+      title: seller?.title || seller?.name || "TRANSPORT FOMEK",
+      contactName: seller?.contactName || "",
+      tva: seller?.tva || seller?.vat || "",
+      siret: seller?.siret || "",
       addressLines:
-        seller?.addressLines || [
-          "15 rue des écoles, 95500 Le Thillay",
-          "11 rue des velettes, 92150 Suresnes",
-        ],
-      phone: seller?.phone || "+33 6 03 67 50 62",
-      website: seller?.website || "http://www.aaron-travel.com",
-      email: seller?.email || "aarontravel@outlook.fr",
+        seller?.addressLines || ["15 rue des Écoles, 95500 Le Thillay"],
+      phone: seller?.phone || "+33 6 95 93 19 92",
+      website: seller?.website || "https://transportfomek.vercel.app",
+      email: seller?.email || "",
     },
 
     client: {
@@ -606,12 +600,12 @@ function toModelData(input) {
     items,
 
     payment: {
-      primaryTitle: "PAYPAL",
-      primaryValue: "aarontravel@outlook.fr",
-      iban: "FR4620041010125200472C03349",
-      bic: "PSSTFRPPSCE",
-      chequeTo: "AARON TRAVEL",
-      other: "Règlement par PayLib : 06.03.67.50.62",
+      primaryTitle: "MODALITÉS DE PAIEMENT",
+      primaryValue: "",
+      iban: "",
+      bic: "",
+      chequeTo: "TRANSPORT FOMEK",
+      other: "",
     },
 
     totals: {

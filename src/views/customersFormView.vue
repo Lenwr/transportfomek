@@ -5,6 +5,7 @@ import {useCollection, useFirestore} from 'vuefire'
 import router from '../router/index.js'
 import Return from "../components/return.vue";
 import {toast} from "vue3-toastify";
+import { generateClientNumber } from '../utils/clientNumber.js'
 
 const db = useFirestore()
 const Liste = useCollection(collection(db, 'customers'))
@@ -13,6 +14,7 @@ const customer = ref({
   nom: '',
   prenom: '',
   adresse: '',
+  ville: '',
   codePostal: '',
   telephone: '',
   envois: [{expediteur: '', colis: ''}],
@@ -20,8 +22,10 @@ const customer = ref({
 
 // Add a new document with a generated id.
 async function addCustomer() {
+  const numeroClient = await generateClientNumber(db)
   const newDoc = await addDoc(collection(db, 'customers'), {
     ...customer.value,
+    numeroClient,
   })
       .then(() => {
         toast("Formulaire envoyé", {
@@ -33,6 +37,7 @@ async function addCustomer() {
         customer.value.nom = '',
             customer.value.prenom = ''
         customer.value.adresse = ''
+        customer.value.ville = ''
         customer.value.codePostal = ''
         customer.value.telephone = ''
 
@@ -142,6 +147,12 @@ const selectItem = (item) => {
                 class="block h-[3em] w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
                 placeholder="adresse"
             />
+          </div>
+        </div>
+        <div>
+          <label for="ville" class="block text-sm font-medium leading-6 text-gray-900">Ville</label>
+          <div class="mt-2">
+            <input id="ville" v-model="customer.ville" type="text" class="block h-[3em] w-full rounded-md border-0 py-1.5 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300" placeholder="Ville" />
           </div>
         </div>
         <div class="">

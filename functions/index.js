@@ -8,7 +8,6 @@ const {
   onDocumentWrittenWithAuthContext,
 } = require("firebase-functions/v2/firestore");
 const { setGlobalOptions } = require("firebase-functions/v2");
-const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const twilio = require("twilio");
@@ -20,15 +19,6 @@ setGlobalOptions({ region: "us-central1" });
 /* =========================
    Configuration & Constantes
 ========================= */
-const TWILIO_ACCOUNT_SID = defineSecret("TWILIO_ACCOUNT_SID");
-const TWILIO_AUTH_TOKEN = defineSecret("TWILIO_AUTH_TOKEN");
-const TWILIO_NUMBER = defineSecret("TWILIO_NUMBER");
-const ADMIN_PHONES = defineSecret("ADMIN_PHONES");
-const OPENROUTESERVICE_API_KEY = defineSecret("OPENROUTESERVICE_API_KEY");
-
-const SMS_SECRETS = [TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_NUMBER];
-const ADMIN_SMS_SECRETS = [...SMS_SECRETS, ADMIN_PHONES];
-const ROUTE_SECRETS = [OPENROUTESERVICE_API_KEY];
 const DEFAULT_ADMIN_PHONE = "+33766813707";
 const DEFAULT_WHATSAPP_FROM = "";
 const DEFAULT_WHATSAPP_TEMPLATE_SID = "";
@@ -84,7 +74,7 @@ function formatMoneyFR(n) {
 function sendSMS(to, body) {
   const dest = cleanPhone(to);
   if (!dest) throw new Error("Numéro invalide");
-  const twilioClient = twilio(TWILIO_ACCOUNT_SID.value(), TWILIO_AUTH_TOKEN.value());
+  const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
   return twilioClient.messages.create({
     body: String(body).trim(),
@@ -106,11 +96,12 @@ function formatWhatsappAddress(phone) {
 
 function getWhatsappSender() {
   const sender = String(process.env.TWILIO_WHATSAPP_FROM || DEFAULT_WHATSAPP_FROM).trim();
+  if (!sender) throw new Error("Expéditeur WhatsApp non configuré (TWILIO_WHATSAPP_FROM)");
   return sender.startsWith("whatsapp:") ? sender : `whatsapp:${sender}`;
 }
 
 function sendWhatsApp(to, body) {
-  const twilioClient = twilio(TWILIO_ACCOUNT_SID.value(), TWILIO_AUTH_TOKEN.value());
+  const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
   const message = String(body || "").trim();
 
   if (!message) throw new Error("Message WhatsApp manquant");
@@ -123,8 +114,8 @@ function sendWhatsApp(to, body) {
 }
 
 function sendWhatsAppTemplate(to, contentSid, contentVariables = {}) {
-  const twilioClient = twilio(TWILIO_ACCOUNT_SID.value(), TWILIO_AUTH_TOKEN.value());
-  const sid = String(contentSid || DEFAULT_WHATSAPP_TEMPLATE_SID).trim();
+  const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+  const sid = String(contentSid || process.env.TWILIO_WHATSAPP_TEMPLATE_SID || DEFAULT_WHATSAPP_TEMPLATE_SID).trim();
 
   if (!sid) throw new Error("Template WhatsApp manquant");
 
@@ -142,12 +133,7 @@ function sendWhatsAppTemplate(to, contentSid, contentVariables = {}) {
 }
 
 function getAdminPhones() {
-  let raw = "";
-  try {
-    raw = ADMIN_PHONES.value();
-  } catch (e) {
-    raw = "";
-  }
+  const raw = String(process.env.ADMIN_PHONES || "");
 
   const phones = raw
     .split(",")
@@ -312,7 +298,7 @@ function sortStopsByNearest(start, stops) {
 }
 
 async function geocodeWithOpenRouteService(address) {
-  const apiKey = OPENROUTESERVICE_API_KEY.value();
+  const apiKey = process.env.OPENROUTESERVICE_API_KEY;
   const url = new URL("https://api.openrouteservice.org/geocode/search");
   url.searchParams.set("api_key", apiKey);
   url.searchParams.set("text", address);
@@ -341,7 +327,7 @@ async function getDirectionsWithOpenRouteService(coordinates) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: OPENROUTESERVICE_API_KEY.value(),
+      Authorization: process.env.OPENROUTESERVICE_API_KEY,
     },
     body: JSON.stringify({
       coordinates,
@@ -789,7 +775,7 @@ exports.onPaymentCreated = onDocumentCreated("payments/{paymentId}", async () =>
 
 // 2) reservationRequests -> SMS admin
 exports.onReservationRequestCreate = onDocumentCreated(
-  { document: "reservationRequests/{requestId}", secrets: ADMIN_SMS_SECRETS },
+  { document: "reservationRequests/{requestId}", },
   async (event) => {
     const snap = event.data;
     if (!snap) return;
@@ -816,7 +802,7 @@ exports.onReservationRequestCreate = onDocumentCreated(
 
 // 3) pickupRequests -> SMS admin
 exports.onPickupRequestCreate = onDocumentCreated(
-  { document: "pickupRequests/{requestId}", secrets: ADMIN_SMS_SECRETS },
+  { document: "pickupRequests/{requestId}", },
   async (event) => {
     const snap = event.data;
     if (!snap) return;
@@ -843,7 +829,7 @@ exports.onPickupRequestCreate = onDocumentCreated(
 
 // 4) pickupRequests status update -> SMS client
 exports.onPickupRequestStatusUpdate = onDocumentUpdated(
-  { document: "pickupRequests/{requestId}", secrets: SMS_SECRETS },
+  { document: "pickupRequests/{requestId}", },
   async (event) => {
     const before = event.data.before.data() || {};
     const after = event.data.after.data() || {};
@@ -869,7 +855,7 @@ exports.onPickupRequestStatusUpdate = onDocumentUpdated(
 
 // 5) status update -> SMS locataire
 exports.onReservationRequestStatusUpdate = onDocumentUpdated(
-  { document: "reservationRequests/{requestId}", secrets: SMS_SECRETS },
+  { document: "reservationRequests/{requestId}", },
   async (event) => {
     const beforeStatus = event.data.before.data()?.status;
     const after = event.data.after.data() || {};
@@ -896,7 +882,7 @@ exports.onReservationRequestStatusUpdate = onDocumentUpdated(
 ========================= */
 
 exports.sendInvoiceSMS = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -911,7 +897,7 @@ exports.sendInvoiceSMS = onRequest(
 );
 
 exports.sendWhatsAppMessage = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -940,7 +926,7 @@ exports.sendWhatsAppMessage = onRequest(
 );
 
 exports.sendBroadcastSMS = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -967,7 +953,7 @@ exports.sendBroadcastSMS = onRequest(
 );
 
 exports.sendContainerTrackingLinks = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       const user = await requireSuperAdmin(req);
@@ -1022,7 +1008,7 @@ exports.sendContainerTrackingLinks = onRequest(
         recipientsByPhone.get(phone).shipments.set(trackingNumber, {
           trackingNumber,
           pickupDate: formatTrackingPickupDate(pickup.date || pickup.createdAt),
-          link: `https://wefretafrica.vercel.app/suivi/aaron-travel?code=${encodeURIComponent(trackingNumber)}`,
+          link: `https://tracksend.vercel.app/suivi/transport-fomek?code=${encodeURIComponent(trackingNumber)}`,
         });
       }
 
@@ -1055,7 +1041,7 @@ exports.sendContainerTrackingLinks = onRequest(
         const message = [
           `Bonjour ${recipient.name || "Client"},`,
           ...links,
-          "AARON TRAVEL — Suivez. Expédiez. Livrez.",
+          "TRANSPORT FOMEK — Suivez. Expédiez. Livrez.",
         ].join("\n");
 
         try {
@@ -1090,7 +1076,7 @@ exports.sendContainerTrackingLinks = onRequest(
 );
 
 exports.sendPickupTrackingLink = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       const user = await requireSuperAdmin(req);
@@ -1110,7 +1096,11 @@ exports.sendPickupTrackingLink = onRequest(
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase();
-      if (!status.includes("expedi") && !status.includes("transit") && !pickup.transitDate) {
+      const packageShipped = (pickup.colis || []).some(item => [item.statutColis, ...(item.details || []).map(detail => detail.statutColis)].some(value => {
+        const normalized = String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        return normalized.includes("expedi") || normalized.includes("transit");
+      }));
+      if (!status.includes("expedi") && !status.includes("transit") && !pickup.transitDate && !packageShipped) {
         return res.status(409).json({ success: false, error: "Le colis n'est pas encore expédié" });
       }
 
@@ -1123,14 +1113,14 @@ exports.sendPickupTrackingLink = onRequest(
         return res.status(400).json({ success: false, error: "Numéro de suivi manquant" });
       }
 
-      const link = `https://wefretafrica.vercel.app/suivi/aaron-travel?code=${encodeURIComponent(trackingNumber)}`;
+      const link = `https://tracksend.vercel.app/suivi/transport-fomek?code=${encodeURIComponent(trackingNumber)}`;
       const name = String(pickup.expediteur || "Client").trim();
       const pickupDate = formatTrackingPickupDate(pickup.date || pickup.createdAt);
       const message = [
         `Bonjour ${name},`,
         `Votre colis, récupéré le ${pickupDate}, vient d'être chargé dans un conteneur et est désormais en cours d'acheminement.`,
         `Suivez sa progression sur TRACKSEND : ${link}`,
-        "AARON TRAVEL — Suivez. Expédiez. Livrez.",
+        "TRANSPORT FOMEK — Suivez. Expédiez. Livrez.",
       ].join("\n");
       const sms = await sendSMS(phone, message);
       const sentAt = admin.firestore.FieldValue.serverTimestamp();
@@ -1162,7 +1152,7 @@ exports.sendPickupTrackingLink = onRequest(
 );
 
 exports.sendBoxTenantBroadcastSMS = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       const user = await requireSuperAdminOrPermission(req, "boxBroadcast");
@@ -1208,7 +1198,7 @@ exports.sendBoxTenantBroadcastSMS = onRequest(
 );
 
 exports.sendDriverLinkSMS = onRequest(
-  { secrets: SMS_SECRETS, cors: true },
+  { cors: true },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -1341,7 +1331,6 @@ exports.createClientPortalAccess = onRequest(
   })
 );
 
-const INTERNAL_ROLES = new Set(["admin", "superAdmin", "manager", "chauffeur", "driver", "staff"]);
 const INTERNAL_PERMISSION_KEYS = new Set([
   "dashboard",
   "planning",
@@ -1365,6 +1354,10 @@ function cleanPermissions(input) {
   return input.map((item) => String(item || "").trim()).filter((item) => INTERNAL_PERMISSION_KEYS.has(item));
 }
 
+function validInternalRole(value) {
+  return value === "superAdmin" || (/^[a-z0-9_-]{2,50}$/.test(value) && value !== "client");
+}
+
 exports.createInternalAccess = onRequest(
   { cors: true },
   withCors(async (req, res) => {
@@ -1379,8 +1372,11 @@ exports.createInternalAccess = onRequest(
       if (!cleanUserEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanUserEmail)) {
         return res.status(400).json({ success: false, error: "Email invalide" });
       }
-      if (!INTERNAL_ROLES.has(cleanRole) || cleanRole === "client") {
+      if (!validInternalRole(cleanRole)) {
         return res.status(400).json({ success: false, error: "Rôle interne invalide" });
+      }
+      if (cleanRole !== "superAdmin" && !(await admin.firestore().collection("roles").doc(cleanRole).get()).exists) {
+        return res.status(400).json({ success: false, error: "Ce rôle n’existe pas" });
       }
       if (tempPassword.length < 8) {
         return res.status(400).json({ success: false, error: "Mot de passe trop court" });
@@ -1457,8 +1453,11 @@ exports.updateUserAccess = onRequest(
       if (!cleanUid) {
         return res.status(400).json({ success: false, error: "uid requis" });
       }
-      if (!INTERNAL_ROLES.has(cleanRole) && cleanRole !== "client") {
+      if (cleanRole !== "client" && !validInternalRole(cleanRole)) {
         return res.status(400).json({ success: false, error: "Rôle invalide" });
+      }
+      if (cleanRole !== "client" && cleanRole !== "superAdmin" && !(await admin.firestore().collection("roles").doc(cleanRole).get()).exists) {
+        return res.status(400).json({ success: false, error: "Ce rôle n’existe pas" });
       }
 
       const isClient = cleanRole === "client";
@@ -1588,7 +1587,7 @@ exports.deleteClientAccount = onRequest(
 );
 
 exports.calculateDriverRoute = onRequest(
-  { secrets: ROUTE_SECRETS },
+  { },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -1692,7 +1691,7 @@ exports.searchMscTracking = onRequest(
 );
 
 exports.sendInvoiceBySMS = onRequest(
-  { secrets: SMS_SECRETS },
+  { },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -1744,7 +1743,7 @@ exports.sendInvoiceBySMS = onRequest(
 );
 
 exports.sendInvoiceReminderSMS = onRequest(
-  { secrets: SMS_SECRETS },
+  { },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);

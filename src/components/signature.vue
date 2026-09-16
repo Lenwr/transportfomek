@@ -179,7 +179,9 @@ const saveSignature = async () => {
       dateStyle: "long",
       timeStyle: "short",
     }).format(new Date(deliveredAt))
-    await addDoc(collection(db, "adminNotifications"), {
+    // La notification est secondaire : elle ne doit jamais bloquer la validation
+    // ni laisser le bouton en chargement si son écriture échoue.
+    void addDoc(collection(db, "adminNotifications"), {
       type: "DELIVERY_CONFIRMED",
       title: "Colis livré",
       message: `${trackingNumber} a été remis à ${signedBy} le ${deliveredAtLabel}.`,
@@ -190,6 +192,8 @@ const saveSignature = async () => {
       createdAt: serverTimestamp(),
       read: false,
       createdBy: user?.uid || "",
+    }).catch((notificationError) => {
+      console.warn("Livraison enregistrée, mais notification non créée :", notificationError)
     })
 
     toast("Remise enregistrée, colis livré.", { type: "success" })

@@ -1,7 +1,10 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
+import { getAuth } from "firebase/auth"
+import { messagingEndpoint } from "../utils/messagingEndpoint"
 import { onMounted, ref, computed } from 'vue'
 import { useFirestore, useCollection } from 'vuefire'
-import { collection, doc, deleteDoc } from 'firebase/firestore'
+import { collection, doc, deleteDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { toast } from 'vue3-toastify'
 import { useCustomersStore } from '../stores/modules/customers.js'
 import { storeToRefs } from 'pinia'
@@ -27,6 +30,30 @@ onMounted(async () => {
 const portalClientsCol = useCollection(collection(db, 'clients'))
 
 const query = ref('')
+const columnsOpen = ref(false)
+const columnOptions = [
+  { key: 'numeroClient', label: 'N° client' },
+  { key: 'nom', label: 'Nom' },
+  { key: 'prenom', label: 'Prénom' },
+  { key: 'telephone', label: 'Téléphone' },
+  { key: 'adresse', label: 'Adresse' },
+  { key: 'ville', label: 'Ville' },
+  { key: 'codePostal', label: 'Code postal' },
+  { key: 'email', label: 'Email' },
+  { key: 'societe', label: 'Société' },
+]
+const defaultColumns = ['numeroClient', 'nom', 'prenom', 'telephone', 'adresse', 'ville']
+const storedColumns = JSON.parse(localStorage.getItem('fomek-client-columns') || 'null')
+const visibleColumns = ref(Array.isArray(storedColumns) && storedColumns.length ? storedColumns : defaultColumns)
+const isColumnVisible = (key) => visibleColumns.value.includes(key)
+const toggleColumn = (key) => {
+  const next = isColumnVisible(key)
+    ? visibleColumns.value.filter((column) => column !== key)
+    : [...visibleColumns.value, key]
+  if (!next.length) return
+  visibleColumns.value = next
+  localStorage.setItem('fomek-client-columns', JSON.stringify(next))
+}
 
 // ======================
 // Helpers société
@@ -43,6 +70,18 @@ const getClientCompany = (item) => {
     .trim()
 }
 
+const formatLastName = (value) => String(value || '').trim().toLocaleUpperCase('fr-FR')
+const formatFirstName = (value) => {
+  const name = String(value || '').trim().toLocaleLowerCase('fr-FR')
+  return name ? name.charAt(0).toLocaleUpperCase('fr-FR') + name.slice(1) : ''
+}
+const formatClientAddress = (item) => {
+  const street = String(item?.adresse || item?.adresseComplete || '').trim()
+  const postalCode = String(item?.codePostal || '').trim()
+  const city = String(item?.ville || '').trim()
+  return [street, postalCode, city].filter(Boolean).join(', ')
+}
+
 // ======================
 // Filtres
 // ======================
@@ -50,7 +89,12 @@ const allClients = computed(() => {
   const merged = new Map()
 
   for (const item of customers.value || []) {
-    merged.set(`customers:${item.id}`, { ...item, _source: 'customers' })
+    merged.set(`customers:${item.id}`, {
+      ...item,
+      _source: 'customers',
+      _customerId: item.id,
+      _portalId: '',
+    })
   }
   for (const item of portalClientsCol.value || []) {
     const duplicate = Array.from(merged.values()).find((client) => {
@@ -58,8 +102,24 @@ const allClients = computed(() => {
       const sameEmail = client.email && item.email && client.email.toLowerCase() === item.email.toLowerCase()
       return samePhone || sameEmail
     })
-    if (duplicate) Object.assign(duplicate, item)
-    else merged.set(`clients:${item.id}`, { ...item, _source: 'clients' })
+    if (duplicate) {
+      // Ne jamais remplacer l'identifiant du document `customers` par celui du
+      // document portail : les actions modifier/supprimer cibleraient le mauvais document.
+      const customerId = duplicate._customerId || duplicate.id
+      Object.assign(duplicate, item, {
+        id: customerId,
+        _source: 'customers',
+        _customerId: customerId,
+        _portalId: item.id,
+      })
+    } else {
+      merged.set(`clients:${item.id}`, {
+        ...item,
+        _source: 'clients',
+        _customerId: '',
+        _portalId: item.id,
+      })
+    }
   }
 
   return Array.from(merged.values()).sort((a, b) =>
@@ -73,7 +133,7 @@ const filteredClients = computed(() => {
 
   return allClients.value.filter((item) =>
     (
-      `${item.nom || ''} ${item.prenom || ''} ${item.email || ''} ${item.adresse || item.adresseComplete || ''} ${item.codePostal || ''} ${item.telephone || item.phone || ''} ${getClientCompany(item)}`
+      `${item.numeroClient || ''} ${item.nom || ''} ${item.prenom || ''} ${item.email || ''} ${item.adresse || item.adresseComplete || ''} ${item.codePostal || ''} ${item.ville || ''} ${item.telephone || item.phone || ''} ${getClientCompany(item)}`
     )
       .toLowerCase()
       .includes(q),
@@ -87,6 +147,7 @@ const customer = ref({
   nom: '',
   prenom: '',
   adresse: '',
+  ville: '',
   codePostal: '',
   telephone: '',
   envois: [{ expediteur: '', colis: '' }],
@@ -97,6 +158,7 @@ const resetCustomerForm = () => {
     nom: '',
     prenom: '',
     adresse: '',
+    ville: '',
     codePostal: '',
     telephone: '',
     envois: [{ expediteur: '', colis: '' }],
@@ -124,7 +186,7 @@ const createCustomers = async () => {
 }
 
 const deleteCustomers = async (id) => {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
+  if (await confirmToast('Êtes-vous sûr de vouloir supprimer ce client ?')) {
     try {
       await customersStore.deleteCustomer(id)
       toast('Client supprimé', {
@@ -144,7 +206,7 @@ const deleteCustomers = async (id) => {
 }
 
 const deletePortalClient = async (id) => {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce client portail ?')) {
+  if (await confirmToast('Êtes-vous sûr de vouloir supprimer ce client portail ?')) {
     try {
       await deleteDoc(doc(db, 'clients', id))
       toast('Client portail supprimé', {
@@ -161,6 +223,64 @@ const deletePortalClient = async (id) => {
     }
   }
 }
+
+// ======================
+// Modification client
+// ======================
+const editingClient = ref(null)
+const editForm = ref({})
+const editingSaving = ref(false)
+
+const openEditClient = (item) => {
+  editingClient.value = {
+    ...item,
+    _customerId: item._customerId || (item._source === 'customers' ? item.id : ''),
+    _portalId: item._portalId || (item._source === 'clients' ? item.id : ''),
+  }
+  editForm.value = {
+    numeroClient: item.numeroClient || '',
+    nom: item.nom || '',
+    prenom: item.prenom || '',
+    telephone: item.telephone || item.phone || '',
+    adresse: item.adresse || item.adresseComplete || '',
+    ville: item.ville || '',
+    codePostal: item.codePostal || '',
+    email: item.email || '',
+  }
+  document.getElementById('editClientModal')?.showModal()
+}
+
+const saveEditedClient = async () => {
+  if (!editingClient.value || editingSaving.value) return
+  editingSaving.value = true
+  try {
+    const { _customerId, _portalId } = editingClient.value
+    const updates = { ...editForm.value, updatedAt: serverTimestamp() }
+    const writes = []
+
+    if (_customerId) {
+      writes.push(customersStore.updateCustomers(_customerId, updates))
+    }
+    if (_portalId) {
+      writes.push(updateDoc(doc(db, 'clients', _portalId), {
+        ...updates,
+        phone: editForm.value.telephone,
+        adresseComplete: editForm.value.adresse,
+      }))
+    }
+    if (!writes.length) throw new Error('Document client introuvable')
+
+    await Promise.all(writes)
+    document.getElementById('editClientModal')?.close()
+    toast('Client modifié', { type: 'success', autoClose: 1200 })
+  } catch (e) {
+    console.error('Erreur modification client:', e)
+    toast(`Erreur lors de la modification : ${e.message || 'accès refusé'}`, { type: 'error' })
+  } finally {
+    editingSaving.value = false
+  }
+}
+const closeEditClient = () => document.getElementById('editClientModal')?.close()
 
 // ======================
 // Diffusion SMS (Broadcast)
@@ -235,11 +355,13 @@ async function sendBroadcast() {
     isSendingBroadcast.value = true
 
     const endpoint =
-      'https://us-central1-aarontravelgestion.cloudfunctions.net/sendBroadcastSMS'
+      messagingEndpoint("sendBroadcastSMS")
 
+    const token = await getAuth().currentUser?.getIdToken()
+    if (!token) throw new Error('Reconnecte-toi pour envoyer un SMS')
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ phones, message: broadcastMsg.value.trim() }),
     })
 
@@ -462,6 +584,13 @@ async function sendBroadcast() {
           </div>
 
           <div>
+            <label for="ville" class="block text-sm font-medium leading-6 text-gray-900">Ville</label>
+            <div class="mt-2">
+              <input id="ville" v-model="customer.ville" type="text" class="block h-[3em] w-full rounded-md border-0 py-1.5 pl-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300" placeholder="Ville" />
+            </div>
+          </div>
+
+          <div>
             <label for="codePostal" class="block text-sm font-medium leading-6 text-gray-900">Code Postal</label>
             <div class="mt-2">
               <input
@@ -522,20 +651,84 @@ async function sendBroadcast() {
       </div>
     </dialog>
 
+    <!-- Modal modification client -->
+    <dialog id="editClientModal" class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box w-[calc(100vw-1rem)] max-w-2xl bg-white text-black">
+        <h2 class="mb-5 text-xl font-bold">Modifier le client</h2>
+        <form class="grid gap-4 sm:grid-cols-2" @submit.prevent="saveEditedClient">
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">N° client</span>
+            <input v-model="editForm.numeroClient" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">Nom</span>
+            <input v-model="editForm.nom" required class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">Prénom</span>
+            <input v-model="editForm.prenom" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">Téléphone</span>
+            <input v-model="editForm.telephone" type="tel" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control sm:col-span-2">
+            <span class="mb-1 text-sm font-medium">Adresse</span>
+            <input v-model="editForm.adresse" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">Ville</span>
+            <input v-model="editForm.ville" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control">
+            <span class="mb-1 text-sm font-medium">Code postal</span>
+            <input v-model="editForm.codePostal" class="input input-bordered bg-white" />
+          </label>
+          <label class="form-control sm:col-span-2">
+            <span class="mb-1 text-sm font-medium">Email</span>
+            <input v-model="editForm.email" type="email" class="input input-bordered bg-white" />
+          </label>
+          <div class="modal-action sm:col-span-2">
+            <button type="button" class="btn btn-ghost" @click="closeEditClient">Annuler</button>
+            <button type="submit" class="btn btn-primary text-white" :disabled="editingSaving">
+              {{ editingSaving ? 'Enregistrement…' : 'Enregistrer les modifications' }}
+            </button>
+          </div>
+        </form>
+      </div>
+      <form method="dialog" class="modal-backdrop"><button>Fermer</button></form>
+    </dialog>
+
     <!-- Tableau -->
     <div v-if="loading" class="p-4">Chargement...</div>
 
     <div v-else class="w-full px-4 py-5 pb-20 lg:px-8">
+      <div class="relative mb-3 flex justify-end">
+        <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-sm hover:border-cyan-300" @click="columnsOpen = !columnsOpen">
+          Colonnes affichées
+        </button>
+        <div v-if="columnsOpen" class="absolute right-0 top-12 z-20 grid w-64 gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-xl">
+          <p class="mb-1 text-sm font-bold text-slate-950">Choisir les colonnes</p>
+          <label v-for="column in columnOptions" :key="column.key" class="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" class="checkbox checkbox-sm" :checked="isColumnVisible(column.key)" @change="toggleColumn(column.key)" />
+            {{ column.label }}
+          </label>
+        </div>
+      </div>
       <div class="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-            <table class="w-full min-w-[980px] table-fixed">
+            <table class="w-full min-w-[900px]">
               <thead class="bg-white border-b">
                 <tr>
-                  <th class="w-[14%] px-5 py-4 text-left text-sm font-bold text-gray-900">Nom</th>
-                  <th class="w-[14%] px-5 py-4 text-left text-sm font-bold text-gray-900">Prénoms</th>
-                  <th class="w-[27%] px-5 py-4 text-left text-sm font-bold text-gray-900">Adresse</th>
-                  <th class="w-[20%] px-5 py-4 text-left text-sm font-bold text-gray-900">Email</th>
-                  <th class="w-[15%] px-5 py-4 text-left text-sm font-bold text-gray-900">Téléphone</th>
-                  <th class="w-[10%] px-5 py-4 text-center text-sm font-bold text-gray-900">Actions</th>
+                  <th v-if="isColumnVisible('numeroClient')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">N° client</th>
+                  <th v-if="isColumnVisible('nom')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Nom</th>
+                  <th v-if="isColumnVisible('prenom')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Prénom</th>
+                  <th v-if="isColumnVisible('telephone')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Téléphone</th>
+                  <th v-if="isColumnVisible('adresse')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Adresse</th>
+                  <th v-if="isColumnVisible('ville')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Ville</th>
+                  <th v-if="isColumnVisible('codePostal')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Code postal</th>
+                  <th v-if="isColumnVisible('email')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Email</th>
+                  <th v-if="isColumnVisible('societe')" class="px-5 py-4 text-left text-sm font-bold text-gray-900">Société</th>
+                  <th class="px-5 py-4 text-center text-sm font-bold text-gray-900">Actions</th>
                 </tr>
               </thead>
 
@@ -545,22 +738,31 @@ async function sendBroadcast() {
                   v-for="(item, i) in filteredClients"
                   :key="item.id || i"
                 >
-                  <td class="truncate px-5 py-4 text-sm font-semibold text-gray-900">{{ item.nom || '—' }}</td>
-                  <td class="truncate px-5 py-4 text-sm text-gray-700">{{ item.prenom || '—' }}</td>
-                  <td class="truncate px-5 py-4 text-sm text-gray-700" :title="item.adresse || item.adresseComplete">{{ item.adresse || item.adresseComplete || '—' }}</td>
-                  <td class="truncate px-5 py-4 text-sm text-gray-700" :title="item.email">{{ item.email || '—' }}</td>
-                  <td class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ item.telephone || item.phone || '—' }}</td>
+                  <td v-if="isColumnVisible('numeroClient')" class="whitespace-nowrap px-5 py-4 text-sm font-bold text-cyan-800">{{ item.numeroClient || '—' }}</td>
+                  <td v-if="isColumnVisible('nom')" class="whitespace-nowrap px-5 py-4 text-sm font-semibold text-gray-900">{{ formatLastName(item.nom) || '—' }}</td>
+                  <td v-if="isColumnVisible('prenom')" class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ formatFirstName(item.prenom) || '—' }}</td>
+                  <td v-if="isColumnVisible('telephone')" class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ item.telephone || item.phone || '—' }}</td>
+                  <td v-if="isColumnVisible('adresse')" class="max-w-xs truncate px-5 py-4 text-sm text-gray-700" :title="formatClientAddress(item)">{{ formatClientAddress(item) || '—' }}</td>
+                  <td v-if="isColumnVisible('ville')" class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ item.ville || '—' }}</td>
+                  <td v-if="isColumnVisible('codePostal')" class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ item.codePostal || '—' }}</td>
+                  <td v-if="isColumnVisible('email')" class="max-w-xs truncate px-5 py-4 text-sm text-gray-700" :title="item.email">{{ item.email || '—' }}</td>
+                  <td v-if="isColumnVisible('societe')" class="whitespace-nowrap px-5 py-4 text-sm text-gray-700">{{ getClientCompany(item) || '—' }}</td>
                   <td class="px-5 py-4">
                     <div class="flex items-center justify-center gap-3">
-                    <router-link :to="'/customersDetails/' + item.id" class="text-cyan-800 hover:text-cyan-950" title="Voir le client">
+                    <router-link :to="'/customersDetails/' + item.id" class="rounded-lg p-2 text-cyan-800 transition hover:bg-cyan-100 hover:text-cyan-950" title="Ouvrir la fiche client" aria-label="Ouvrir la fiche client">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
+                        stroke="currentColor" class="h-5 w-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                       </svg>
                     </router-link>
+                    <button type="button" class="rounded-lg p-2 text-amber-600 transition hover:bg-amber-100 hover:text-amber-800" title="Modifier le client" aria-label="Modifier le client" @click="openEditClient(item)">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.862 4.487Zm0 0L19.5 7.125M18 14.25V19.5A1.5 1.5 0 0 1 16.5 21h-12A1.5 1.5 0 0 1 3 19.5v-12A1.5 1.5 0 0 1 4.5 6H9.75" />
+                      </svg>
+                    </button>
                     <svg @click="item._source === 'clients' ? deletePortalClient(item.id) : deleteCustomers(item.id)" xmlns="http://www.w3.org/2000/svg" fill="none"
-                      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 cursor-pointer text-red-500 hover:text-red-700" aria-label="Supprimer le client">
+                      viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 cursor-pointer text-red-500 hover:text-red-700" aria-label="Supprimer le client">
                       <path stroke-linecap="round" stroke-linejoin="round"
                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                     </svg>
@@ -568,7 +770,7 @@ async function sendBroadcast() {
                   </td>
                 </tr>
                 <tr v-if="!filteredClients.length">
-                  <td colspan="6" class="px-6 py-12 text-center text-sm text-slate-500">Aucun client trouvé.</td>
+                  <td :colspan="visibleColumns.length + 1" class="px-6 py-12 text-center text-sm text-slate-500">Aucun client trouvé.</td>
                 </tr>
               </tbody>
             </table>

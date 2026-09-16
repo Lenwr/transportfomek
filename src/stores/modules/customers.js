@@ -10,6 +10,7 @@ import {
     deleteDoc,
     doc
 } from 'firebase/firestore';
+import { generateClientNumber } from '../../utils/clientNumber.js';
 
 export const useCustomersStore = defineStore('customers', {
     state: () => ({
@@ -24,11 +25,14 @@ export const useCustomersStore = defineStore('customers', {
         async createCutomers(data) {
             this.loading = true;
             try {
-                const docRef = await addDoc(collection(db, 'customers'), {
+                const numeroClient = data.numeroClient || await generateClientNumber(db);
+                const customerData = {
                     ...data,
+                    numeroClient,
                     createdAt: new Date()
-                });
-                const newCustomer = { id: docRef.id, ...data };
+                };
+                const docRef = await addDoc(collection(db, 'customers'), customerData);
+                const newCustomer = { id: docRef.id, ...customerData };
                 this.customers.push(newCustomer);
                 return newCustomer;
             } catch (error) {

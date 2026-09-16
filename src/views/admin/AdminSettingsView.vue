@@ -1,6 +1,7 @@
 <script setup>
+import { confirmToast } from "../../utils/confirmToast.js"
 import { computed, onMounted, ref } from "vue"
-import { collection } from "firebase/firestore"
+import { collection, deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore"
 import { useCollection } from "vuefire"
 import { getAuth } from "firebase/auth"
 import { toast } from "vue3-toastify"
@@ -14,23 +15,15 @@ const permissionOptions = [
   { key: "liste", label: "Enlevements" },
   { key: "form", label: "Nouvel enlevement" },
   { key: "pickupRequests", label: "Demandes clients" },
-  { key: "pickupRequestScan", label: "Scan demande" },
   { key: "deliveryScan", label: "Scan livraison" },
-  { key: "recording", label: "Chargements" },
+  { key: "recording", label: "Conteneurs et caméra d’enregistrement" },
   { key: "billing", label: "Factures & devis" },
   { key: "customers", label: "Clients" },
 ]
 
-const roleLabels = {
-  admin: "Admin",
-  superAdmin: "SuperAdmin",
-  manager: "Manager",
-  staff: "Equipe",
-  client: "Client portail",
-}
-
 const usersSnap = useCollection(collection(db, "users"))
 const clientsSnap = useCollection(collection(db, "clients"))
+const rolesSnap = useCollection(collection(db, "roles"))
 
 const activeTab = ref("internal")
 const saving = ref(false)
@@ -39,12 +32,13 @@ const clientSearch = ref("")
 const generatedAccess = ref(null)
 const applicationUsers = ref([])
 const loadingUsers = ref(false)
+const roleDraft = ref({ name: "", permissions: [] })
 
 const newUser = ref({
   email: "",
   password: "",
   displayName: "",
-  role: "admin",
+  role: "",
   permissions: [],
   disabled: false,
 })
@@ -60,6 +54,17 @@ const portalUsers = computed(() =>
     .filter((item) => item.role === "client" || item.accessType === "client")
     .sort((a, b) => String(a.email || "").localeCompare(String(b.email || ""), "fr"))
 )
+
+const customRoles = computed(() =>
+  (rolesSnap.value || [])
+    .filter((role) => role.id !== "superAdmin")
+    .sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id), "fr"))
+)
+
+const roleOptions = computed(() => [
+  { id: "superAdmin", name: "SuperAdmin", permissions: [] },
+  ...customRoles.value.map((role) => ({ id: role.id, name: role.name || role.id, permissions: role.permissions || [] })),
+])
 
 const filteredInternalUsers = computed(() => {
   const q = userSearch.value.trim().toLowerCase()
@@ -83,7 +88,7 @@ const filteredClients = computed(() => {
 })
 
 function roleLabel(role = "") {
-  return roleLabels[role] || role || "Admin"
+  return roleOptions.value.find((item) => item.id === role)?.name || role || "Rôle non attribué"
 }
 
 function clientName(item = {}) {
@@ -96,7 +101,7 @@ function allPermissionKeys() {
 
 function defaultPermissionsFor(role) {
   if (role === "superAdmin") return []
-  return allPermissionKeys()
+  return [...(roleOptions.value.find((item) => item.id === role)?.permissions || [])]
 }
 
 function onNewRoleChange() {
@@ -113,6 +118,53 @@ function toggleUserPermission(user, key) {
   const current = new Set(Array.isArray(user.permissions) ? user.permissions : [])
   current.has(key) ? current.delete(key) : current.add(key)
   user.permissions = [...current]
+}
+
+function toggleRolePermission(key) {
+  const current = new Set(roleDraft.value.permissions)
+  current.has(key) ? current.delete(key) : current.add(key)
+  roleDraft.value.permissions = [...current]
+}
+
+function roleKey(value = "") {
+  return String(value).trim().toLocaleLowerCase("fr-FR").normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "")
+}
+
+async function saveRole() {
+  const id = roleKey(roleDraft.value.name)
+  if (!id || id === "superadmin" || id === "client") {
+    toast("Choisis un nom de rôle valide.", { type: "warning" })
+    return
+  }
+  saving.value = true
+  try {
+    await setDoc(doc(db, "roles", id), {
+      name: roleDraft.value.name.trim(),
+      permissions: roleDraft.value.permissions,
+      updatedAt: serverTimestamp(),
+    }, { merge: true })
+    roleDraft.value = { name: "", permissions: [] }
+    toast("Rôle enregistré.", { type: "success", autoClose: 1200 })
+  } catch (error) {
+    toast(error.message || "Impossible d’enregistrer le rôle.", { type: "error" })
+  } finally {
+    saving.value = false
+  }
+}
+
+async function removeRole(role) {
+  if (!await confirmToast(`Supprimer le rôle ${role.name || role.id} ?`)) return
+  try {
+    await deleteDoc(doc(db, "roles", role.id))
+    toast("Rôle supprimé.", { type: "success", autoClose: 1200 })
+  } catch (error) {
+    toast(error.message || "Suppression impossible.", { type: "error" })
+  }
+}
+
+function onUserRoleChange(user) {
+  user.permissions = defaultPermissionsFor(user.role)
 }
 
 async function postFunction(name, payload) {
@@ -157,7 +209,7 @@ async function createInternalAccess() {
       email: "",
       password: "",
       displayName: "",
-      role: "admin",
+      role: "",
       permissions: [],
       disabled: false,
     }
@@ -175,7 +227,7 @@ async function updateAccess(user) {
   try {
     await postFunction("updateUserAccess", {
       uid: user.id,
-      role: user.role || "admin",
+      role: user.role,
       displayName: user.displayName || "",
       disabled: Boolean(user.disabled),
       permissions: user.role === "superAdmin" ? [] : user.permissions || [],
@@ -191,7 +243,7 @@ async function updateAccess(user) {
 
 async function deleteClient(client) {
   if (!client?.id) return
-  if (!window.confirm(`Supprimer le client ${clientName(client)} et son accès portail ?`)) return
+  if (!await confirmToast(`Supprimer le client ${clientName(client)} et son accès portail ?`)) return
 
   saving.value = true
   try {
@@ -240,6 +292,42 @@ onMounted(refreshApplicationUsers)
       </button>
     </div>
 
+    <section v-if="activeTab === 'internal'" class="grid gap-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm lg:grid-cols-[380px_minmax(0,1fr)]">
+      <form @submit.prevent="saveRole">
+        <h3 class="text-lg font-bold text-slate-950">Créer un rôle</h3>
+        <p class="mt-1 text-sm text-slate-500">SuperAdmin reste le seul rôle permanent. Crée ici les autres rôles et leurs accès.</p>
+        <label class="mt-4 block">
+          <span class="text-sm font-semibold text-slate-700">Nom du rôle</span>
+          <input v-model="roleDraft.name" required class="mt-2 h-11 w-full rounded-lg border border-slate-300 px-3 text-sm" placeholder="Ex. Chauffeur, Manager, Comptable" />
+        </label>
+        <div class="mt-4 grid gap-2 sm:grid-cols-2">
+          <label v-for="permission in permissionOptions" :key="permission.key" class="flex items-center gap-2 text-sm text-slate-700">
+            <input type="checkbox" class="checkbox checkbox-sm" :checked="roleDraft.permissions.includes(permission.key)" @change="toggleRolePermission(permission.key)" />
+            <span>{{ permission.label }}</span>
+          </label>
+        </div>
+        <button class="mt-5 w-full rounded-lg bg-cyan-700 px-4 py-3 text-sm font-bold text-white disabled:opacity-60" :disabled="saving">Enregistrer le rôle</button>
+      </form>
+
+      <div>
+        <h3 class="text-lg font-bold text-slate-950">Rôles disponibles</h3>
+        <article class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
+          <p class="font-bold text-amber-900">SuperAdmin</p>
+          <p class="mt-1 text-sm text-amber-700">Accès complet permanent.</p>
+        </article>
+        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+          <article v-for="role in customRoles" :key="role.id" class="rounded-lg border border-slate-200 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div><p class="font-bold text-slate-950">{{ role.name || role.id }}</p><p class="mt-1 text-xs text-slate-500">{{ (role.permissions || []).length }} page(s) autorisée(s)</p></div>
+              <button type="button" class="text-sm font-bold text-red-600" @click="removeRole(role)">Supprimer</button>
+            </div>
+            <p class="mt-3 text-xs leading-5 text-slate-600">{{ (role.permissions || []).map(key => permissionOptions.find(item => item.key === key)?.label || key).join(' · ') || 'Aucune page' }}</p>
+          </article>
+          <p v-if="!customRoles.length" class="text-sm text-slate-500">Aucun rôle personnalisé pour le moment.</p>
+        </div>
+      </div>
+    </section>
+
     <div v-if="activeTab === 'internal'" class="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
       <form class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm" @submit.prevent="createInternalAccess">
         <h3 class="text-lg font-bold text-slate-950">Créer un accès</h3>
@@ -258,11 +346,9 @@ onMounted(refreshApplicationUsers)
           </label>
           <label class="block">
             <span class="text-sm font-semibold text-slate-700">Rôle</span>
-            <select v-model="newUser.role" class="mt-2 h-11 w-full rounded-lg border border-slate-300 px-3 text-sm" @change="onNewRoleChange">
-              <option value="admin">Admin</option>
-              <option value="chauffeur">Chauffeur</option>
-              <option value="manager">Manager</option>
-              <option value="superAdmin">SuperAdmin</option>
+            <select v-model="newUser.role" required class="mt-2 h-11 w-full rounded-lg border border-slate-300 px-3 text-sm" @change="onNewRoleChange">
+              <option value="" disabled>Choisir un rôle</option>
+              <option v-for="role in roleOptions" :key="role.id" :value="role.id">{{ role.name }}</option>
             </select>
           </label>
 
@@ -308,11 +394,9 @@ onMounted(refreshApplicationUsers)
                 <input v-model="user.displayName" class="mt-2 h-10 w-full rounded-lg border border-slate-300 px-3 text-sm lg:w-80" placeholder="Nom affiché" />
               </div>
               <div class="flex flex-wrap gap-2">
-                <select v-model="user.role" class="h-10 rounded-lg border border-slate-300 px-3 text-sm">
-                  <option value="admin">Admin</option>
-                  <option value="chauffeur">Chauffeur</option>
-                  <option value="manager">Manager</option>
-                  <option value="superAdmin">SuperAdmin</option>
+                <select v-model="user.role" class="h-10 rounded-lg border border-slate-300 px-3 text-sm" @change="onUserRoleChange(user)">
+                  <option v-if="user.role && !roleOptions.some(role => role.id === user.role)" :value="user.role">{{ roleLabel(user.role) }} (ancien)</option>
+                  <option v-for="role in roleOptions" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
                 <label class="inline-flex h-10 items-center gap-2 rounded-lg border border-slate-200 px-3 text-sm font-semibold">
                   <input v-model="user.disabled" type="checkbox" class="checkbox checkbox-sm" />

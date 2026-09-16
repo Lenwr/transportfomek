@@ -1,5 +1,6 @@
 <!-- src/views/BoxesView.vue -->
 <script setup>
+import { confirmToast } from "../../utils/confirmToast.js"
 import { computed, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useCollection, useFirestore } from "vuefire"
@@ -559,7 +560,7 @@ async function releaseSelectedBox() {
       return
     }
 
-    const ok = window.confirm(`Clôturer le contrat et libérer le box ${b.code} ?`)
+    const ok = await confirmToast(`Clôturer le contrat et libérer le box ${b.code} ?`)
     if (!ok) return
 
     await callFunction(CLOSE_CONTRACT_URL, {
@@ -585,7 +586,7 @@ async function deleteSelectedBox() {
     const b = selectedBox.value
     if (!b?.id) return
 
-    const ok = window.confirm(
+    const ok = await confirmToast(
       `Supprimer le box ${b.code} ?\n(refus si box loué/contrat actif)`
     )
     if (!ok) return

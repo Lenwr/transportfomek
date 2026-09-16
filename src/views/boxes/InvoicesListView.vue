@@ -1,5 +1,7 @@
 <!-- src/views/boxes/InvoicesListView.vue -->
 <script setup>
+import { confirmToast } from "../../utils/confirmToast.js"
+import { messagingEndpoint } from "../../utils/messagingEndpoint"
 import { computed, ref } from "vue"
 import { useRoute } from "vue-router"
 import { useCollection, useFirestore } from "vuefire"
@@ -22,7 +24,6 @@ const route = useRoute()
 const db = useFirestore()
 const auth = getAuth()
 
-const FUNCTIONS_BASE_URL = "https://us-central1-aarontravelgestion.cloudfunctions.net"
 
 /* =========================
   Firestore
@@ -270,17 +271,14 @@ function generateInvoicePDF(inv) {
       paidAt: paidAtISO,
       vatRate,
       provider: {
-        title: "CGL/ Aaron travel",
-        contactName: "Boubakar CAMARA",
-        tva: "FR61828534214",
-        siret: "82853421400014",
-        addressLines: [
-          "15 rue des écoles, 95500 Le Thillay",
-          "11 rue des velettes, 92150 Suresnes",
-        ],
-        phone: "+33 6 03 67 50 62",
-        website: "http://www.aaron-travel.com",
-        email: "aarontravel@outlook.fr",
+        title: "TRANSPORT FOMEK",
+        contactName: "",
+        tva: "",
+        siret: "",
+        addressLines: ["15 rue des Écoles, 95500 Le Thillay"],
+        phone: "+33 6 95 93 19 92",
+        website: "https://transportfomek.vercel.app",
+        email: "",
       },
       billTo: {
         name:
@@ -310,11 +308,11 @@ function generateInvoicePDF(inv) {
         vatRate,
       },
       paymentInfo: {
-        primary: { title: "PAYPAL", value: "aarontravel@outlook.fr" },
-        iban: "FR4620041010125200472C03349",
-        bic: "PSSTFRPPSCE",
-        chequeTo: "AARON TRAVEL",
-        other: "Règlement par PayLib : 06.03.67.50.62",
+        primary: { title: "MODALITÉS DE PAIEMENT", value: "" },
+        iban: "",
+        bic: "",
+        chequeTo: "TRANSPORT FOMEK",
+        other: "",
       },
       fileName: buildInvoiceFileName(inv),
     },
@@ -329,12 +327,12 @@ function buildInvoiceMessage(inv) {
   const due = fmtMoney(dueLeft(inv))
   const url = inv.pdfUrl || "(PDF à générer)"
   const client = inv.client?.companyName || inv.client?.representativeName || inv.client?.displayName || "Client"
-  return `AARON TRAVEL — Facture ${num}\nClient: ${client}\nBox: ${box}\nPériode: ${period}\nSolde dû: ${due} €\n${url}`
+  return `TRANSPORT FOMEK — Facture ${num}\nClient: ${client}\nBox: ${box}\nPériode: ${period}\nSolde dû: ${due} €\n${url}`
 }
 
 function sendByEmail(inv) {
   const to = inv.client?.email || ""
-  const subject = encodeURIComponent(`AARON TRAVEL - Facture ${invoiceNumberValue(inv)}`)
+  const subject = encodeURIComponent(`TRANSPORT FOMEK - Facture ${invoiceNumberValue(inv)}`)
   const body = encodeURIComponent(buildInvoiceMessage(inv))
   window.location.href = `mailto:${to}?subject=${subject}&body=${body}`
 }
@@ -362,7 +360,7 @@ async function sendInvoiceSmsViaFunction(inv) {
     sendingSmsId.value = inv.id
 
     const token = await getIdTokenOrThrow()
-    const res = await fetch(`${FUNCTIONS_BASE_URL}/sendInvoiceBySMS`, {
+    const res = await fetch(messagingEndpoint("sendInvoiceBySMS"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -390,7 +388,7 @@ async function sendInvoiceReminderViaFunction(inv) {
     sendingReminderId.value = inv.id
 
     const token = await getIdTokenOrThrow()
-    const res = await fetch(`${FUNCTIONS_BASE_URL}/sendInvoiceReminderSMS`, {
+    const res = await fetch(messagingEndpoint("sendInvoiceReminderSMS"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -487,7 +485,7 @@ async function saveInvoiceEdit() {
 async function removeInvoice(inv) {
   try {
     if (!inv?.id) return
-    const ok = window.confirm(
+    const ok = await confirmToast(
       `Supprimer la facture ${inv?.number || ""} ?\nLa suppression sera refusée si des paiements sont liés.`
     )
     if (!ok) return

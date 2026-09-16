@@ -1,4 +1,5 @@
 <script setup>
+import { confirmToast } from "../utils/confirmToast.js"
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFirestore } from 'vuefire'
@@ -166,7 +167,7 @@ const goEnlevement = (enlevementId) => {
 const deleteRequest = async (id) => {
   if (!id) return
 
-  const confirmDelete = window.confirm(
+  const confirmDelete = await confirmToast(
     "Tu veux vraiment supprimer cette demande d'enlèvement ?",
   )
   if (!confirmDelete) return
