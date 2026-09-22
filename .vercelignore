@@ -1,0 +1,11 @@
+functions/
+functions-admin/
+functions-tracking/
+.env*
+**/.env*
+backups/
+firebase-debug*.log
+firestore.rules
+firestore.indexes.json
+firebase.json
+.firebaserc

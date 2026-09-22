@@ -450,6 +450,7 @@ import { confirmToast } from "../utils/confirmToast.js"
         deliveryStatus: 'En attente',
         customerId: d.clientId || '',
         requestId: d.id,
+        ...(d.transportTermsAcceptance ? { transportTermsAcceptance: d.transportTermsAcceptance } : {}),
   
         createdAt: serverTimestamp(),
       }

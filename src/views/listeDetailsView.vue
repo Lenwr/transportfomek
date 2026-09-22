@@ -1,4 +1,5 @@
 <script setup>
+import { appendTransportTerms } from "../utils/transportTerms"
 import { confirmToast } from "../utils/confirmToast.js"
 import { transportFomekTrackingUrl } from "../utils/publicTracking"
 
@@ -948,6 +949,8 @@ function buildBordereauPdf(c, qrCanvas, options = {}) {
   }
 
   pdf.setTextColor(0, 0, 0)
+
+  appendTransportTerms(pdf, { reference: num, acceptance: c.transportTermsAcceptance })
 
   return pdf
 

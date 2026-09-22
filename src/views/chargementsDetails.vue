@@ -1,4 +1,5 @@
 <script setup>
+import { messagingEndpoint } from "../utils/messagingEndpoint"
 import { confirmToast } from "../utils/confirmToast.js"
 import { groupScannedPackages, recipientKey } from "../utils/scannedPackages"
 import { computed, ref, onMounted, watch, nextTick } from "vue"
@@ -1089,7 +1090,7 @@ async function callTrackingLinksFunction(dryRun) {
   const user = auth.currentUser
   if (!user) throw new Error("Session expirée. Reconnecte-toi.")
   const token = await user.getIdToken()
-  const response = await fetch(`${FUNCTIONS_BASE_URL}/sendContainerTrackingLinks`, {
+  const response = await fetch(messagingEndpoint("sendContainerTrackingLinks"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -1097,9 +1098,13 @@ async function callTrackingLinksFunction(dryRun) {
     },
     body: JSON.stringify({ chargementId: detailId.value, dryRun }),
   })
-  const payload = await response.json().catch(() => ({}))
-  if (!response.ok || !payload.success) {
-    throw new Error(payload.error || "Impossible d'envoyer les liens de suivi")
+  const payload = await response.json().catch(() => null)
+  if (!response.ok || !payload?.success) {
+    const reason = response.status === 401 ? "Session expirée : reconnecte-toi."
+      : response.status === 403 ? "Ton compte n’a pas l’autorisation d’envoyer ces liens."
+      : !payload ? "Le service a renvoyé une réponse inattendue. Recharge la page."
+      : "Impossible d’envoyer les liens de suivi."
+    throw new Error(payload?.error || `${reason} (HTTP ${response.status})`)
   }
   return payload
 }
@@ -1192,19 +1197,20 @@ function drawMeta(pdf) {
   }
 
   pdf.text(`Date : ${chargeDate}`, 20, y)
+  return y
 }
 
-function drawTableHeader(pdf, x, y, colW, headerH = 9) {
-  pdf.setFontSize(12)
+function drawTableHeader(pdf, x, y, colW, headerH = 14) {
+  pdf.setFontSize(10)
   pdf.setFillColor(235, 235, 235)
   const totalW = colW.reduce((a, b) => a + b, 0)
   pdf.rect(x, y, totalW, headerH, "F")
-  const textY = y + headerH - 3
+  const textY = y + 5
 
   pdf.text("Qté", x + 3, textY)
-  pdf.text("Détail", x + colW[0] + 3, textY)
+  pdf.text("Contenu exact et descriptif détaillé", x + colW[0] + 3, textY)
   pdf.text("Poids (kg)", x + colW[0] + colW[1] + 3, textY)
-  pdf.text("Valeur (€)", x + colW[0] + colW[1] + colW[2] + 3, textY)
+  pdf.text(["Valeur estimée", "(€)"], x + colW[0] + colW[1] + colW[2] + 3, textY)
 }
 
 function exportColissagePDF() {
@@ -1212,12 +1218,18 @@ function exportColissagePDF() {
     const pdf = new jsPDF("p", "mm", "a4")
 
     drawHeader(pdf)
-    drawMeta(pdf)
+    const metaBottom = drawMeta(pdf)
+    pdf.setFontSize(10)
+    const declarationInstruction = pdf.splitTextToSize(
+      "Veuillez indiquer le contenu exact et le descriptif détaillé de vos colis, ainsi que leur valeur estimée.",
+      180
+    )
+    pdf.text(declarationInstruction, 20, metaBottom + 9)
 
     const x = 20
-    let y = 68
+    let y = metaBottom + 14 + declarationInstruction.length * 5
     const colW = [20, 100, 30, 30]
-    const headerH = 9
+    const headerH = 14
     const rowH = 9
 
     drawTableHeader(pdf, x, y, colW, headerH)
@@ -1270,7 +1282,7 @@ function exportColissagePDF() {
       }
     }
 
-    if (y + rowH > limitY) {
+    if (y + 62 > limitY) {
       pdf.addPage()
       drawHeader(pdf)
       y = 40
@@ -1337,135 +1349,145 @@ function drawScannedListMeta(pdf) {
   pdf.text(`Nombre total de lignes scannées : ${colisFiltresTries.value.length}`, 20, y)
 }
 
-function exportListeScanneePDF() {
-  try {
-    const pdf = new jsPDF("p", "mm", "a4")
+async function exportListeScanneePDF() {
+  if (!chargement.value) return
 
-    drawScannedListHeader(pdf)
-    drawScannedListMeta(pdf)
+  const pdf = new jsPDF({ unit: "mm", format: "a4" })
+  const marginX = 20
+  const pageW = pdf.internal.pageSize.getWidth()
+  const pageH = pdf.internal.pageSize.getHeight()
 
-    let y = 78
-    const pageH = 297
-    const bottomMargin = 20
-    const limitY = pageH - bottomMargin
+  drawScannedListHeader(pdf)
+  let y = 58
 
-    if (!scannedRecipientGroups.value.length) {
-      pdf.setFontSize(12)
-      pdf.text("Aucun colis scanné.", 20, y)
-      pdf.save(`liste_scannes_${detailId.value}.pdf`)
-      return
+  // Tableau prévu pour être complété à la main au stylo/bic.
+  // On garde uniquement les informations déjà connues :
+  // Colis et nombre de colis.
+  // Les colonnes Contenu et Valeur restent volontairement vides.
+  const colW = [40, 18, 72, 40] // Colis / Nb / Contenu / Valeur
+  const tableW = colW.reduce((a, b) => a + b, 0)
+  const x = marginX
+
+  const drawTableHeader = () => {
+    pdf.setFillColor(245, 245, 245)
+    pdf.setDrawColor(120, 120, 120)
+    pdf.rect(x, y, tableW, 10, "FD")
+
+    pdf.setFont("helvetica", "bold")
+    pdf.setFontSize(8)
+    pdf.setTextColor(20, 20, 20)
+
+    let cx = x
+    const headers = ["Colis", "Nb", "Contenu exact et descriptif", "Valeur estimée (€)"]
+
+    headers.forEach((label, i) => {
+      const lines = pdf.splitTextToSize(label, colW[i] - 4)
+      pdf.text(lines, cx + 2, y + 4.5)
+      cx += colW[i]
+    })
+
+    let bx = x
+    for (const w of colW) {
+      pdf.rect(bx, y, w, 10)
+      bx += w
     }
 
-    for (const group of scannedRecipientGroups.value) {
-      if (y > limitY - 30) {
-        pdf.addPage()
-        drawScannedListHeader(pdf)
-        y = 40
-      }
+    y += 10
+  }
 
-      pdf.setFillColor(230, 230, 230)
-      pdf.rect(20, y, 170, 10, "F")
-      pdf.setFontSize(12)
-      pdf.text(`Destinataire : ${group.destinataire}`, 23, y + 7)
-      y += 7
+  const groups = scannedRecipientGroups.value || []
 
-      pdf.setFontSize(10)
-
-      if (group.expediteur) {
-        y += 6
-        pdf.text(`Expéditeur(s) : ${group.expediteur}`, 24, y)
-      }
-
-      if (group.telephoneDestinataire) {
-        y += 6
-        pdf.text(`Téléphone direct : ${group.telephoneDestinataire}`, 24, y)
-      }
-
-      if (group.telephoneDestinataireWhatsapp) {
-        y += 6
-        pdf.text(`WhatsApp : ${group.telephoneDestinataireWhatsapp}`, 24, y)
-      }
-
-      y += 8
-
-      pdf.setFillColor(245, 245, 245)
-      pdf.rect(24, y, 25, 8, "F")
-      pdf.rect(49, y, 70, 8, "F")
-      pdf.rect(119, y, 30, 8, "F")
-      pdf.rect(149, y, 35, 8, "F")
-
-      pdf.text("Date", 26, y + 5.5)
-      pdf.text("Colis", 51, y + 5.5)
-      pdf.text("Nb coli", 121, y + 5.5)
-      pdf.text("Statut", 151, y + 5.5)
-
-      y += 8
-
-      for (const item of group.items) {
-        if (y > limitY - 12) {
-          pdf.addPage()
-          drawScannedListHeader(pdf)
-          y = 40
-        }
-
-        pdf.rect(24, y, 25, 8)
-        pdf.rect(49, y, 70, 8)
-        pdf.rect(119, y, 30, 8)
-        pdf.rect(149, y, 35, 8)
-
-        const dateText = formatDateShort(item.date)
-        const coliText = String(item.coli || "")
-        const qtyText = String(item.nombreDeColis || 0)
-        const statutText = String(getStatutColis(item) || "-")
-
-        pdf.setFontSize(9)
-        pdf.text(dateText, 26, y + 5.5)
-        pdf.text(coliText.slice(0, 38), 51, y + 5.5)
-        pdf.text(qtyText, 121, y + 5.5)
-        pdf.text(statutText.slice(0, 18), 151, y + 5.5)
-
-        y += 8
-      }
-
-      if (y > limitY - 10) {
-        pdf.addPage()
-        drawScannedListHeader(pdf)
-        y = 40
-      }
-
-      pdf.setFontSize(10)
-      pdf.text(
-        `Total ${group.destinataire} : ${group.items.length} ligne(s) scannée(s) / ${group.totalColis} coli(s)`,
-        24,
-        y + 6
-      )
-      y += 14
-    }
-
-    if (y > limitY - 12) {
+  for (const group of groups) {
+    if (y > pageH - 45) {
       pdf.addPage()
       drawScannedListHeader(pdf)
-      y = 40
+      y = 58
     }
 
-    const totalGlobalColis = scannedRecipientGroups.value.reduce(
-      (sum, group) => sum + Number(group.totalColis || 0),
+    // Bloc destinataire
+    pdf.setFillColor(225, 225, 225)
+    pdf.rect(x, y, tableW, 8, "F")
+    pdf.setFont("helvetica", "bold")
+    pdf.setFontSize(9)
+    pdf.setTextColor(20, 20, 20)
+    pdf.text(`Destinataire : ${group.destinataire || ""}`, x + 3, y + 5.5)
+    y += 8
+
+    pdf.setFont("helvetica", "normal")
+    pdf.setFontSize(8.5)
+    pdf.text(
+      `Expéditeur(s) : ${Array.isArray(group.expediteurs) ? group.expediteurs.join(", ") : (group.expediteur || "")}`,
+      x + 3,
+      y + 5
+    )
+    y += 9
+
+    drawTableHeader(pdf)
+
+    const items = Array.isArray(group.items) ? group.items : []
+
+    for (const item of items) {
+      // Hauteur volontairement généreuse pour permettre une saisie manuscrite.
+      const rowH = 18
+
+      if (y + rowH > pageH - 25) {
+        pdf.addPage()
+        drawScannedListHeader(pdf)
+        y = 58
+        drawTableHeader(pdf)
+      }
+
+      let cx = x
+
+      const values = [
+        String(item.coli || ""),
+        String(item.nombreDeColis ?? item.qty ?? 1),
+      ]
+
+      pdf.setFont("helvetica", "normal")
+      pdf.setFontSize(8)
+      pdf.setTextColor(20, 20, 20)
+
+      // Colis
+      pdf.rect(cx, y, colW[0], rowH)
+      const colisLines = pdf.splitTextToSize(values[0], colW[0] - 4)
+      pdf.text(colisLines, cx + 2, y + 5)
+      cx += colW[0]
+
+      // Nombre
+      pdf.rect(cx, y, colW[1], rowH)
+      pdf.text(values[1], cx + 2, y + 5)
+      cx += colW[1]
+
+      // Contenu : cellule vide, réservée à l'écriture manuscrite.
+      pdf.rect(cx, y, colW[2], rowH)
+      cx += colW[2]
+
+      // Valeur : cellule vide, réservée à l'écriture manuscrite.
+      pdf.rect(cx, y, colW[3], rowH)
+
+      y += rowH
+    }
+
+    const totalLines = items.length
+    const totalColis = items.reduce(
+      (sum, item) => sum + Number(item.nombreDeColis ?? item.qty ?? 1),
       0
     )
 
-    pdf.setFontSize(12)
+    pdf.setFont("helvetica", "normal")
+    pdf.setFontSize(8)
     pdf.text(
-      `TOTAL GLOBAL : ${colisFiltresTries.value.length} ligne(s) scannée(s) / ${totalGlobalColis} coli(s)`,
-      20,
-      y + 8
+      `Total ${group.destinataire || "destinataire"} : ${totalLines} ligne(s) scannée(s) / ${totalColis} colis`,
+      x,
+      y + 6
     )
-
-    pdf.save(`liste_scannes_groupes_${detailId.value}.pdf`)
-  } catch (e) {
-    console.error(e)
-    toast("Erreur export liste scannée", { type: "error" })
+    y += 14
   }
+
+  pdf.save(`liste_scannes_groupes_${chargement.value.id || "chargement"}.pdf`)
 }
+
 
 /* =========================================================
    Lifecycle

@@ -1,4 +1,5 @@
 <script setup>
+import { TRANSPORT_TERMS, TRANSPORT_TERMS_VERSION, transportTermsAcceptance } from "../utils/transportTerms";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
@@ -43,6 +44,8 @@ const isEdit = computed(() => props.mode === "edit");
 const router = useRouter();
 const authStore = useAuthStore();
 const isPublicClientMode = computed(() => props.publicClientMode);
+const transportTermsAccepted = ref(false);
+const requiresTransportTerms = computed(() => isPublicClientMode.value || isPublicGenericForm.value);
 const canUseDictation = computed(() => authStore.isSuperAdmin && !isPublicClientMode.value && !props.disableDictation);
 const formGridClass = computed(() =>
   props.embedded || isPublicClientMode.value
@@ -505,6 +508,10 @@ const send = async () => {
   if (isSubmitting.value) return;
 
   try {
+    if (requiresTransportTerms.value && !transportTermsAccepted.value) {
+      toast.warning("Veuillez lire et accepter les conditions d’enlèvement et de transport.");
+      return;
+    }
     if (!customer.value.date || !customer.value.expediteur || !customer.value.destinataire) {
       toast("Remplis la date, l’expéditeur et le destinataire ⚠️", { type: "warning" });
       return;
@@ -534,7 +541,11 @@ const send = async () => {
     const telephoneDestinataire = withCallingCode(customer.value.telephoneDestinataire, destinationDirectCode.value);
     const telephoneDestinataireWhatsapp = withCallingCode(customer.value.telephoneDestinataireWhatsapp, destinationWhatsappCode.value);
 
+    const acceptance = requiresTransportTerms.value
+      ? transportTermsAcceptance(transportTermsAccepted.value, serverTimestamp())
+      : null;
     const payloadBase = {
+      ...(acceptance ? { transportTermsAcceptance: acceptance } : {}),
       numeroClient: selectedClientNumber.value || customer.value.numeroExpediteur || "",
       expediteur: customer.value.expediteur || "",
       statut: customer.value.statut || "",
@@ -590,6 +601,7 @@ const send = async () => {
       if (isPublicClientMode.value) {
         const name = splitFullName(customer.value.expediteur || "");
         const pickupRequestPayload = {
+          transportTermsAcceptance: acceptance,
           clientPrenom: name.prenom,
           clientNom: name.nom,
           clientPhone: customer.value.telephoneExpediteur || "",
@@ -665,6 +677,7 @@ const send = async () => {
           autoClose: 1800
         });
 
+        transportTermsAccepted.value = false;
         customer.value = {
           numeroExpediteur: "",
           expediteur: "",
@@ -1040,6 +1053,18 @@ onMounted(() => {
           {{ isSubmitting ? "Traitement..." : isEdit ? "Enregistrer les modifications" : "Enregistrer l'enlevement" }}
         </button>
       </aside>
+
+      <section v-if="requiresTransportTerms" class="rounded-lg border border-cyan-200 bg-white p-5 shadow-sm xl:col-span-full" aria-labelledby="transport-terms-title">
+        <h3 id="transport-terms-title" class="text-lg font-bold text-slate-950">Conditions d’enlèvement et de transport</h3>
+        <p class="mt-1 text-xs text-slate-500">Version du {{ TRANSPORT_TERMS_VERSION.split('-').reverse().join('/') }}</p>
+        <ol class="mt-4 list-decimal space-y-3 pl-5 text-sm leading-6 text-slate-700">
+          <li v-for="clause in TRANSPORT_TERMS" :key="clause">{{ clause }}</li>
+        </ol>
+        <label class="mt-5 flex cursor-pointer items-start gap-3 rounded-lg bg-cyan-50 p-4">
+          <input v-model="transportTermsAccepted" type="checkbox" required class="mt-1 h-5 w-5 shrink-0 accent-cyan-700" />
+          <span class="text-sm font-semibold text-slate-900">J’ai lu et j’accepte les conditions d’enlèvement et de transport ci-dessus.</span>
+        </label>
+      </section>
 
       <button v-if="isPublicClientMode" type="submit" class="w-full rounded-lg bg-cyan-700 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-cyan-800 disabled:opacity-60" :disabled="isSubmitting">
         {{ isSubmitting ? "Envoi..." : "Envoyer le formulaire" }}
