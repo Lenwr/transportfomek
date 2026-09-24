@@ -1,4 +1,6 @@
 <script setup>
+import { packageDeclaration, formatDeclaredValue } from "../utils/packageDeclaration.js"
+import { drawWrappedTableRow } from "../utils/pdfTableRow.js"
 import { ref, computed, onMounted } from "vue"
 import { useRoute } from "vue-router"
 import { StreamBarcodeReader } from "vue-barcode-reader"
@@ -187,6 +189,7 @@ async function buildItemFromEnlevement(parsed) {
     destinataire: data.destinataire || "",
     telephoneDestinataire: data.telephoneDestinataire || "",
     coli: coliLabel,
+    ...packageDeclaration(group, group.details?.[parsed.detailIndex]),
     nombreDeColis: Number(data.nombreDeColis) || 0,
     clientId: parsed.clientId,
     colisIndex: parsed.colisIndex,
@@ -243,21 +246,7 @@ async function onDecode(text) {
     scanLock.value = true
     lastScannedValue.value = text
 
-    const itemBase =
-      parsed.source === "legacy" && parsed.expediteur
-        ? {
-            id: `${parsed.clientId}-${parsed.colisIndex}-${parsed.detailIndex}`,
-            expediteur: parsed.expediteur,
-            destinataire: parsed.destinataire,
-            telephoneDestinataire: parsed.telephoneDestinataire,
-            coli: parsed.coli,
-            nombreDeColis: Number(parsed.nombreDeColis) || 0,
-            clientId: parsed.clientId,
-            colisIndex: parsed.colisIndex,
-            detailIndex: parsed.detailIndex,
-            chargementId: detailId.value
-          }
-        : await buildItemFromEnlevement(parsed)
+    const itemBase = await buildItemFromEnlevement(parsed)
 
     const deja = chargement.value?.packagesTable?.some((i) => i.id === itemBase.id)
     if (deja) {
@@ -345,11 +334,12 @@ function drawScannedTableHeader(pdf, y) {
   pdf.setFont("helvetica", "bold")
   pdf.setFontSize(9)
 
-  pdf.text("Expéditeur", 16, y + 6.5)
-  pdf.text("Destinataire", 54, y + 6.5)
-  pdf.text("Colis", 95, y + 6.5)
-  pdf.text("Qté", 148, y + 6.5)
-  pdf.text("Date", 160, y + 6.5)
+  let x = 14
+  const widths = [30, 30, 35, 52, 35]
+  ;["Expéditeur", "Destinataire", "Colis", "Contenu détaillé", "Valeur (€)"].forEach((label, i) => {
+    pdf.text(label, x + 3, y + 6.5)
+    x += widths[i]
+  })
 }
 
 function exportListeScanneePDF() {
@@ -376,48 +366,16 @@ function exportListeScanneePDF() {
     }
 
     for (const item of packagesSorted.value) {
-      const exp = String(item.expediteur || "-")
-      const dest = String(item.destinataire || "-")
-      const coli = String(item.coli || "-")
-      const qty = String(item.nombreDeColis || 0)
-      const dateTxt = formatDateShort(item.date)
-
-      const expLines = pdf.splitTextToSize(exp, 34)
-      const destLines = pdf.splitTextToSize(dest, 38)
-      const coliLines = pdf.splitTextToSize(coli, 50)
-      const dateLines = pdf.splitTextToSize(dateTxt, 28)
-
-      const maxLines = Math.max(
-        expLines.length,
-        destLines.length,
-        coliLines.length,
-        dateLines.length,
-        1
-      )
-
-      const rowHeight = Math.max(10, maxLines * 5 + 3)
-
-      if (y + rowHeight > bottomLimit) {
-        pdf.addPage()
-        drawPdfHeader(pdf, "Liste scannée")
-        y = 20
-        drawScannedTableHeader(pdf, y)
-        y += 10
-      }
-
-      pdf.setDrawColor(230, 230, 230)
-      pdf.rect(14, y, 182, rowHeight)
-
       pdf.setFont("helvetica", "normal")
       pdf.setFontSize(8.5)
-
-      pdf.text(expLines, 16, y + 5)
-      pdf.text(destLines, 54, y + 5)
-      pdf.text(coliLines, 95, y + 5)
-      pdf.text(qty, 150, y + 5)
-      pdf.text(dateLines, 160, y + 5)
-
-      y += rowHeight
+      y = drawWrappedTableRow(pdf, [item.expediteur || "-", item.destinataire || "-", [item.coli, formatDateShort(item.date)].filter(Boolean).join("\n"), item.contenuDetaille || "", item.valeurEstimee == null ? "" : Number(item.valeurEstimee).toFixed(2)], [30, 30, 35, 52, 35], 14, y, bottomLimit, () => {
+        pdf.addPage()
+        drawPdfHeader(pdf, "Liste scannée")
+        drawScannedTableHeader(pdf, 35)
+        pdf.setFont("helvetica", "normal")
+        pdf.setFontSize(8.5)
+        return 45
+      })
     }
 
     pdf.save(`liste_scannee_${detailId.value}.pdf`)
@@ -504,6 +462,8 @@ onMounted(chargerChargement)
                   <div><span class="text-slate-400">Destinataire :</span> {{ item.destinataire }}</div>
                   <div><span class="text-slate-400">Téléphone :</span> {{ item.telephoneDestinataire || "—" }}</div>
                   <div><span class="text-slate-400">Colis :</span> {{ item.coli }}</div>
+                  <div class="whitespace-pre-wrap">Contenu : {{ item.contenuDetaille || "Non renseigné" }}</div>
+                  <div>Valeur estimée : {{ formatDeclaredValue(item.valeurEstimee) }}</div>
                   <div><span class="text-slate-400">Qté :</span> {{ item.nombreDeColis }}</div>
                   <div><span class="text-slate-400">Date :</span> {{ formatDateTime(item.date) }}</div>
                   <div><span class="text-slate-400">Statut :</span> {{ item.status }}</div>
@@ -527,6 +487,8 @@ onMounted(chargerChargement)
                     <th class="text-left text-sm font-semibold px-4 py-3">Destinataire</th>
                     <th class="text-left text-sm font-semibold px-4 py-3">Téléphone</th>
                     <th class="text-left text-sm font-semibold px-4 py-3">Colis</th>
+                    <th class="text-left text-sm font-semibold px-4 py-3">Contenu détaillé</th>
+                    <th class="text-left text-sm font-semibold px-4 py-3">Valeur estimée (€)</th>
                     <th class="text-left text-sm font-semibold px-4 py-3">Qté</th>
                     <th class="text-left text-sm font-semibold px-4 py-3">Date</th>
                     <th class="text-left text-sm font-semibold px-4 py-3">Statut</th>
@@ -543,6 +505,8 @@ onMounted(chargerChargement)
                     <td class="px-4 py-3 text-sm">{{ item.destinataire }}</td>
                     <td class="px-4 py-3 text-sm">{{ item.telephoneDestinataire || "—" }}</td>
                     <td class="px-4 py-3 text-sm">{{ item.coli }}</td>
+                    <td class="px-4 py-3 text-sm whitespace-pre-wrap">{{ item.contenuDetaille || "Non renseigné" }}</td>
+                    <td class="px-4 py-3 text-sm">{{ formatDeclaredValue(item.valeurEstimee) }}</td>
                     <td class="px-4 py-3 text-sm">{{ item.nombreDeColis }}</td>
                     <td class="px-4 py-3 text-sm whitespace-nowrap">{{ formatDateTime(item.date) }}</td>
                     <td class="px-4 py-3 text-sm">
@@ -553,7 +517,7 @@ onMounted(chargerChargement)
                   </tr>
 
                   <tr v-if="packagesSorted.length === 0">
-                    <td colspan="7" class="px-4 py-8 text-center text-slate-400">
+                    <td colspan="9" class="px-4 py-8 text-center text-slate-400">
                       Aucun colis scanné pour le moment
                     </td>
                   </tr>

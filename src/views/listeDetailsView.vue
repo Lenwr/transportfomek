@@ -1,4 +1,5 @@
 <script setup>
+import { packageDeclaration } from "../utils/packageDeclaration.js"
 import { appendTransportTerms } from "../utils/transportTerms"
 import { confirmToast } from "../utils/confirmToast.js"
 import { transportFomekTrackingUrl } from "../utils/publicTracking"
@@ -449,6 +450,7 @@ function buildChargementPackageItem(row, chargementId) {
     telephoneDestinataireWhatsapp: client.value.telephoneDestinataireWhatsapp || "",
 
     coli: row.name,
+    ...packageDeclaration(client.value.colis?.[row.colisIndex], client.value.colis?.[row.colisIndex]?.details?.[row.detailIndex]),
 
     nombreDeColis: Number(client.value.nombreDeColis || totalPackages.value || 0),
 

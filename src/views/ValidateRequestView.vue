@@ -99,7 +99,7 @@
               <div
                 v-for="(c, index) in form.colis"
                 :key="index"
-                class="flex items-center gap-2"
+                class="flex flex-wrap items-center gap-2"
               >
                 <input
                   type="number"
@@ -120,6 +120,7 @@
                 >
                   Supprimer
                 </button>
+                <PackageDeclarationFields :model="c" />
               </div>
             </div>
           </section>
@@ -259,6 +260,9 @@
   </template>
   
   <script setup>
+import PackageDeclarationFields from "../components/PackageDeclarationFields.vue";
+import { packageDeclaration, validDeclaredValue } from "../utils/packageDeclaration.js";
+
 import { confirmToast } from "../utils/confirmToast.js"
   import { ref, onMounted, computed } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
@@ -343,6 +347,7 @@ import { confirmToast } from "../utils/confirmToast.js"
   
         return {
           nom: label,
+          ...packageDeclaration(c),
           quantite: q,
           type: typeKey,
           details,
@@ -375,6 +380,7 @@ import { confirmToast } from "../utils/confirmToast.js"
         colis: Array.isArray(data.colis)
           ? data.colis.map((c) => ({
               nom: c.nom || c.article || '',
+              ...packageDeclaration(c),
               quantite: c.quantite || (c.details?.length || 1),
               type: c.type || '',
               details: c.details || [],
@@ -414,6 +420,10 @@ import { confirmToast } from "../utils/confirmToast.js"
       const d = demande.value
       const f = form.value
   
+      if (f.colis.some(c => !validDeclaredValue(c.valeurEstimee))) {
+        toast.error("La valeur estimée doit être un montant positif ou nul.");
+        return;
+      }
       // reconstruit colis final
       const colisFinal = rebuildColisWithDetails(f.colis)
       const nbColis = colisFinal.reduce(

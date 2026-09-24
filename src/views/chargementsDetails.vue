@@ -1,4 +1,6 @@
 <script setup>
+import { packageDeclaration, formatDeclaredValue, buildPackingRows } from "../utils/packageDeclaration.js"
+import { drawWrappedTableRow } from "../utils/pdfTableRow.js"
 import { messagingEndpoint } from "../utils/messagingEndpoint"
 import { confirmToast } from "../utils/confirmToast.js"
 import { groupScannedPackages, recipientKey } from "../utils/scannedPackages"
@@ -173,9 +175,10 @@ watch(
   { immediate: true }
 )
 
+const declarationsById = ref(new Map())
 const colisFiltresTries = computed(() =>
   (chargement.value?.packagesTable || [])
-    .slice()
+    .map(item => ({ ...item, ...declarationsById.value.get(item.id) }))
     .sort((a, b) => new Date(a.date) - new Date(b.date))
 )
 
@@ -451,6 +454,7 @@ async function buildItemFromEnlevement(clientId, colisIndex, detailIndex) {
     telephoneDestinataireDirect: telephoneDestinataire,
     telephoneDestinataireWhatsapp,
     coli,
+    ...packageDeclaration(group, group.details?.[detailIndex]),
     nombreDeColis: Number(data.nombreDeColis) || 0,
     clientId,
     colisIndex,
@@ -503,6 +507,7 @@ async function buildItemsFromWholeEnlevement(clientId) {
     telephoneDestinataireWhatsapp: data.telephoneDestinataireWhatsapp || "",
     destination: data.destination || "Cameroun",
     coli: row.coli,
+    ...packageDeclaration(row.group, row.detail || {}),
     nombreDeColis: Number(data.nombreDeColis) || rows.length,
     clientId,
     colisIndex: row.colisIndex,
@@ -521,6 +526,7 @@ async function chargerStatutsColis() {
   if (!chargement.value) return
 
   const map = new Map()
+  const declarations = new Map()
   const byClient = {}
 
   for (const it of chargement.value.packagesTable || []) {
@@ -535,7 +541,9 @@ async function chargerStatutsColis() {
     const arr = snap.data().colis || []
 
     for (const it of list) {
-      const detail = arr[it.colisIndex]?.details?.[it.detailIndex]
+      const group = arr[it.colisIndex]
+      const detail = group?.details?.[it.detailIndex]
+      if (group && (group.contenuDetaille != null || group.valeurEstimee != null || detail?.contenuDetaille != null || detail?.valeurEstimee != null)) declarations.set(it.id, packageDeclaration(group, detail))
       if (!detail) continue
 
       const key = `${it.clientId}-${it.colisIndex}-${it.detailIndex}`
@@ -543,12 +551,13 @@ async function chargerStatutsColis() {
     }
   }
 
+  declarationsById.value = declarations
   statutsColisMap.value = map
 }
 
 watch(() => chargement.value?.id, async (id) => {
   if (id) await Promise.all([chargerStatutsColis(), loadFinancialStats()])
-})
+}, { immediate: true })
 
 watch(
   () => (chargement.value?.packagesTable || []).map((item) => item.clientId).filter(Boolean).join("|"),
@@ -575,18 +584,7 @@ const scannedRecipientGroups = computed(() => groupScannedPackages(colisFiltresT
 const displayedContainerPackages = computed(() => groupScannedPackages(filteredContainerPackages.value).flatMap(group => group.items))
 const startsRecipientGroup = index => index === 0 || recipientKey(displayedContainerPackages.value[index]?.destinataire) !== recipientKey(displayedContainerPackages.value[index - 1]?.destinataire)
 
-const colissage = computed(() => {
-  const counts = new Map()
-
-  for (const it of chargement.value?.packagesTable || []) {
-    const label = parseLabelFromColi(it.coli)
-    counts.set(label, (counts.get(label) || 0) + 1)
-  }
-
-  return [...counts.entries()]
-    .map(([label, qty]) => ({ label, qty }))
-    .sort((a, b) => a.label.localeCompare(b.label, "fr"))
-})
+const colissage = computed(() => buildPackingRows(colisFiltresTries.value))
 
 const totalScannedLines = computed(() => colisFiltresTries.value.length)
 
@@ -747,7 +745,10 @@ async function processScanPayloadNow(text) {
 
       const nowIso = new Date().toISOString()
 
+      const pickup = await getEnlevementData(clientId)
+      const declaration = packageDeclaration(pickup.colis?.[colisIndex], pickup.colis?.[colisIndex]?.details?.[detailIndex])
       newItems = [{
+        ...declaration,
         id,
         expediteur,
         destinataire,
@@ -1239,9 +1240,9 @@ function exportColissagePDF() {
     const rows = colissage.value.length
       ? colissage.value.map((r) => ({
           qte: String(r.qty),
-          detail: r.label,
+          detail: [r.label, r.contenuDetaille].filter(Boolean).join(" — "),
           poids: "",
-          valeur: "",
+          valeur: r.valeurTotale == null ? "" : r.valeurTotale.toFixed(2),
         }))
       : []
 
@@ -1254,31 +1255,13 @@ function exportColissagePDF() {
       y += rowH
     } else {
       for (const row of rows) {
-        if (y + rowH > limitY) {
+        y = drawWrappedTableRow(pdf, [row.qte, row.detail, row.poids, row.valeur], colW, x, y, limitY, () => {
           pdf.addPage()
           drawHeader(pdf)
-          y = 68
-          drawTableHeader(pdf, x, y, colW, headerH)
-          y += headerH
-        }
-
-        pdf.rect(x, y, colW[0], rowH)
-        pdf.text(row.qte, x + 3, y + rowH - 2.5)
-
-        pdf.rect(x + colW[0], y, colW[1], rowH)
-        pdf.text(String(row.detail), x + colW[0] + 3, y + rowH - 2.5)
-
-        pdf.rect(x + colW[0] + colW[1], y, colW[2], rowH)
-        pdf.text(row.poids || "", x + colW[0] + colW[1] + 3, y + rowH - 2.5)
-
-        pdf.rect(x + colW[0] + colW[1] + colW[2], y, colW[3], rowH)
-        pdf.text(
-          row.valeur || "",
-          x + colW[0] + colW[1] + colW[2] + 3,
-          y + rowH - 2.5
-        )
-
-        y += rowH
+          drawTableHeader(pdf, x, 68, colW, headerH)
+          pdf.setFontSize(11)
+          return 68 + headerH
+        })
       }
     }
 
@@ -1360,10 +1343,7 @@ async function exportListeScanneePDF() {
   drawScannedListHeader(pdf)
   let y = 58
 
-  // Tableau prévu pour être complété à la main au stylo/bic.
-  // On garde uniquement les informations déjà connues :
-  // Colis et nombre de colis.
-  // Les colonnes Contenu et Valeur restent volontairement vides.
+  // Déclarations renseignées lors de l’enregistrement, une ligne par colis scanné.
   const colW = [40, 18, 72, 40] // Colis / Nb / Contenu / Valeur
   const tableW = colW.reduce((a, b) => a + b, 0)
   const x = marginX
@@ -1427,56 +1407,26 @@ async function exportListeScanneePDF() {
     const items = Array.isArray(group.items) ? group.items : []
 
     for (const item of items) {
-      // Hauteur volontairement généreuse pour permettre une saisie manuscrite.
-      const rowH = 18
-
-      if (y + rowH > pageH - 25) {
+      pdf.setFont("helvetica", "normal")
+      pdf.setFontSize(8)
+      pdf.setTextColor(20, 20, 20)
+      y = drawWrappedTableRow(pdf, [item.coli || "", "1", item.contenuDetaille || "", item.valeurEstimee == null ? "" : Number(item.valeurEstimee).toFixed(2)], colW, x, y, pageH - 25, () => {
         pdf.addPage()
         drawScannedListHeader(pdf)
         y = 58
         drawTableHeader(pdf)
-      }
-
-      let cx = x
-
-      const values = [
-        String(item.coli || ""),
-        String(item.nombreDeColis ?? item.qty ?? 1),
-      ]
-
-      pdf.setFont("helvetica", "normal")
-      pdf.setFontSize(8)
-      pdf.setTextColor(20, 20, 20)
-
-      // Colis
-      pdf.rect(cx, y, colW[0], rowH)
-      const colisLines = pdf.splitTextToSize(values[0], colW[0] - 4)
-      pdf.text(colisLines, cx + 2, y + 5)
-      cx += colW[0]
-
-      // Nombre
-      pdf.rect(cx, y, colW[1], rowH)
-      pdf.text(values[1], cx + 2, y + 5)
-      cx += colW[1]
-
-      // Contenu : cellule vide, réservée à l'écriture manuscrite.
-      pdf.rect(cx, y, colW[2], rowH)
-      cx += colW[2]
-
-      // Valeur : cellule vide, réservée à l'écriture manuscrite.
-      pdf.rect(cx, y, colW[3], rowH)
-
-      y += rowH
+        pdf.setFont("helvetica", "normal")
+        pdf.setFontSize(8)
+        return y
+      })
     }
 
     const totalLines = items.length
-    const totalColis = items.reduce(
-      (sum, item) => sum + Number(item.nombreDeColis ?? item.qty ?? 1),
-      0
-    )
+    const totalColis = items.length
 
     pdf.setFont("helvetica", "normal")
     pdf.setFontSize(8)
+    if (y + 10 > pageH - 25) { pdf.addPage(); drawScannedListHeader(pdf); y = 58 }
     pdf.text(
       `Total ${group.destinataire || "destinataire"} : ${totalLines} ligne(s) scannée(s) / ${totalColis} colis`,
       x,
@@ -1799,6 +1749,8 @@ onMounted(async () => {
                 <p>Direct : {{ item.telephoneDestinataireDirect || item.telephoneDestinataire || "-" }}</p>
                 <p>WhatsApp : {{ item.telephoneDestinataireWhatsapp || "-" }}</p>
                 <p>Total colis : {{ item.nombreDeColis || 0 }}</p>
+                <p class="whitespace-pre-wrap">Contenu : {{ item.contenuDetaille || "Non renseigné" }}</p>
+                <p>Valeur estimée : {{ formatDeclaredValue(item.valeurEstimee) }}</p>
                 <p>Date : {{ formatDateTime(item.date) }}</p>
               </div>
               <button
@@ -1825,6 +1777,8 @@ onMounted(async () => {
                   <th class="px-5 py-3">Direct</th>
                   <th class="px-5 py-3">WhatsApp</th>
                   <th class="px-5 py-3">Colis</th>
+                  <th class="px-5 py-3">Contenu détaillé</th>
+                  <th class="px-5 py-3">Valeur estimée (€)</th>
                   <th class="px-5 py-3">Total colis</th>
                   <th class="px-5 py-3">Date scan</th>
                   <th class="px-5 py-3">Statut</th>
@@ -1835,7 +1789,7 @@ onMounted(async () => {
               <tbody class="divide-y divide-slate-100">
                 <template v-for="(item, i) in displayedContainerPackages" :key="item.id || i">
                 <tr v-if="startsRecipientGroup(i)" class="bg-cyan-50">
-                  <th colspan="9" scope="rowgroup" class="px-5 py-3 text-left font-bold text-cyan-950">Destinataire : {{ item.destinataire?.trim() || 'Sans destinataire' }}</th>
+                  <th colspan="11" scope="rowgroup" class="px-5 py-3 text-left font-bold text-cyan-950">Destinataire : {{ item.destinataire?.trim() || 'Sans destinataire' }}</th>
                 </tr>
                 <tr class="hover:bg-slate-50">
                   <td class="whitespace-nowrap px-5 py-4 font-semibold text-slate-950">{{ item.expediteur || "-" }}</td>
@@ -1843,6 +1797,8 @@ onMounted(async () => {
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ item.telephoneDestinataireDirect || item.telephoneDestinataire || "-" }}</td>
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ item.telephoneDestinataireWhatsapp || "-" }}</td>
                   <td class="px-5 py-4 text-slate-600">{{ item.coli || "-" }}</td>
+                  <td class="whitespace-pre-wrap px-5 py-4">{{ item.contenuDetaille || "Non renseigné" }}</td>
+                  <td class="px-5 py-4">{{ formatDeclaredValue(item.valeurEstimee) }}</td>
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ item.nombreDeColis || 0 }}</td>
                   <td class="whitespace-nowrap px-5 py-4 text-slate-600">{{ formatDateTime(item.date) }}</td>
                   <td class="whitespace-nowrap px-5 py-4">
@@ -1864,7 +1820,7 @@ onMounted(async () => {
 
                 </template>
                 <tr v-if="!displayedContainerPackages.length">
-                  <td class="px-5 py-10 text-center text-slate-500" colspan="9">
+                  <td class="px-5 py-10 text-center text-slate-500" colspan="11">
                     {{ packageSearch ? "Aucun colis ne correspond à la recherche." : "Aucun colis scanné pour le moment." }}
                   </td>
                 </tr>
@@ -1877,7 +1833,7 @@ onMounted(async () => {
           <div class="flex flex-col gap-3 border-b border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
             <div class="min-w-0">
               <h3 class="font-bold text-slate-950">Tableau de colissage</h3>
-              <p class="text-sm text-slate-500">Regroupement automatique par type d’article.</p>
+              <p class="text-sm text-slate-500">Regroupement par article, contenu et valeur déclarée par colis.</p>
             </div>
             <button
               class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:border-cyan-200 hover:text-cyan-800 sm:w-auto"
@@ -1894,15 +1850,19 @@ onMounted(async () => {
                 <tr>
                   <th class="px-5 py-3">Article</th>
                   <th class="px-5 py-3">Quantité</th>
+                  <th class="px-5 py-3">Contenu détaillé</th>
+                  <th class="px-5 py-3">Valeur estimée totale (€)</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100">
-                <tr v-for="row in colissage" :key="row.label" class="hover:bg-slate-50">
+                <tr v-for="row in colissage" :key="row.key" class="hover:bg-slate-50">
                   <td class="px-5 py-4 font-semibold capitalize text-slate-950">{{ row.label }}</td>
                   <td class="px-5 py-4 text-slate-600">{{ row.qty }}</td>
+                  <td class="whitespace-pre-wrap px-5 py-4">{{ row.contenuDetaille || "Non renseigné" }}</td>
+                  <td class="px-5 py-4">{{ formatDeclaredValue(row.valeurTotale) }}</td>
                 </tr>
                 <tr v-if="!colissage.length">
-                  <td class="px-5 py-10 text-center text-slate-500" colspan="2">
+                  <td class="px-5 py-10 text-center text-slate-500" colspan="4">
                     Pas encore de données de colissage.
                   </td>
                 </tr>

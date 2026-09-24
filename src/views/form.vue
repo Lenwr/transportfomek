@@ -1,4 +1,7 @@
 <script setup>
+import PackageDeclarationFields from "../components/PackageDeclarationFields.vue";
+import { packageDeclaration, validDeclaredValue } from "../utils/packageDeclaration.js";
+
 import { TRANSPORT_TERMS, TRANSPORT_TERMS_VERSION, transportTermsAcceptance } from "../utils/transportTerms";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
@@ -250,7 +253,7 @@ const loadCustomerDirectory = async () => {
   }
 };
 
-const emptyPackage = () => ({ nom: "", quantite: 1, statutColis: "réceptionné", customArticle: false });
+const emptyPackage = () => ({ nom: "", contenuDetaille: "", valeurEstimee: "", quantite: 1, statutColis: "réceptionné", customArticle: false });
 const colisList = ref([emptyPackage()]);
 
 const selectCatalogArticle = (colis, value) => {
@@ -454,6 +457,7 @@ watch(
 
         return {
           nom: g.nom || g.article || "",
+          ...packageDeclaration(g),
           quantite: Number(qty) || 1,
           statutColis: stat,
           customArticle: false
@@ -501,7 +505,7 @@ const buildColis = () =>
         article: label
       }));
 
-      return { nom: label, quantite: q, type: typeKey, details };
+      return { nom: label, quantite: q, type: typeKey, details, ...packageDeclaration(c) };
     });
 
 const send = async () => {
@@ -517,6 +521,10 @@ const send = async () => {
       return;
     }
 
+    if (colisList.value.some(c => !validDeclaredValue(c.valeurEstimee))) {
+      toast("La valeur estimée doit être un montant positif ou nul.", { type: "warning" });
+      return;
+    }
     const colisData = buildColis();
     if (!colisData.length) {
       toast("Ajoute au moins 1 colis (nom + quantité) ⚠️", { type: "warning" });
@@ -943,6 +951,7 @@ onMounted(() => {
               <button type="button" class="mt-6 h-11 rounded-lg border border-red-200 bg-red-50 text-sm font-bold text-red-700 hover:bg-red-100" @click="supprimerColis(index)">
                 X
               </button>
+              <PackageDeclarationFields :model="colis" class="sm:col-span-3" />
             </div>
           </div>
 
