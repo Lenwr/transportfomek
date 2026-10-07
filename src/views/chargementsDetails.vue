@@ -46,6 +46,8 @@ const lastQueuedScan = ref({ text: "", at: 0 })
 const scanCooldownUntil = ref(0)
 const sendingTrackingLinks = ref(false)
 const financialPickups = ref([])
+const unavailableFinancialCount = ref(0)
+let financialRequestId = 0
 const loadingFinancialStats = ref(false)
 const packageSearch = ref("")
 const removingPackageId = ref("")
@@ -644,27 +646,34 @@ const formatMoney = (value) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(Number(value) || 0)
 
 async function loadFinancialStats() {
+  const requestId = ++financialRequestId
+  unavailableFinancialCount.value = 0
   if (!canViewFinancial.value) {
     financialPickups.value = []
+    loadingFinancialStats.value = false
     return
   }
 
   const clientIds = [...new Set((chargement.value?.packagesTable || []).map((item) => item.clientId).filter(Boolean))]
   if (!clientIds.length) {
     financialPickups.value = []
+    loadingFinancialStats.value = false
     return
   }
 
   loadingFinancialStats.value = true
   try {
-    financialPickups.value = await Promise.all(
+    const results = await Promise.allSettled(
       clientIds.map(async (clientId) => ({ id: clientId, ...(await getEnlevementData(clientId)) }))
     )
+    if (requestId !== financialRequestId) return
+    financialPickups.value = results.filter(result => result.status === "fulfilled").map(result => result.value)
+    unavailableFinancialCount.value = results.filter(result => result.status === "rejected").length
   } catch (error) {
     console.error("Statistiques financières indisponibles", error)
     toast("Impossible de charger les statistiques financières", { type: "error" })
   } finally {
-    loadingFinancialStats.value = false
+    if (requestId === financialRequestId) loadingFinancialStats.value = false
   }
 }
 
@@ -1556,6 +1565,10 @@ onMounted(async () => {
         </span>
       </div>
 
+      <p v-if="!loadingFinancialStats && unavailableFinancialCount" role="status" class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+        Bilan incomplet : {{ unavailableFinancialCount }} enlèvement(s) introuvable(s) ou inaccessible(s).
+        Les montants affichés concernent uniquement les dossiers disponibles.
+      </p>
       <div v-if="loadingFinancialStats" class="mt-5 rounded-lg bg-slate-50 p-5 text-sm text-slate-500">
         Calcul des statistiques…
       </div>

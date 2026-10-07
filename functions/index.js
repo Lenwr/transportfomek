@@ -14,7 +14,10 @@ const twilio = require("twilio");
 const crypto = require("crypto");
 
 admin.initializeApp();
-setGlobalOptions({ region: "us-central1" });
+setGlobalOptions({
+  region: "us-central1",
+  secrets: ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_NUMBER"],
+});
 
 /* =========================
    Configuration & Constantes
@@ -882,7 +885,7 @@ exports.onReservationRequestStatusUpdate = onDocumentUpdated(
 ========================= */
 
 exports.sendInvoiceSMS = onRequest(
-  { cors: true },
+  { cors: true, cpu: "gcf_gen1", concurrency: 1, minInstances: 0, maxInstances: 1 },
   withCors(async (req, res) => {
     try {
       await requireAuth(req);
@@ -953,7 +956,7 @@ exports.sendBroadcastSMS = onRequest(
 );
 
 exports.sendContainerTrackingLinks = onRequest(
-  { cors: true },
+  { cors: true, cpu: "gcf_gen1", concurrency: 1, minInstances: 0, maxInstances: 1 },
   withCors(async (req, res) => {
     try {
       const user = await requireSuperAdmin(req);

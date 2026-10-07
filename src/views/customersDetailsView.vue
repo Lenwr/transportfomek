@@ -37,8 +37,19 @@
   // ======================
   // Liste des enlèvements du client
   // ======================
+  const getEnlevementTimestamp = (item) => {
+    const value = item?.date || item?.createdAt
+    if (!value) return 0
+    if (typeof value?.toDate === 'function') return value.toDate().getTime()
+    if (value instanceof Date) return value.getTime()
+    const timestamp = new Date(value).getTime()
+    return Number.isNaN(timestamp) ? 0 : timestamp
+  }
+
   const listeColis = computed(() => {
-    return EnlevementsCol.value || []
+    return [...(EnlevementsCol.value || [])].sort(
+      (a, b) => getEnlevementTimestamp(b) - getEnlevementTimestamp(a)
+    )
   })
   
   const formatDateTime = (dateTimeString) => {
