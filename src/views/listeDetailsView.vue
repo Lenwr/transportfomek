@@ -6,13 +6,13 @@ import { transportFomekTrackingUrl } from "../utils/publicTracking"
 
 import { messagingEndpoint } from "../utils/messagingEndpoint"
 
-import { ref, computed, watch, nextTick, onMounted } from "vue"
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from "vue"
 
 import { useRoute, useRouter } from "vue-router"
 
 import { useFirestore, useCollection, useDocument } from "vuefire"
 
-import { arrayUnion, collection, doc, updateDoc, deleteDoc, getDoc, getDocs, addDoc, serverTimestamp } from "firebase/firestore"
+import { arrayUnion, collection, doc, updateDoc, deleteDoc, deleteField, getDoc, getDocs, addDoc, serverTimestamp, setDoc, onSnapshot } from "firebase/firestore"
 
 import { getAuth } from "firebase/auth"
 
@@ -99,6 +99,68 @@ const sortedChargements = computed(() =>
   })
 
 )
+
+// Les conteneurs volumineux stockent leurs colis dans une sous-collection.
+// Utiliser ici la même source de vérité que la fiche du conteneur empêche
+// un ancien packagesTable invisible de produire un faux badge.
+const migratedPackagesByLoadingId = ref({})
+const migratedPackageListeners = new Map()
+
+watch(
+  () => (chargements.value || [])
+    .filter((item) => item.packagesStorage === "subcollection-v1")
+    .map((item) => item.id)
+    .sort()
+    .join("|"),
+  () => {
+    const ids = new Set(
+      (chargements.value || [])
+        .filter((item) => item.packagesStorage === "subcollection-v1")
+        .map((item) => item.id),
+    )
+
+    for (const [id, stop] of migratedPackageListeners) {
+      if (ids.has(id)) continue
+      stop()
+      migratedPackageListeners.delete(id)
+      const next = { ...migratedPackagesByLoadingId.value }
+      delete next[id]
+      migratedPackagesByLoadingId.value = next
+    }
+
+    for (const id of ids) {
+      if (migratedPackageListeners.has(id)) continue
+      const stop = onSnapshot(
+        collection(db, "chargements", id, "packages"),
+        (snapshot) => {
+          const items = snapshot.docs
+            .filter((item) => /^chunk_\d+$/.test(item.id))
+            .sort((a, b) => a.id.localeCompare(b.id))
+            .flatMap((item) => Array.isArray(item.data().items) ? item.data().items : [])
+          migratedPackagesByLoadingId.value = {
+            ...migratedPackagesByLoadingId.value,
+            [id]: items,
+          }
+        },
+        (error) => console.error("Lecture des colis du conteneur impossible", id, error),
+      )
+      migratedPackageListeners.set(id, stop)
+    }
+  },
+  { immediate: true },
+)
+
+onUnmounted(() => {
+  for (const stop of migratedPackageListeners.values()) stop()
+  migratedPackageListeners.clear()
+})
+
+function loadingPackages(chargement) {
+  if (chargement.packagesStorage === "subcollection-v1") {
+    return migratedPackagesByLoadingId.value[chargement.id] || []
+  }
+  return Array.isArray(chargement.packagesTable) ? chargement.packagesTable : []
+}
 
 const addToLoadingModalRef = ref(null)
 
@@ -221,7 +283,7 @@ const packageLoadingById = computed(() => {
 
   for (const chargement of sortedChargements.value) {
 
-    const packages = Array.isArray(chargement.packagesTable) ? chargement.packagesTable : []
+    const packages = loadingPackages(chargement)
 
     for (const item of packages) {
 
@@ -472,6 +534,59 @@ function buildChargementPackageItem(row, chargementId) {
 
 }
 
+function splitPackageChunks(items) {
+  const chunks = []
+  let chunk = []
+  let bytes = 0
+
+  for (const item of items) {
+    const size = new TextEncoder().encode(JSON.stringify(item)).length + 128
+    if (size > 300000) throw new Error("Un colis individuel est trop volumineux")
+    if (chunk.length && bytes + size > 300000) {
+      chunks.push(chunk)
+      chunk = []
+      bytes = 0
+    }
+    chunk.push(item)
+    bytes += size
+  }
+
+  if (chunk.length) chunks.push(chunk)
+  return chunks
+}
+
+async function readMigratedPackages(chargementId) {
+  const snapshot = await getDocs(collection(db, "chargements", chargementId, "packages"))
+  return snapshot.docs
+    .filter((item) => /^chunk_\d+$/.test(item.id))
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .flatMap((item) => Array.isArray(item.data().items) ? item.data().items : [])
+}
+
+async function writeMigratedPackages(chargementRef, chargementId, items) {
+  const packagesCollection = collection(db, "chargements", chargementId, "packages")
+  const existingChunks = await getDocs(packagesCollection)
+  const chunks = splitPackageChunks(items)
+
+  for (let index = 0; index < chunks.length; index += 1) {
+    await setDoc(
+      doc(packagesCollection, `chunk_${String(index).padStart(5, "0")}`),
+      { items: chunks[index] },
+    )
+  }
+
+  for (const oldChunk of existingChunks.docs) {
+    if (/^chunk_\d+$/.test(oldChunk.id) && Number(oldChunk.id.slice(6)) >= chunks.length) {
+      await deleteDoc(oldChunk.ref)
+    }
+  }
+
+  await updateDoc(chargementRef, {
+    packagesStorage: "subcollection-v1",
+    packagesTable: deleteField(),
+  })
+}
+
 const getDestinataireDirectPhone = () =>
 
   client.value.telephoneDestinataireDirect || client.value.telephoneDestinataire || ""
@@ -664,7 +779,15 @@ async function addSelectedPackagesToChargement() {
 
     }
 
-    const existing = Array.isArray(snap.data()?.packagesTable) ? snap.data().packagesTable : []
+    const loadingData = snap.data() || {}
+
+    const usesMigratedStorage = loadingData.packagesStorage === "subcollection-v1"
+
+    const existing = usesMigratedStorage
+
+      ? await readMigratedPackages(selectedChargementId.value)
+
+      : (Array.isArray(loadingData.packagesTable) ? loadingData.packagesTable : [])
 
     const existingIds = new Set(existing.map((item) => item.id))
 
@@ -682,11 +805,17 @@ async function addSelectedPackagesToChargement() {
 
     }
 
-    await updateDoc(chargementRef, {
+    const updatedPackages = [...existing, ...newItems]
 
-      packagesTable: [...existing, ...newItems],
+    if (usesMigratedStorage) {
 
-    })
+      await writeMigratedPackages(chargementRef, selectedChargementId.value, updatedPackages)
+
+    } else {
+
+      await updateDoc(chargementRef, { packagesTable: updatedPackages })
+
+    }
 
     toast(`${newItems.length} colis ajouté(s) au chargement.`, { type: "success", autoClose: 1400 })
 
