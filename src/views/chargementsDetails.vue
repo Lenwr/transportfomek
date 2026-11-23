@@ -6,7 +6,7 @@ import { confirmToast } from "../utils/confirmToast.js"
 import { groupScannedPackages, recipientKey } from "../utils/scannedPackages"
 import { computed, ref, onMounted, watch, nextTick } from "vue"
 import { useFirestore, useDocument } from "vuefire"
-import { doc, updateDoc, getDoc } from "firebase/firestore"
+import { collection, doc, updateDoc, getDoc, getDocs, setDoc, deleteDoc, deleteField } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
 import { useRoute } from "vue-router"
 import { StreamBarcodeReader } from "vue-barcode-reader"
@@ -30,6 +30,92 @@ const FUNCTIONS_BASE_URL = String(import.meta.env.VITE_FIREBASE_FUNCTIONS_BASE_U
 const detailId = ref(route.params.id)
 const docRef = doc(db, "chargements", detailId.value)
 const chargementSource = useDocument(docRef)
+// Les colis migrés sont stockés dans une sous-collection pour respecter la limite 1 Mio.
+const migratedPackages = ref([])
+const packagesLoaded = ref(false)
+const packagesLoadError = ref(false)
+const packageStorageBusy = ref(false)
+const packagesCollection = collection(db, "chargements", detailId.value, "packages")
+
+async function loadMigratedPackages() {
+  packagesLoaded.value = false
+  packagesLoadError.value = false
+  try {
+    const snapshot = await getDocs(packagesCollection)
+    migratedPackages.value = snapshot.docs
+      .filter(d => /^chunk_\d+$/.test(d.id))
+      .sort((a, b) => a.id.localeCompare(b.id))
+      .flatMap(d => Array.isArray(d.data().items) ? d.data().items : [])
+    packagesLoaded.value = true
+  } catch (error) {
+    packagesLoadError.value = true
+    throw error
+  }
+}
+
+// Chaque lot reste bien en dessous de la limite Firestore (taille UTF-8 estimée).
+function splitPackageChunks(items) {
+  const chunks = []
+  let chunk = []
+  let bytes = 0
+  for (const item of items) {
+    const size = new TextEncoder().encode(JSON.stringify(item)).length + 128
+    if (size > 300000) throw new Error("Un colis individuel est trop volumineux")
+    if (chunk.length && bytes + size > 300000) {
+      chunks.push(chunk)
+      chunk = []
+      bytes = 0
+    }
+    chunk.push(item)
+    bytes += size
+  }
+  if (chunk.length) chunks.push(chunk)
+  return chunks
+}
+
+async function persistPackages(items) {
+  if (packageStorageBusy.value) throw new Error("Une sauvegarde des colis est déjà en cours")
+  packageStorageBusy.value = true
+  try {
+    // Ne jamais écraser les lots si leur lecture a échoué.
+    if (chargement.value?.packagesStorage === "subcollection-v1" && !packagesLoaded.value) {
+      throw new Error("Colis non chargés : sauvegarde annulée pour protéger les données")
+    }
+    const chunks = splitPackageChunks(items)
+    const existing = await getDocs(packagesCollection)
+    // Écriture et vérification avant suppression du champ historique.
+    for (let i = 0; i < chunks.length; i++) {
+      await setDoc(doc(packagesCollection, `chunk_${String(i).padStart(5, "0")}`), { items: chunks[i] })
+    }
+    const verified = await getDocs(packagesCollection)
+    const verifiedCount = verified.docs
+      .filter((d) => /^chunk_\d+$/.test(d.id) && Number(d.id.slice(6)) < chunks.length)
+      .reduce((count, d) => count + (d.data().items || []).length, 0)
+    if (verifiedCount !== items.length) throw new Error("Vérification de la sauvegarde des colis échouée")
+    const verifiedItems = verified.docs
+      .filter(d => /^chunk_\d+$/.test(d.id) && Number(d.id.slice(6)) < chunks.length)
+      .sort((a, b) => a.id.localeCompare(b.id))
+      .flatMap(d => d.data().items || [])
+    if (JSON.stringify(verifiedItems) !== JSON.stringify(items)) {
+      throw new Error("Vérification du contenu des colis échouée : aucune suppression effectuée")
+    }
+    // Ne supprimer les anciens lots qu'après validation des nouveaux.
+    await updateDoc(docRef, { packagesTable: deleteField(), packagesStorage: "subcollection-v1" })
+    for (const old of existing.docs) {
+      if (/^chunk_\d+$/.test(old.id) && Number(old.id.slice(6)) >= chunks.length) await deleteDoc(old.ref)
+    }
+    migratedPackages.value = [...items]
+    packagesLoaded.value = true
+    chargementSource.value = { ...(chargementSource.value || {}), packagesTable: [], packagesStorage: "subcollection-v1" }
+  } finally {
+    packageStorageBusy.value = false
+  }
+}
+
+onMounted(async () => {
+  try { await loadMigratedPackages() }
+  catch (error) { console.error("Chargement des colis migrés impossible", error); toast("Impossible de charger les colis du conteneur", { type: "error" }) }
+})
 
 const displayScanner = ref(false)
 const scannerSection = ref(null)
@@ -66,6 +152,9 @@ const chargement = computed(() => {
   return {
     id: detailId.value,
     ...src,
+    packagesTable: src.packagesStorage === "subcollection-v1"
+      ? migratedPackages.value
+      : (src.packagesTable || []),
   }
 })
 
@@ -127,6 +216,12 @@ function buildTrackingRecipientsForContainer(chargementId) {
 
 const TRACKING_SMS_URL =
   "https://us-central1-fomektrack.cloudfunctions.net/sendTrackingLinks"
+
+// Liaison de reprise pour un ancien colis créé avant la conservation fiable de
+// clientId/enlevementId dans packagesTable. Ciblée sur ce conteneur uniquement.
+const LEGACY_CONTAINER_PICKUP_LINKS = {
+  "82eP5GRAdSUsDfntcLuY": ["n544MVJLEVIwnMdA9r5q"],
+}
 
 
 watch(
@@ -826,12 +921,7 @@ async function processScanPayloadNow(text) {
       : []
 
     const newList = [...currentList, ...newItems]
-    await updateDoc(docRef, { packagesTable: newList })
-
-    chargementSource.value = {
-      ...(chargementSource.value || {}),
-      packagesTable: newList,
-    }
+    await persistPackages(newList)
 
     const byClient = new Map()
     for (const item of newItems) {
@@ -937,8 +1027,7 @@ async function removePackageFromContainer(item, index) {
       return
     }
 
-    await updateDoc(docRef, { packagesTable })
-    chargementSource.value = { ...(chargementSource.value || {}), packagesTable }
+    await persistPackages(packagesTable)
     toast("Colis retiré du conteneur.", { type: "success", autoClose: 3000 })
   } catch (error) {
     console.error("Erreur retrait colis du conteneur", error)
@@ -954,10 +1043,15 @@ async function removePackageFromContainer(item, index) {
 async function majStatutChargement() {
   try {
     if (!chargement.value) return
+    if (chargement.value.packagesStorage === "subcollection-v1" && (!packagesLoaded.value || packagesLoadError.value)) {
+      toast("Chargement des colis en cours. Réessaie dans quelques secondes.", { type: "warning" })
+      return
+    }
 
     const now = new Date().toISOString()
     const target = statutSelectionne.value
     const startsTransit = target === "expédié"
+    const updateSchedule = startsTransit || (Boolean(chargement.value.transitDate || chargement.value.shippingDate) && Boolean(estimatedDeliveryInput.value))
     if (startsTransit && authStore.isSuperAdmin && !transitDateInput.value) {
       toast("Choisis la date de départ du conteneur", { type: "warning" })
       return
@@ -972,21 +1066,25 @@ async function majStatutChargement() {
     const adjustedEstimatedDate = selectedEstimatedDate
       ? new Date(new Date(selectedEstimatedDate).getTime() + adjustmentDays * 86_400_000).toISOString()
       : null
-    const containerTransitDate = startsTransit
+    const containerTransitDate = updateSchedule
       ? (authStore.isSuperAdmin && selectedTransitDate
           ? selectedTransitDate
           : chargement.value.transitDate || chargement.value.shippingDate || now)
       : null
 
     const current = chargement.value.packagesTable || []
-    const newTable = current.map((p) => ({
-      ...p,
-      status: target,
-      historique: [...(p.historique || []), { status: target, date: now }],
-    }))
+    const previousStatus = String(chargement.value.statutGlobal || "").trim().toLowerCase()
+    const statusChanged = previousStatus !== String(target || "").trim().toLowerCase()
 
-    const chargementUpdate = { packagesTable: newTable, statutGlobal: target }
-    if (startsTransit) {
+    // Ne pas réécrire packagesTable ici : ce tableau peut approcher la limite
+    // Firestore de 1 Mio. Le statut détaillé est stocké dans l'enlèvement
+    // d'origine (source de vérité) et le chargement ne conserve que son statut
+    // global. Cela évite aussi de dupliquer un historique pour chaque colis.
+    const chargementUpdate = {
+      statutGlobal: target,
+      statusUpdatedAt: now,
+    }
+    if (updateSchedule) {
       chargementUpdate.transitDate = containerTransitDate
       chargementUpdate.shippingDate = containerTransitDate
       if (adjustedEstimatedDate) chargementUpdate.estimatedDeliveryAt = adjustedEstimatedDate
@@ -994,6 +1092,8 @@ async function majStatutChargement() {
       chargementUpdate.scheduleReason = String(scheduleReason.value || "").trim()
       chargementUpdate.scheduleUpdatedAt = now
     }
+    // Un simple changement de date ne doit jamais migrer ni réécrire les colis.
+    // Firestore ne reçoit ici que les champs du conteneur.
     await updateDoc(docRef, chargementUpdate)
     chargementSource.value = {
       ...(chargementSource.value || {}),
@@ -1001,9 +1101,11 @@ async function majStatutChargement() {
     }
 
     const byClient = {}
-    for (const it of newTable) {
+    for (const it of current) {
       const legacyIdMatch = String(it.id || "").match(/^(.*)-(\d+)-(\d+)$/)
-      const clientId = String(it.clientId || legacyIdMatch?.[1] || "").trim()
+      const clientId = String(
+        it.clientId || it.enlevementId || legacyIdMatch?.[1] || ""
+      ).trim()
       if (!clientId) {
         console.warn("Colis sans identifiant d'enlèvement, synchronisation ignorée", it.id)
         continue
@@ -1020,6 +1122,80 @@ async function majStatutChargement() {
       })
     }
 
+    // Les premiers chargements ne conservaient pas toujours clientId/enlevementId.
+    // On récupère ces anciennes lignes par une correspondance stricte des parties
+    // (expéditeur + destinataire + libellé du colis) afin de mettre aussi à jour
+    // leur enlèvement source et de déclencher la synchronisation TRACKSEND.
+    const normalizeLegacyValue = (value) => String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+\d+\s*\/\s*\d+\s*$/i, "")
+      .replace(/[^a-z0-9]+/gi, " ")
+      .trim()
+      .toLowerCase()
+
+    const legacyCandidates = current.filter((item) =>
+      item?.expediteur && item?.destinataire && item?.coli
+    )
+
+    if (legacyCandidates.length) {
+      const allPickups = await getDocs(collection(db, "enlevements"))
+
+      for (const item of legacyCandidates) {
+        const itemSender = normalizeLegacyValue(item.expediteur)
+        const itemRecipient = normalizeLegacyValue(item.destinataire)
+        const itemLabel = normalizeLegacyValue(item.coli)
+        const matches = []
+
+        for (const pickupSnap of allPickups.docs) {
+          if (byClient[pickupSnap.id]) continue
+
+          const pickup = pickupSnap.data() || {}
+          if (
+            normalizeLegacyValue(pickup.expediteur) !== itemSender ||
+            normalizeLegacyValue(pickup.destinataire) !== itemRecipient
+          ) continue
+
+          for (const [colisIndex, group] of (pickup.colis || []).entries()) {
+            const details = Array.isArray(group?.details) && group.details.length
+              ? group.details
+              : [null]
+
+            details.forEach((detail, detailIndex) => {
+              const label = normalizeLegacyValue(detail?.coli || group?.nom)
+              if (
+                label && itemLabel &&
+                (label === itemLabel || label.startsWith(itemLabel) || itemLabel.startsWith(label))
+              ) {
+                matches.push({ pickupId: pickupSnap.id, colisIndex, detailIndex })
+              }
+            })
+          }
+        }
+
+        // Aucune écriture si la correspondance n'est pas strictement unique.
+        if (matches.length !== 1) continue
+
+        const match = matches[0]
+        ;(byClient[match.pickupId] ||= []).push({
+          ...item,
+          clientId: match.pickupId,
+          colisIndex: match.colisIndex,
+          detailIndex: match.detailIndex,
+        })
+      }
+    }
+
+    for (const pickupId of LEGACY_CONTAINER_PICKUP_LINKS[detailId.value] || []) {
+      if (!byClient[pickupId]) {
+        byClient[pickupId] = [{
+          clientId: pickupId,
+          colisIndex: 0,
+          detailIndex: 0,
+        }]
+      }
+    }
+
     for (const [clientId, list] of Object.entries(byClient)) {
       const refDoc = doc(db, "enlevements", clientId)
       const snap = await getDoc(refDoc)
@@ -1030,20 +1206,29 @@ async function majStatutChargement() {
 
       for (const it of list) {
         const g = arr[it.colisIndex]
-        if (!g?.details?.[it.detailIndex]) continue
+        if (!g) continue
 
-        g.details = [...g.details]
-        g.details[it.detailIndex] = {
-          ...g.details[it.detailIndex],
-          statutColis: target,
+        if (g?.details?.[it.detailIndex]) {
+          const details = [...g.details]
+          details[it.detailIndex] = {
+            ...details[it.detailIndex],
+            statutColis: target,
+          }
+          arr[it.colisIndex] = { ...g, details }
+        } else {
+          arr[it.colisIndex] = {
+            ...g,
+            statutColis: target,
+          }
         }
       }
 
-      const enlevementUpdate = {
-        colis: arr,
-        deliveryStatus: target,
-      }
-      if (startsTransit) {
+      // Lors d'un ajustement de date sans changement de statut, ne pas
+      // réécrire l'intégralité du tableau colis des enlèvements.
+      const enlevementUpdate = statusChanged
+        ? { colis: arr, deliveryStatus: target }
+        : {}
+      if (updateSchedule) {
         const destination = String(data.destination || "")
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
@@ -1083,16 +1268,16 @@ async function majStatutChargement() {
       enlevementCache.set(clientId, { ...data, ...enlevementUpdate })
     }
 
-    toast("📦 Statuts mis à jour", {
+    toast(updateSchedule ? "📅 Dates enregistrées dans les enlèvements" : "📦 Statuts mis à jour", {
       type: "success",
       autoClose: 1800,
     })
 
-    setLocalStatusForItems(newTable, target)
+    setLocalStatusForItems(current, target)
     scheduleAdjustmentDays.value = 0
   } catch (e) {
     console.error("❌ Erreur MAJ statuts :", e)
-    toast("❌ Erreur lors de la mise à jour", { type: "error" })
+    toast(`❌ Mise à jour incomplète : ${e?.message || "erreur inconnue"}`, { type: "error" })
   }
 }
 
@@ -1652,7 +1837,7 @@ onMounted(async () => {
             </select>
 
             <div
-              v-if="authStore.isSuperAdmin && statutSelectionne === 'expédié'"
+              v-if="authStore.isSuperAdmin && (statutSelectionne === 'expédié' || chargement?.transitDate || chargement?.shippingDate)"
               class="rounded-lg border border-cyan-200 bg-cyan-50 p-3"
             >
               <label for="container-transit-date" class="block text-xs font-bold uppercase tracking-wide text-cyan-900">
@@ -1665,7 +1850,7 @@ onMounted(async () => {
                 class="mt-2 block w-full rounded-lg border border-cyan-200 bg-white px-3 py-2 text-sm font-semibold text-slate-950 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
               />
               <p class="mt-2 text-xs leading-5 text-cyan-800">
-                Cette date sera appliquée à tous les colis et recalculera leur arrivée estimée.
+                Tu peux modifier la date d’arrivée même après l’expédition. Les enlèvements associés seront actualisés.
               </p>
 
               <label for="container-estimated-date" class="mt-4 block text-xs font-bold uppercase tracking-wide text-cyan-900">

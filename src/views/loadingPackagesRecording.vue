@@ -1,8 +1,8 @@
 <script setup>
 import { confirmToast } from "../utils/confirmToast.js"
-import { computed, ref } from "vue"
+import { computed, ref, watch, onUnmounted } from "vue"
 import { useCollection, useFirestore } from "vuefire"
-import { collection, addDoc, doc, deleteDoc, serverTimestamp, updateDoc } from "firebase/firestore"
+import { collection, addDoc, doc, deleteDoc, serverTimestamp, updateDoc, onSnapshot } from "firebase/firestore"
 import { format } from "date-fns"
 import frLocale from "date-fns/locale/fr"
 import { toast } from "vue3-toastify"
@@ -32,9 +32,56 @@ const sortedChargements = computed(() =>
 
 const activeCount = computed(() => sortedChargements.value.length)
 
-const scannedPackagesCount = computed(() =>
-  sortedChargements.value.reduce((sum, item) => sum + Number(item.packagesTable?.length || 0), 0)
-)
+// Les conteneurs historiques utilisent packagesTable ; les conteneurs migrés
+// stockent les colis dans chargements/{id}/packages/chunk_XXXXX.
+const migratedPackageCounts = ref({})
+const packageCountLoading = ref({})
+const packageCountErrors = ref({})
+const packageCountListeners = new Map()
+
+function countPackages(item) {
+  if (item.packagesStorage !== "subcollection-v1") return item.packagesTable?.length || 0
+  if (packageCountErrors.value[item.id]) return "Indisponible"
+  if (packageCountLoading.value[item.id] || migratedPackageCounts.value[item.id] == null) return "Chargement…"
+  return migratedPackageCounts.value[item.id]
+}
+
+const scannedPackagesCount = computed(() => {
+  const values = sortedChargements.value.map(countPackages)
+  if (values.some(value => typeof value !== "number")) return "Chargement…"
+  return values.reduce((sum, value) => sum + value, 0)
+})
+
+watch(() => (chargements.value || []).filter(c => c.packagesStorage === "subcollection-v1").map(c => c.id).sort().join("|"), () => {
+  const ids = new Set((chargements.value || []).filter(c => c.packagesStorage === "subcollection-v1").map(c => c.id))
+  for (const [id, stop] of packageCountListeners) {
+    if (!ids.has(id)) {
+      stop()
+      packageCountListeners.delete(id)
+    }
+  }
+  for (const id of ids) {
+    if (packageCountListeners.has(id)) continue
+    packageCountLoading.value = { ...packageCountLoading.value, [id]: true }
+    const stop = onSnapshot(collection(db, "chargements", id, "packages"), snapshot => {
+      const count = snapshot.docs.filter(d => /^chunk_\d+$/.test(d.id))
+        .reduce((sum, d) => sum + (Array.isArray(d.data().items) ? d.data().items.length : 0), 0)
+      migratedPackageCounts.value = { ...migratedPackageCounts.value, [id]: count }
+      packageCountLoading.value = { ...packageCountLoading.value, [id]: false }
+      packageCountErrors.value = { ...packageCountErrors.value, [id]: false }
+    }, error => {
+      console.error("Lecture du nombre de colis impossible", id, error)
+      packageCountLoading.value = { ...packageCountLoading.value, [id]: false }
+      packageCountErrors.value = { ...packageCountErrors.value, [id]: true }
+    })
+    packageCountListeners.set(id, stop)
+  }
+}, { immediate: true })
+
+onUnmounted(() => {
+  for (const stop of packageCountListeners.values()) stop()
+  packageCountListeners.clear()
+})
 
 function openModal() {
   modalRef.value?.showModal()
@@ -209,7 +256,7 @@ async function deleteLoad(id) {
                 {{ item.contenaire || "-" }}
               </td>
               <td class="whitespace-nowrap px-5 py-4 text-slate-600">
-                {{ item.packagesTable?.length || 0 }}
+                {{ countPackages(item) }}
               </td>
               <td class="whitespace-nowrap px-5 py-4">
                 <span class="rounded-md bg-cyan-50 px-2.5 py-1 text-xs font-bold text-cyan-800">

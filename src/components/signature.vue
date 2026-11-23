@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount, onMounted, computed } from 'vue'
 import { addDoc, arrayUnion, collection, doc, getDoc, serverTimestamp, updateDoc, getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
@@ -11,6 +11,8 @@ const receiverName = ref("")
 const identityFile = ref(null)
 const identityPreview = ref("")
 const saving = ref(false)
+const shipmentData = ref(null)
+const loadingShipment = ref(true)
 const props = defineProps({
   detailId: String,
   colisIndex: Number,
@@ -23,6 +25,23 @@ const props = defineProps({
 const db = getFirestore()
 const auth = getAuth()
 const storage = getStorage()
+
+const remainingBalance = computed(() => {
+  const value = shipmentData.value?.resteAPayer ?? shipmentData.value?.amountDue ?? shipmentData.value?.solde ?? shipmentData.value?.balanceDue ?? 0
+  const amount = Number(value)
+  return Number.isFinite(amount) ? Math.max(0, amount) : 0
+})
+
+const paymentLabel = computed(() => remainingBalance.value > 0 ? 'Solde restant dû' : 'Aucun solde restant')
+
+onMounted(async () => {
+  try {
+    const snapshot = await getDoc(doc(db, "enlevements", props.detailId))
+    if (snapshot.exists()) shipmentData.value = snapshot.data()
+  } finally {
+    loadingShipment.value = false
+  }
+})
 
 onBeforeUnmount(() => {
   if (identityPreview.value) URL.revokeObjectURL(identityPreview.value)
@@ -90,6 +109,7 @@ const saveSignature = async () => {
     }
 
     const docData = docSnap.data()
+    shipmentData.value = docData
     const colis = docData.colis || []
     const user = auth.currentUser
     const identityDocument = await uploadIdentityDocument(deliveredAt)
@@ -209,6 +229,12 @@ const saveSignature = async () => {
 
 <template>
   <form class="w-full space-y-5 text-left" @submit.prevent="saveSignature">
+    <div v-if="!loadingShipment" class="rounded-lg border p-4" :class="remainingBalance > 0 ? 'border-amber-200 bg-amber-50 text-amber-950' : 'border-emerald-200 bg-emerald-50 text-emerald-950'">
+      <p class="text-xs font-bold uppercase tracking-wide">Situation du lot</p>
+      <p class="mt-1 text-lg font-extrabold">{{ paymentLabel }}</p>
+      <p v-if="remainingBalance > 0" class="mt-1 text-2xl font-black">{{ remainingBalance.toFixed(2) }} €</p>
+      <p class="mt-1 text-xs">Ce montant concerne l’ensemble de l’enlèvement auquel appartient ce colis.</p>
+    </div>
     <div>
       <label for="receiver-name" class="text-sm font-bold text-slate-800">
         Nom de la personne qui reçoit <span class="text-red-600">*</span>

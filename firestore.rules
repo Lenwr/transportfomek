@@ -117,6 +117,9 @@ service cloud.firestore {
     match /chargements/{chargementId} {
       allow read, create, update: if isInternalUser() || hasPermission("recording");
       allow delete: if isInternalUser();
+      match /packages/{chunkId} {
+        allow read, write: if isInternalUser() || hasPermission("recording");
+      }
     }
 
     match /pickupRequests/{requestId} {
